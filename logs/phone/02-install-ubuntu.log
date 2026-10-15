@@ -1,0 +1,46 @@
+
+=== Ubuntu PRoot install started: 2026-10-15T17:04:07+03:00 ===
+Image: ubuntu:resolute-20260912
+Container: ha-ubuntu
+[*] Installing 'ubuntu:resolute-20260912' as 'ha-ubuntu'...
+[*] Authenticating with registry (anonymous)...
+[*] Fetching manifest for 'ubuntu:resolute-20260912'...
+[*] Fetching aarch64 manifest...
+[*] 7cb168fccdd2: Downloading layer 1/2 (38.9 MiB)...
+[*] 7cb168fccdd2: Applying layer 1/2...
+[*] 70624a8d6970: Downloading layer 2/2 (407 B)...
+[*] 70624a8d6970: Applying layer 2/2...
+[*] Updating '/etc/resolv.conf'...
+[*] Updating '/etc/hosts'...
+[*] Registering Android-specific UIDs and GIDs...
+[*] Finished installation.
+
+Start shell: proot-distro login ha-ubuntu
+
+
+Container inventory:
+
+Installed containers:
+
+  * ha-ubuntu
+
+Log in with: proot-distro login <name>
+
+
+Guest verification:
+PRETTY_NAME="Ubuntu 26.04.1 LTS"
+NAME="Ubuntu"
+VERSION_ID="26.04"
+VERSION="26.04.1 LTS (Resolute Raccoon)"
+VERSION_CODENAME=resolute
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=resolute
+LOGO=ubuntu-logo
+Architecture: arm64
+Python 3.14.6
+=== Ubuntu PRoot install completed: 2026-10-15T17:04:18+03:00 ===

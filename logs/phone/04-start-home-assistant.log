@@ -1,0 +1,59 @@
+
+=== Home Assistant start requested: 2026-10-15T17:14:52+03:00 ===
+
+No active sessions.
+
+Start one with: proot-distro login <name>
+
+
+Started detached session for container 'ha-ubuntu':
+
+PID:     12951
+Command: /bin/bash -c '/bin/bash -c '"'"'exec /srv/homeassistant/venv/bin/hass -c /srv/homeassistant/config >>/srv/homeassistant/runtime.log 2>&1'"'"''
+
+List sessions:  proot-distro ps
+Stop session:   proot-distro kill 12951
+
+HTTP ready: 302 (attempt 8)
+
+PID    CONTAINER  TYPE    USER           UPTIME  COMMAND
+12951  ha-ubuntu  login*  homeassistant  0m35s   /bin/bash -c '/bin/bash -c '"'…
+
+* detached session
+
+
+=== Home Assistant start requested: 2026-10-15T17:20:32+03:00 ===
+
+Started detached session for container 'ha-ubuntu':
+
+PID:     16140
+Command: /bin/bash -c '/bin/bash -c '"'"'exec /srv/homeassistant/venv/bin/hass -c /srv/homeassistant/config >>/srv/homeassistant/runtime.log 2>&1'"'"''
+
+List sessions:  proot-distro ps
+Stop session:   proot-distro kill 16140
+
+HTTP ready: 302 (attempt 3)
+
+PID    CONTAINER  TYPE    USER           UPTIME  COMMAND
+16140  ha-ubuntu  login*  homeassistant  0m10s   /bin/bash -c '/bin/bash -c '"'…
+
+* detached session
+
+
+=== Home Assistant start requested: 2026-10-15T17:22:12+03:00 ===
+
+Started detached session for container 'ha-ubuntu':
+
+PID:     16445
+Command: /bin/bash -c '/bin/bash -c '"'"'exec /srv/homeassistant/venv/bin/hass -c /srv/homeassistant/config >>/srv/homeassistant/runtime.log 2>&1'"'"''
+
+List sessions:  proot-distro ps
+Stop session:   proot-distro kill 16445
+
+HTTP ready: 302 (attempt 3)
+
+PID    CONTAINER  TYPE    USER           UPTIME  COMMAND
+16445  ha-ubuntu  login*  homeassistant  0m10s   /bin/bash -c '/bin/bash -c '"'…
+
+* detached session
+

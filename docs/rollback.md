@@ -1,0 +1,115 @@
+# Откат
+
+## Текущее состояние после установки APK
+
+На телефоне установлены только:
+
+- `com.termux`, версия 0.118.3;
+- `com.termux.boot`, версия 0.8.1.
+
+Приложения ещё не запускались, bootstrap и серверное окружение не создавались,
+настройки Android не менялись. Поэтому полный откат текущего этапа — удалить
+сначала Termux:Boot, затем Termux.
+
+## Воспроизводимый откат
+
+Из корня проекта:
+
+```powershell
+.\scripts\uninstall-termux.ps1 -ConfirmRemoval
+```
+
+Скрипт эквивалентен следующим ADB-действиям:
+
+```powershell
+adb shell am force-stop com.termux.boot
+adb uninstall com.termux.boot
+adb shell am force-stop com.termux
+adb uninstall com.termux
+```
+
+Важно: после начала настройки Termux удаление `com.termux` уничтожит его
+приватный домашний каталог, пакеты, конфигурацию Home Assistant и базу данных.
+Перед поздним откатом нужно сначала выполнить отдельный экспорт данных.
+
+Скрипт намеренно требует `-ConfirmRemoval` и сейчас не запускался.
+
+## Вернуть прежний обработчик Home
+
+В ходе настройки обнаружено, что прежним Home был назначен сетевой экран
+«Предложения» `com.lge.appbox.client/.DpPreloadIntro`. Он заменён на штатный
+LG Launcher без очистки данных:
+
+```powershell
+adb shell cmd package set-home-activity com.lge.launcher3/.LauncherExtension
+```
+
+Если по какой-либо причине потребуется вернуть прежнее состояние:
+
+```powershell
+adb shell cmd package set-home-activity com.lge.appbox.client/.DpPreloadIntro
+```
+
+Откат Home не удаляет Termux и его данные.
+
+## Вернуть оптимизацию батареи
+
+Termux и Termux:Boot добавлены в device-idle whitelist. Удалить исключения можно
+без удаления приложений и данных:
+
+```powershell
+adb shell dumpsys deviceidle whitelist -com.termux
+adb shell dumpsys deviceidle whitelist -com.termux.boot
+```
+
+Глобальные настройки Android и phantom-process monitor не изменялись.
+
+## Удалить Ubuntu PRoot
+
+После установки контейнера `ha-ubuntu` его можно удалить независимо от Termux:
+
+```text
+proot-distro remove ha-ubuntu
+```
+
+Команда уничтожает весь rootfs и будущие данные Home Assistant внутри него,
+но не удаляет Termux. Перед использованием на настроенном сервере требуется
+сначала создать backup. На этапе пустого rootfs откат безопасен.
+
+Если нужно удалить только Home Assistant, сохранив Ubuntu, следует остановить
+его процессы и удалить `/srv/homeassistant`. Эта операция также уничтожит
+конфигурацию и базу данных, поэтому отдельный rollback-скрипт будет добавлен
+только после реализации backup.
+
+Home Assistant/PRoot-сессию можно безопасно остановить без удаления данных:
+
+```text
+~/05-stop-home-assistant.sh
+```
+
+Скрипт вызывает `proot-distro kill ha-ubuntu` с обычным `SIGTERM` и эскалацией,
+если гостевой процесс не завершится.
+
+## Удалить прототип Voice Color Station
+
+Прототип устанавливается отдельным Android-пакетом и не изменяет Termux,
+Ubuntu или Home Assistant. Остановить и полностью удалить только его можно так:
+
+```powershell
+adb shell am force-stop local.ivand.voicecolorstation
+adb uninstall local.ivand.voicecolorstation
+```
+
+Остановить только фоновое прослушивание без удаления приложения можно действием
+«Остановить» в его постоянном Android-уведомлении либо через ADB:
+
+```powershell
+adb shell am force-stop local.ivand.voicecolorstation
+```
+
+Следующее открытие приложения снова запустит службу, пока Activity видима.
+`stopservice` из ADB для намеренно неэкспортированной службы на LG возвращает
+ошибку; `force-stop` ограничен только этим пакетом и не удаляет его данные.
+
+Удаление стирает только локальные данные прототипа и выданное ему разрешение
+на микрофон. Собранный APK и исходники в этом репозитории сохраняются.

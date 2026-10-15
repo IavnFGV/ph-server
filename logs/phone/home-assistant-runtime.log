@@ -1,0 +1,119 @@
+2026-10-15 14:15:06.376 WARNING (MainThread) [aiohttp_fast_zlib] zlib_ng and isal are not available, falling back to zlib, performance will be degraded.
+2026-10-15 14:15:30.023 ERROR (MainThread) [haffmpeg.core] FFmpeg fails [Errno 2] No such file or directory: 'ffmpeg'
+Traceback (most recent call last):
+  File "/srv/homeassistant/venv/lib/python3.14/site-packages/haffmpeg/core.py", line 130, in open
+    self._proc = await asyncio.create_subprocess_exec(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/usr/lib/python3.14/asyncio/subprocess.py", line 224, in create_subprocess_exec
+    transport, protocol = await loop.subprocess_exec(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        stderr=stderr, **kwds)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/asyncio/base_events.py", line 1809, in subprocess_exec
+    transport = await self._make_subprocess_transport(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        protocol, popen_args, False, stdin, stdout, stderr,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        bufsize, **kwargs)
+        ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/asyncio/unix_events.py", line 202, in _make_subprocess_transport
+    transp = _UnixSubprocessTransport(self, protocol, args, shell,
+                                    stdin, stdout, stderr, bufsize,
+                                    waiter=waiter, extra=extra,
+                                    **kwargs)
+  File "/usr/lib/python3.14/asyncio/base_subprocess.py", line 40, in __init__
+    self._start(args=args, shell=shell, stdin=stdin, stdout=stdout,
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                stderr=stderr, bufsize=bufsize, **kwargs)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/asyncio/unix_events.py", line 844, in _start
+    self._proc = subprocess.Popen(
+                 ~~~~~~~~~~~~~~~~^
+        args, shell=shell, stdin=stdin, stdout=stdout, stderr=stderr,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        universal_newlines=False, bufsize=bufsize, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 1990, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'ffmpeg'
+2026-10-15 14:15:30.055 WARNING (MainThread) [haffmpeg.tools] Error starting FFmpeg.
+2026-10-15 14:15:55.479 WARNING (ImportExecutor_0) [pyroute2.netlink.rtnl.tcmsg.common] tcmsg: [Errno 13] Permission denied: '/proc/net/psched'
+2026-10-15 14:15:55.480 WARNING (ImportExecutor_0) [pyroute2.netlink.rtnl.tcmsg.common] the tc subsystem functionality is limited
+2026-10-15 14:17:25.697 ERROR (ImportExecutor_0) [homeassistant.components.camera.img_util] Error loading libturbojpeg; Camera snapshot performance will be sub-optimal
+Traceback (most recent call last):
+  File "/srv/homeassistant/venv/lib/python3.14/site-packages/homeassistant/components/camera/img_util.py", line 91, in __init__
+    TurboJPEGSingleton.__instance = TurboJPEG()
+                                    ~~~~~~~~~^^
+  File "/srv/homeassistant/venv/lib/python3.14/site-packages/turbojpeg.py", line 301, in __init__
+    self.__find_turbojpeg() if lib_path is None else lib_path)
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/srv/homeassistant/venv/lib/python3.14/site-packages/turbojpeg.py", line 996, in __find_turbojpeg
+    raise RuntimeError(
+    ...<2 lines>...
+        'e.g. jpeg = TurboJPEG(lib_path)')
+RuntimeError: Unable to locate turbojpeg library automatically. You may specify the turbojpeg library path manually.
+e.g. jpeg = TurboJPEG(lib_path)
+2026-10-15 14:17:40.209 ERROR (SyncWorker_0) [homeassistant.util.package] Unable to install package aiohomeconnect==0.39.1: 
+2026-10-15 14:17:40.891 WARNING (MainThread) [homeassistant.core] Task <Task pending name='Task-107' coro=<async_setup.<locals>._async_initialize() running at /srv/homeassistant/venv/lib/python3.14/site-packages/homeassistant/components/dhcp/__init__.py:141> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at /usr/lib/python3.14/asyncio/futures.py:393, Task.task_wakeup()]> cb=[set.remove()]> was still running after final writes shutdown stage; Integrations should cancel non-critical tasks when receiving the stop event to prevent delaying shutdown
+2026-10-15 14:17:40.946 ERROR (SyncWorker_9) [aiodhcpwatcher] Cannot watch for dhcp packets without a functional packet filter: libpcap is not available. Cannot compile filter !
+2026-10-15 14:17:41.325 WARNING (Thread-3 (_do_shutdown)) [homeassistant.util.executor] Thread[SyncWorker_0] is still running at shutdown: File "/usr/lib/python3.14/threading.py", line 1044, in _bootstrap
+    self._bootstrap_inner()
+  File "/usr/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+  File "/usr/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.14/concurrent/futures/thread.py", line 119, in _worker
+    work_item.run(ctx)
+  File "/usr/lib/python3.14/concurrent/futures/thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "/usr/lib/python3.14/concurrent/futures/thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "/srv/homeassistant/venv/lib/python3.14/site-packages/homeassistant/requirements.py", line 122, in _install_requirements_if_missing
+    if pkg_util.is_installed(req) or _install_with_retry(req, kwargs):
+  File "/srv/homeassistant/venv/lib/python3.14/site-packages/homeassistant/requirements.py", line 110, in _install_with_retry
+    if pkg_util.install_package(requirement, **kwargs):
+  File "/srv/homeassistant/venv/lib/python3.14/site-packages/homeassistant/util/package.py", line 191, in install_package
+    if (stderr := _install(args, env)) is None:
+  File "/srv/homeassistant/venv/lib/python3.14/site-packages/homeassistant/util/package.py", line 137, in _install
+    _, stderr = process.communicate()
+  File "/usr/lib/python3.14/subprocess.py", line 1221, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+  File "/usr/lib/python3.14/subprocess.py", line 2153, in _communicate
+    ready = selector.select(timeout)
+  File "/usr/lib/python3.14/selectors.py", line 398, in select
+    fd_event_list = self._selector.poll(timeout)
+2026-10-15 14:20:42.598 WARNING (MainThread) [aiohttp_fast_zlib] zlib_ng and isal are not available, falling back to zlib, performance will be degraded.
+2026-10-15 14:20:44.547 WARNING (ImportExecutor_0) [pyroute2.netlink.rtnl.tcmsg.common] tcmsg: [Errno 13] Permission denied: '/proc/net/psched'
+2026-10-15 14:20:44.547 WARNING (ImportExecutor_0) [pyroute2.netlink.rtnl.tcmsg.common] the tc subsystem functionality is limited
+2026-10-15 14:20:45.791 ERROR (ImportExecutor_0) [homeassistant.components.camera.img_util] Error loading libturbojpeg; Camera snapshot performance will be sub-optimal
+Traceback (most recent call last):
+  File "/srv/homeassistant/venv/lib/python3.14/site-packages/homeassistant/components/camera/img_util.py", line 91, in __init__
+    TurboJPEGSingleton.__instance = TurboJPEG()
+                                    ~~~~~~~~~^^
+  File "/srv/homeassistant/venv/lib/python3.14/site-packages/turbojpeg.py", line 301, in __init__
+    self.__find_turbojpeg() if lib_path is None else lib_path)
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/srv/homeassistant/venv/lib/python3.14/site-packages/turbojpeg.py", line 996, in __find_turbojpeg
+    raise RuntimeError(
+    ...<2 lines>...
+        'e.g. jpeg = TurboJPEG(lib_path)')
+RuntimeError: Unable to locate turbojpeg library automatically. You may specify the turbojpeg library path manually.
+e.g. jpeg = TurboJPEG(lib_path)
+2026-10-15 14:20:49.152 ERROR (SyncWorker_4) [aiodhcpwatcher] Cannot watch for dhcp packets without a functional packet filter: libpcap is not available. Cannot compile filter !
+2026-10-15 14:22:19.191 WARNING (MainThread) [aiohttp_fast_zlib] zlib_ng and isal are not available, falling back to zlib, performance will be degraded.
+2026-10-15 14:22:21.384 WARNING (ImportExecutor_0) [pyroute2.netlink.rtnl.tcmsg.common] tcmsg: [Errno 13] Permission denied: '/proc/net/psched'
+2026-10-15 14:22:21.384 WARNING (ImportExecutor_0) [pyroute2.netlink.rtnl.tcmsg.common] the tc subsystem functionality is limited
