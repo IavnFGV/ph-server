@@ -19,7 +19,11 @@
   приватных каталогов Termux/Ubuntu в `logs/phone`; временные ADB-файлы после
   каждой копии удаляются.
 - `build-voice-color-station.ps1` — без Gradle собирает и подписывает локальным
-  debug-ключом минимальный Android APK голосовой цветовой станции.
+  debug-ключом Android APK локальной голосовой цветовой станции.
+- `prepare-vosk-dependencies.ps1` — скачивает закреплённые Vosk/JNA, русскую
+  модель и совместимый R8/D8, проверяет SHA-256 и готовит assets/ARM64 `.so`.
 - `install-voice-color-station.ps1` — устанавливает собранный APK через ADB и
   открывает приложение; разрешение на микрофон остаётся за пользователем.
+- `verify-vosk-runtime.ps1` — сохраняет версию/разрешения APK, состояние
+  foreground-service, AppOps микрофона, уведомление и релевантный logcat.
 

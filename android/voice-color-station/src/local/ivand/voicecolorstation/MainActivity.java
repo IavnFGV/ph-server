@@ -20,14 +20,30 @@ public final class MainActivity extends Activity {
 
     private LinearLayout root;
     private TextView status;
+    private String serviceStatus = "Загружаю локальную модель…";
+    private String lastHeard;
+    private boolean lastHeardIsFinal;
     private boolean receiverRegistered;
-    private final BroadcastReceiver colorReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver serviceReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            applyColor(intent.getIntExtra(VoiceListenerService.EXTRA_COLOR,
-                            Color.rgb(20, 28, 42)),
-                    intent.getStringExtra(VoiceListenerService.EXTRA_COLOR_NAME),
-                    intent.getStringExtra(VoiceListenerService.EXTRA_PHRASE));
+            if (VoiceListenerService.ACTION_COLOR_CHANGED.equals(intent.getAction())) {
+                applyColor(intent.getIntExtra(VoiceListenerService.EXTRA_COLOR,
+                                Color.rgb(20, 28, 42)),
+                        intent.getStringExtra(VoiceListenerService.EXTRA_COLOR_NAME),
+                        intent.getStringExtra(VoiceListenerService.EXTRA_PHRASE));
+            } else if (VoiceListenerService.ACTION_STATUS_CHANGED.equals(intent.getAction())) {
+                String message = intent.getStringExtra(VoiceListenerService.EXTRA_STATUS);
+                if (message != null) {
+                    serviceStatus = message;
+                    renderStatus();
+                }
+            } else if (VoiceListenerService.ACTION_PHRASE_HEARD.equals(intent.getAction())) {
+                lastHeard = intent.getStringExtra(VoiceListenerService.EXTRA_PHRASE);
+                lastHeardIsFinal = intent.getBooleanExtra(
+                        VoiceListenerService.EXTRA_IS_FINAL, false);
+                renderStatus();
+            }
         }
     };
 
@@ -52,7 +68,8 @@ public final class MainActivity extends Activity {
         status.setGravity(Gravity.CENTER);
         status.setTextSize(27f);
         status.setTextColor(Color.WHITE);
-        status.setText("Запускаю фоновый режим…\nСкажите: «Помогатор, включи синий»");
+        status.setText("Загружаю локальную модель…\n"
+                + "Скажите: «Помогатор, включи синий»");
         root.addView(status, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));
@@ -62,17 +79,17 @@ public final class MainActivity extends Activity {
     private void ensureMicrophonePermission() {
         if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
                 == PackageManager.PERMISSION_GRANTED) {
-            showLocalWakeWordPending();
+            startVoiceService();
         } else {
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
                     MICROPHONE_PERMISSION_REQUEST);
         }
     }
 
-    private void showLocalWakeWordPending() {
-        status.setText("Фоновое прослушивание временно остановлено.\n"
-                + "Циклический Google-распознаватель издавал системный звук.\n"
-                + "Следующий этап — локальный wake-word.");
+    private void startVoiceService() {
+        serviceStatus = "Запускаю локальное распознавание Vosk…";
+        renderStatus();
+        startForegroundService(new Intent(this, VoiceListenerService.class));
     }
 
     private void restoreLastColor() {
@@ -90,9 +107,12 @@ public final class MainActivity extends Activity {
                 + 0.587 * Color.green(value)
                 + 0.114 * Color.blue(value)) / 255.0;
         status.setTextColor(luminance > 0.62 ? Color.BLACK : Color.WHITE);
-        String heard = phrase == null ? "" : "Услышал: «" + phrase + "»\n";
-        status.setText(heard + "Экран теперь " + name
-                + ".\nФоновый режим продолжает слушать.");
+        if (phrase != null) {
+            lastHeard = phrase;
+            lastHeardIsFinal = true;
+        }
+        serviceStatus = "Экран теперь " + name + ".\nФоновый режим продолжает слушать.";
+        renderStatus();
         getSharedPreferences("voice_state", MODE_PRIVATE).edit()
                 .putInt("color_value", value)
                 .putString("color_name", name)
@@ -106,7 +126,7 @@ public final class MainActivity extends Activity {
         if (requestCode == MICROPHONE_PERMISSION_REQUEST) {
             boolean granted = grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-            if (granted) showLocalWakeWordPending();
+            if (granted) startVoiceService();
             else status.setText("Без разрешения на микрофон фоновый режим не работает.");
         }
     }
@@ -114,15 +134,18 @@ public final class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        registerReceiver(colorReceiver,
-                new IntentFilter(VoiceListenerService.ACTION_COLOR_CHANGED));
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(VoiceListenerService.ACTION_COLOR_CHANGED);
+        filter.addAction(VoiceListenerService.ACTION_STATUS_CHANGED);
+        filter.addAction(VoiceListenerService.ACTION_PHRASE_HEARD);
+        registerReceiver(serviceReceiver, filter);
         receiverRegistered = true;
     }
 
     @Override
     protected void onStop() {
         if (receiverRegistered) {
-            unregisterReceiver(colorReceiver);
+            unregisterReceiver(serviceReceiver);
             receiverRegistered = false;
         }
         super.onStop();
@@ -142,5 +165,14 @@ public final class MainActivity extends Activity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+    }
+
+    private void renderStatus() {
+        String heard = "";
+        if (lastHeard != null && !lastHeard.isEmpty()) {
+            heard = (lastHeardIsFinal ? "Услышал: «" : "Слышу: «")
+                    + lastHeard + "»\n\n";
+        }
+        status.setText(heard + serviceStatus);
     }
 }

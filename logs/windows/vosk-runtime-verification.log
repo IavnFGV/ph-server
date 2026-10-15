@@ -1,0 +1,264 @@
+**********************
+PowerShell transcript start
+Start time: 20261015232336
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+& .\scripts\verify-vosk-runtime.ps1
+Process ID: 35712
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+=== APK identity and permissions ===
+
+package: name='local.ivand.voicecolorstation' versionCode='6' versionName='0.4.0' platformBuildVersionName='14'
+platformBuildVersionCode='34' compileSdkVersion='34' compileSdkVersionCodename='14'
+sdkVersion:'31'
+targetSdkVersion:'31'
+native-code: 'arm64-v8a'
+
+
+Algorithm : SHA256
+Hash      : D3CB3421C583C8CD0B3BADD54BFA0F72F88DC4FAAF154E1418B27C2B3C0969C3
+Path      : D:\projects\local-server-on-lg-phone\lg-v50s-home-server\android\voice-color-station\artifacts\voice-color-
+            station-debug.apk
+
+=== Runtime process and foreground service ===
+
+  * ServiceRecord{3ea4edb u0 local.ivand.voicecolorstation/.VoiceListenerService}
+    isForeground=true foregroundId=71 foregroundNoti=Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)
+=== Microphone AppOps ===
+
+=== Effective notification status ===
+                android.text=String (Жду: «Помощник» или «Помоги»)
+=== Recent relevant logcat ===
+**********************
+PowerShell transcript end
+End time: 20261015232337
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261015234414
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Sleep -Seconds 8; & .\scripts\verify-vosk-runtime.ps1
+Process ID: 27084
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+=== APK identity and permissions ===
+
+package: name='local.ivand.voicecolorstation' versionCode='7' versionName='0.4.1' platformBuildVersionName='14'
+platformBuildVersionCode='34' compileSdkVersion='34' compileSdkVersionCodename='14'
+sdkVersion:'31'
+targetSdkVersion:'31'
+native-code: 'arm64-v8a'
+
+
+Algorithm : SHA256
+Hash      : 8FAB1320AEDF11F2BAAE74509CE5E20BEFEF3CFFB0EC6AE6BF1B6B96DC6AF8E0
+Path      : D:\projects\local-server-on-lg-phone\lg-v50s-home-server\android\voice-color-station\artifacts\voice-color-
+            station-debug.apk
+
+=== Runtime process and foreground service ===
+
+  * ServiceRecord{26e12fc u0 local.ivand.voicecolorstation/.VoiceListenerService}
+    isForeground=true foregroundId=71 foregroundNoti=Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)
+=== Microphone AppOps ===
+
+=== Effective notification status ===
+                android.text=String (Жду: «Помощник» или «Помоги»)
+=== Recent relevant logcat ===
+10-15 23:44:34.014   953   953 I MiniDump: 0xb4000079faaffb20 |     DEVICE |          0 | 0.887 |    0    0 1080 2340
+|   0.0   0.0 1080.0 2340.0 | Splash Screen local.ivand.voicecolorstation@2462#0
+10-15 23:44:34.030   953   953 I MiniDump: 0xb4000079faaffb20 |     DEVICE |          0 | 0.780 |    0    0 1080 2340
+|   0.0   0.0 1080.0 2340.0 | Splash Screen local.ivand.voicecolorstation@2462#0
+10-15 23:44:34.144   953   953 I SurfaceFlinger: Remove BufferStateLayer(0xb4000079faaffb20) Splash Screen
+local.ivand.voicecolorstation@2462#0 (parent=none)
+10-15 23:44:34.144   953   953 I SurfaceFlinger: Remove ContainerLayer(0xb4000079fab13a10) 9d27449 Splash Screen
+local.ivand.voicecolorstation#0 (parent=none)
+10-15 23:44:34.144   953   953 I SurfaceFlinger: Remove EffectLayer(0xb4000079fab719a0) Surface(name=9d27449 Splash
+Screen local.ivand.voicecolorstation)/@0xf204ae6 - animation-leash of window_animation#0 (parent=none)
+10-15 23:44:34.144   953   953 D Layer   : Destroy Surface(name=9d27449 Splash Screen
+local.ivand.voicecolorstation)/@0xf204ae6 - animation-leash of window_animation#0(0xb4000079fab719a0)
+10-15 23:44:34.144   953   953 D Layer   : Destroy 9d27449 Splash Screen
+local.ivand.voicecolorstation#0(0xb4000079fab13a10)
+10-15 23:44:34.146  2111  9276 D InputDispatcher: Window went away: Splash Screen local.ivand.voicecolorstation@2462#0
+10-15 23:44:34.146   953   953 D Layer   : Destroy Splash Screen
+local.ivand.voicecolorstation@2462#0(0xb4000079faaffb20)
+10-15 23:44:34.498 30826 30860 I VoskAPI : ReadDataFiles():model.cc:321) Loading winfo /storage/emulated/0/Android/data
+/local.ivand.voicecolorstation/files/vosk-model-small-ru/vosk-model-small-ru-0.22/graph/phones/word_boundary.int
+10-15 23:44:34.628 30826 30826 V AudioRecord: set(): inputSource 6, sampleRate 16000, format 0x1, channelMask 0x10,
+frameCount 3200, notificationFrames 0, sessionId 0, transferType 0, flags 0, attributionSource
+AttributionSourceState{pid: -1, uid: 10316, packageName: local.ivand.voicecolorstation, attributionTag: (null), token:
+, renouncedPermissions: [], next: []}uid -1, pid -1
+10-15 23:44:34.646   949  3173 V AudioPolicyService: start watching op 27 for AttributionSourceState{pid: 30826, uid:
+10316, packageName: local.ivand.voicecolorstation, attributionTag: (null), token: {no toString() implemented},
+renouncedPermissions: [], next: []}
+10-15 23:44:34.855  2111  2111 I NotificationServiceEx: LED remove() :
+mLights=0|local.ivand.voicecolorstation|71|null|10316
+10-15 23:44:34.855  2111  2111 D NotificationServiceEx: updateLightListLocked
+:r=0|local.ivand.voicecolorstation|71|null|10316, action=2
+10-15 23:44:34.856  2111  2111 D NotificationServiceEx: notification=Notification(channel=local-vosk-listener-v1
+shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000
+backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+10-15 23:44:34.868  4244  4244 I [SignBoard]NotificationListener/u0:
+[NotificationListener.java:208:onNotificationPosted()-AodServiceThread]
+onNotificationPosted(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-15 23:44:34.870  4244  4244 I [SignBoard]GroupLayout@205774500/u0:
+[GroupLayout.java:278:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-15 23:44:34.870  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:319:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-15 23:44:34.874  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:372:onNotificationUpdated()-AodServiceThread] NotificationLayer not supported, skipID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316
+10-15 23:44:34.875  2462  2462 D NotificationEntryMgr:
+updateNotification(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-15 23:44:34.880  2462  2462 D InterruptionStateProvider: No bubble up: not allowed to bubble:
+0|local.ivand.voicecolorstation|71|null|10316
+10-15 23:44:34.881  2462  2462 D InterruptionStateProvider: No heads up: unimportant notification:
+0|local.ivand.voicecolorstation|71|null|10316
+10-15 23:44:34.887  2462  2462 D SignBoardManager:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@ec224c9, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@c5517ce, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@4d016ef, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-15 23:44:34.887  2462  2462 D SignBoardManagerGlobal:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@ec224c9, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@c5517ce, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@4d016ef, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-15 23:44:34.888  2462  2565 D PeopleSpaceWidgetMgr: Sbn doesn't contain valid PeopleTileKey:
+null/0/local.ivand.voicecolorstation
+10-15 23:44:34.889  2462  2462 I LightingEffectDeliver: SKIP! FLAG_ONGOING_EVENT, local.ivand.voicecolorstation@71/u0,
+0|local.ivand.voicecolorstation|71|null|10316
+**********************
+PowerShell transcript end
+End time: 20261015234414
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261015234728
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+& .\scripts\install-voice-color-station.ps1; Start-Sleep -Seconds 8; & .\scripts\verify-vosk-runtime.ps1
+Process ID: 29128
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+=== APK identity and permissions ===
+Algorithm Hash
+--------- ----
+SHA256    FE6690FE8F9045A855C61CF903F5E87861358A2DBC9898154A0CA135A6F2FC5C
+
+
+
+
+
+SHA256    FE6690FE8F9045A855C61CF903F5E87861358A2DBC9898154A0CA135A6F2FC5C
+=== Runtime process and foreground service ===
+
+
+
+=== Microphone AppOps ===
+
+=== Effective notification status ===
+
+=== Recent relevant logcat ===
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**********************
+PowerShell transcript end
+End time: 20261015234729
+**********************

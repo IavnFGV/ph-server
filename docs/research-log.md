@@ -301,6 +301,53 @@
 - OpenWakeWord ориентирован прежде всего на Python/Linux и кастомную обученную
   модель; готовая Android-интеграция для слова «Помогатор» не подтверждена.
 
+### Зафиксированные зависимости Vosk POC
+
+- Официальный Android demo использует `com.alphacephei:vosk-android:0.3.75@aar`
+  и `net.java.dev.jna:jna:5.18.1@aar`:
+  <https://github.com/alphacep/vosk-android-demo/blob/master/app/build.gradle>.
+- Русская small-модель: `vosk-model-small-ru-0.22`, 45 МБ, Apache 2.0:
+  <https://alphacephei.com/vosk/models>.
+- Для совместимости JNA 5.18.1 с ручной сборкой закреплён стабильный R8/D8
+  `9.5.26` из Google Maven. Все четыре файла проверяются по SHA-256 в
+  `scripts/prepare-vosk-dependencies.ps1`.
+- Поиск в `words.txt` модели не нашёл «помогатор», но подтвердил «помощник» и
+  «помоги». Ограниченная грамматика Vosk не может надёжно распознавать слово,
+  отсутствующее в лексиконе; для него нужен отдельный KWS/phonetic model.
+
+### Проверка custom KWS для «Помогатора»
+
+- Sherpa-ONNX действительно предоставляет open-vocabulary keyword spotting и
+  Android API, где ключевые слова задаются без переобучения:
+  <https://github.com/k2-fsa/sherpa/blob/master/docs/source/onnx/kws/index.rst>.
+- Но официальный каталог готовых KWS-моделей сейчас содержит Chinese,
+  Chinese+English и English; Russian-модели в списке нет:
+  <https://github.com/k2-fsa/sherpa/blob/master/docs/source/onnx/kws/pretrained_models/index.rst>.
+- На данном LG полный русский Vosk транскрибировал произнесённое «Помогатор»
+  как `помогать`. Это значение принято как узкий device-tested alias, пока не
+  появится или не будет обучена настоящая русская KWS-модель.
+
+### Как получить настоящий акустический trigger «Помогатор»
+
+- OpenWakeWord позволяет обучать собственную компактную ONNX/TFLite-модель на
+  синтетических и реальных записях, но upstream официально считает готовую
+  поддержку English-only; русский потребует собственного набора речи и
+  обязательной проверки false accepts/rejects:
+  <https://github.com/dscripka/openWakeWord>.
+- Существует сторонний Android runtime, принимающий custom ONNX-модели
+  openWakeWord и работающий с `AudioRecord`:
+  <https://github.com/msnilsen/openwakeword-android>. Это удобная точка
+  интеграции, но не официальный компонент upstream, поэтому код и лицензии
+  нужно отдельно проверить перед включением.
+- Практический путь: записать 20–50 реальных произнесений «Помогатор» разными
+  голосами/дистанциями, сгенерировать тысячи русских TTS-вариантов, добавить
+  отрицательные примеры и похожие слова, обучить ONNX detector, проверить его
+  на часах бытового аудио, затем использовать detector только для пробуждения,
+  а Vosk — для команды после trigger.
+- microWakeWord также обучает custom TFLite-модели, но его готовый runtime
+  ориентирован на ESPHome/TFLite Micro. Для текущего Android-приложения путь
+  через openWakeWord ONNX короче.
+
 ### Android 17 и варианты прошивки mh2lm
 
 - Android 17 официально выпущен 16 июня 2026:
