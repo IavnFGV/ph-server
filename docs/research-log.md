@@ -370,4 +370,27 @@
   backup/restore-плана. Более новая ОС не требуется для локального wake-word и
   не компенсирует риск утраты vendor-функций или рабочего серверного стека.
 
+### Проверка официального Colab и русский training pipeline
+
+- В актуальном `automatic_model_training_simple.ipynb` (заметка датирована
+  2026-04-11) пример клонирует `rhasspy/piper-sample-generator`, переключается
+  на `213d4d5` и загружает английский `en_US-libritts_r-medium.pt`. Форма
+  советует удалять Unicode. Это подтверждает, что прямой ввод «Помогатор» не
+  является русским обучением.
+- Официальный pipeline использует MIT RIR, одну часть AudioSet, час FMA,
+  ACAV100M features и 11 часов validation features. Проверенные размеры двух
+  `.npy`: 17 280 000 128 и 184 836 608 байт; Colab должен иметь достаточный
+  временный диск.
+- Для русской генерации выбраны Piper voices `ru_RU-denis-medium`,
+  `ru_RU-dmitri-medium`, `ru_RU-irina-medium`, `ru_RU-ruslan-medium` из тега
+  `v1.0.0`. Все четыре ONNX URL ответили HTTP 200, размер каждого 63 201 294
+  байта.
+- `training/pomogator/generate_russian_samples.py` создаёт штатную структуру
+  openWakeWord `positive_train`, `positive_test`, `negative_train`,
+  `negative_test`, а затем ресемплирует результат Piper в mono 16-bit PCM
+  16 кГц. Без этого openWakeWord `augment_clips` отклонит 22,05-кГц Piper WAV.
+- Notebook закрепляет upstream commit SHA и сохраняет SHA-256 итоговой ONNX в
+  `training-report.txt`. Из-за смешанных лицензий официальных датасетов модель
+  маркируется как личный некоммерческий POC.
+
 
