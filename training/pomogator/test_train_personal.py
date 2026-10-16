@@ -9,9 +9,22 @@ from pathlib import Path
 import numpy as np
 
 from train_personal import approved, augment, frame, prepare
+from evaluate_personal_test import score_windows
 
 
 class PersonalTrainingTests(unittest.TestCase):
+    def test_test_windows_do_not_borrow_next_utterance_or_count_rejected(self):
+        clips = [{'file': 'one.wav', 'source_start': 2.8, 'source_end': 3.0},
+                 {'file': 'two.wav', 'source_start': 3.2, 'source_end': 3.6}]
+        scores = np.zeros(80)
+        scores[40] = 0.9  # 3.28s: belongs only to the second candidate
+        labels = {'test/one.wav': True, 'test/two.wav': False}
+        result = score_windows(scores, clips, labels, 0.65)
+        self.assertEqual(result['total_approved'], 1)
+        self.assertEqual(result['detected'], 0)
+        self.assertFalse(result['clips'][0]['threshold_reached'])
+        self.assertTrue(result['clips'][1]['threshold_reached'])
+
     def test_test_segmentation_requires_frozen_report_before_reading_audio(self):
         script = Path(__file__).with_name('prepare_personal_candidates.py')
         result = subprocess.run([

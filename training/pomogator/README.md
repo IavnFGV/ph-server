@@ -74,6 +74,20 @@ python training/pomogator/review_personal_recordings.py --test training/pomogato
 исключить их. При оценке следует указать покрытие исходной записи/исключения.
 Test labels не добавляются в train; параметры после просмотра test не подбираются.
 
+`evaluate_personal_test.py --run training/pomogator/private/runs/personal-v2
+--output training/pomogator/private/runs/personal-v2/held-out-test-report.json`
+проверяет frozen hashes и полноту review, затем сравнивает ONNX на непрерывном
+test stream. Существующий итог не перезаписывает. Python dependencies те же,
+что для локального обучения. Окно оценки ограничено началом следующего
+кандидата; rejected не считаются negative ground truth.
+
+Результат 16 октября: принято 13 из 15 кандидатов, оба классификатора обнаружили
+13/13 (personal threshold 0.65, generic 0.5). Преимущество по числу обнаружений
+на test не показано. Исключены 004 и 015 (суммарно 9.65 с speech intervals);
+обе модели активировались и там — нужна причина отклонения, прежде чем
+считать это false alarm. Это positive-window метрика, не симуляция Android
+command window, не полнота всех произнесений и не измерение ложных событий/час.
+
 [Открыть notebook в Google Colab](https://colab.research.google.com/github/IavnFGV/ph-server/blob/feature/vosk-local-wakeword/training/pomogator/Pomogator_openWakeWord.ipynb)
 
 ## Почему не достаточно официального quick-start
