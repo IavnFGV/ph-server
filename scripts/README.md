@@ -22,6 +22,10 @@
   debug-ключом Android APK локальной голосовой цветовой станции.
 - `prepare-vosk-dependencies.ps1` — скачивает закреплённые Vosk/JNA, русскую
   модель и совместимый R8/D8, проверяет SHA-256 и готовит assets/ARM64 `.so`.
+- `prepare-wakeword-dependencies.ps1` — проверяет SHA-256 ONNX Runtime Android,
+  feature-моделей openWakeWord и обученного «Помогатора», готовит assets/ARM64.
+- `verify-wakeword-runtime.ps1` — проверяет self-test трёх ONNX-моделей, READY,
+  foreground-службу, микрофон, память и ошибки только текущего процесса.
 - `install-voice-color-station.ps1` — устанавливает собранный APK через ADB и
   открывает приложение; разрешение на микрофон остаётся за пользователем.
 - `verify-vosk-runtime.ps1` — сохраняет версию/разрешения APK, состояние

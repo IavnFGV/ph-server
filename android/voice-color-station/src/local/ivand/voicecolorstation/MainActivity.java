@@ -87,7 +87,7 @@ public final class MainActivity extends Activity {
     }
 
     private void startVoiceService() {
-        serviceStatus = "Запускаю локальное распознавание Vosk…";
+        serviceStatus = "Запускаю детектор «Помогатор» и Vosk…";
         renderStatus();
         startForegroundService(new Intent(this, VoiceListenerService.class));
     }

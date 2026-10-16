@@ -262,3 +262,57 @@ WSManStackVersion: 3.0
 PowerShell transcript end
 End time: 20261015235002
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261016033742
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+& ./scripts/install-voice-color-station.ps1; Start-Sleep -Seconds 5; & .tools/platform-tools/adb.exe logcat -d -s Pomogator:I AndroidRuntime:E -t 120; & .tools/platform-tools/adb.exe shell appops get local.ivand.voicecolorstation RECORD_AUDIO
+Process ID: 35260
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+
+
+**********************
+PowerShell transcript end
+End time: 20261016033746
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016033921
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+& ./scripts/install-voice-color-station.ps1; Start-Sleep -Seconds 4; & ./scripts/verify-wakeword-runtime.ps1
+Process ID: 11276
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+
+
+**********************
+PowerShell transcript end
+End time: 20261016033924
+**********************

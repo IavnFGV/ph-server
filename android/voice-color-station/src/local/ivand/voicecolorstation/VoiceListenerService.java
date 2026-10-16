@@ -7,24 +7,28 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.os.IBinder;
-import android.os.Looper;
+import android.os.SystemClock;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.vosk.Model;
 import org.vosk.Recognizer;
-import org.vosk.android.RecognitionListener;
-import org.vosk.android.SpeechService;
 import org.vosk.android.StorageService;
 
 import java.io.IOException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public final class VoiceListenerService extends Service implements RecognitionListener {
+public final class VoiceListenerService extends Service {
     public static final String ACTION_COLOR_CHANGED =
             "local.ivand.voicecolorstation.COLOR_CHANGED";
     public static final String ACTION_STATUS_CHANGED =
@@ -46,18 +50,13 @@ public final class VoiceListenerService extends Service implements RecognitionLi
     private static final String MODEL_TARGET = "vosk-model-small-ru";
 
     private final Map<String, ColorChoice> colors = new LinkedHashMap<>();
-    private final Handler handler = new Handler(Looper.getMainLooper());
-    private final Runnable commandTimeout = new Runnable() {
-        @Override public void run() {
-            if (!stopping && System.currentTimeMillis() > commandWindowUntil) {
-                waitingForWakeWord();
-            }
-        }
-    };
+    private static final String TAG = "Pomogator";
+    private static final float WAKE_THRESHOLD = 0.5f;
     private Model model;
     private Recognizer recognizer;
-    private SpeechService speechService;
-    private boolean stopping;
+    private Thread audioThread;
+    private volatile AudioRecord audioRecord;
+    private volatile boolean stopping;
     private long commandWindowUntil;
     private String lastAppliedPhrase = "";
     private long lastAppliedAt;
@@ -104,17 +103,115 @@ public final class VoiceListenerService extends Service implements RecognitionLi
     }
 
     private void startRecognizer() {
-        try {
-            recognizer = new Recognizer(model, 16000.0f);
-            recognizer.setWords(true);
-            speechService = new SpeechService(recognizer, 16000.0f);
-            if (!speechService.startListening(this)) {
-                fail("Микрофон уже занят другим процессом");
-                return;
+        audioThread = new Thread(new Runnable() {
+            @Override public void run() { audioLoop(); }
+        }, "Pomogator-audio");
+        audioThread.start();
+    }
+
+    private File prepareWakeModels() throws IOException {
+        File directory = new File(getFilesDir(), "wakeword-v1");
+        if (!directory.isDirectory() && !directory.mkdirs()) throw new IOException("Cannot create wakeword directory");
+        for (String name : new String[]{"pomogator.onnx", "melspectrogram.onnx", "embedding_model.onnx"}) {
+            try (InputStream input = getAssets().open("wakeword/" + name);
+                 FileOutputStream output = new FileOutputStream(new File(directory, name))) {
+                byte[] buffer = new byte[65536];
+                int count;
+                while ((count = input.read(buffer)) != -1) output.write(buffer, 0, count);
             }
+        }
+        return directory;
+    }
+
+    private void audioLoop() {
+        AudioRecord recorder = null;
+        try (WakeWordDetector detector = new WakeWordDetector(prepareWakeModels())) {
+            Log.i(TAG, "SELF_TEST passed; score=" + detector.selfTest());
+            recognizer = new Recognizer(model, 16000f);
+            recognizer.setWords(true);
+            int minimum = AudioRecord.getMinBufferSize(16000, AudioFormat.CHANNEL_IN_MONO,
+                    AudioFormat.ENCODING_PCM_16BIT);
+            if (minimum <= 0) throw new IOException("Invalid microphone buffer: " + minimum);
+            recorder = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION, 16000,
+                    AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
+                    Math.max(minimum, WakeWordDetector.FRAME_SAMPLES * 8));
+            audioRecord = recorder;
+            if (stopping) return;
+            if (recorder.getState() != AudioRecord.STATE_INITIALIZED) throw new IOException("Microphone unavailable");
+            recorder.startRecording();
+            if (recorder.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) throw new IOException("Microphone did not start");
+            short[] frame = new short[WakeWordDetector.FRAME_SAMPLES];
+            short[] preRoll = new short[6400];
+            int preRollWrite = 0;
+            long lastScoreAt = 0L;
+            float peak = 0f;
             waitingForWakeWord();
-        } catch (IOException error) {
-            fail("Не удалось запустить Vosk: " + error.getMessage());
+            Log.i(TAG, "READY: PCM16 16000Hz, single AudioRecord, threshold=" + WAKE_THRESHOLD);
+            while (!stopping) {
+                int offset = 0;
+                while (offset < frame.length && !stopping) {
+                    int count = recorder.read(frame, offset, frame.length - offset, AudioRecord.READ_BLOCKING);
+                    if (count <= 0) {
+                        if (stopping) return;
+                        throw new IOException("AudioRecord read error " + count);
+                    }
+                    offset += count;
+                }
+                if (stopping) break;
+                for (short value : frame) {
+                    preRoll[preRollWrite] = value;
+                    preRollWrite = (preRollWrite + 1) % preRoll.length;
+                }
+                long now = SystemClock.elapsedRealtime();
+                if (commandWindowUntil != 0L) {
+                    boolean complete = recognizer.acceptWaveForm(frame, frame.length);
+                    handleJson(complete ? recognizer.getResult() : recognizer.getPartialResult(), !complete);
+                    if (commandWindowUntil == 0L) {
+                        recognizer.reset();
+                        detector.reset();
+                    } else if (now >= commandWindowUntil) {
+                        handleJson(recognizer.getFinalResult(), false);
+                        recognizer.reset();
+                        detector.reset();
+                        if (commandWindowUntil != 0L) waitingForWakeWord();
+                    }
+                } else {
+                    float score = detector.process(frame);
+                    peak = Math.max(peak, score);
+                    if (score >= WAKE_THRESHOLD) {
+                        recognizer.reset();
+                        short[] lead = new short[preRoll.length];
+                        for (int i = 0; i < lead.length; i++) lead[i] = preRoll[(preRollWrite + i) % lead.length];
+                        recognizer.acceptWaveForm(lead, lead.length);
+                        commandWindowUntil = now + COMMAND_WINDOW_MILLIS;
+                        publishHeard("Помогатор — сработал детектор", true);
+                        publishStatus("Помогатор услышан. Слушаю команду…");
+                        Log.i(TAG, "WAKE score=" + score + "; command window=6000ms");
+                    } else if (now - lastScoreAt >= 1000L) {
+                        // Scores are UI telemetry; avoid updating Android's notification every second.
+                        sendBroadcast(new Intent(ACTION_STATUS_CHANGED).setPackage(getPackageName())
+                                .putExtra(EXTRA_STATUS, String.format(Locale.ROOT,
+                                        "Жду: «Помогатор» · %.2f / %.2f", peak, WAKE_THRESHOLD)));
+                        Log.d(TAG, "WAIT peak=" + peak);
+                        peak = 0f;
+                        lastScoreAt = now;
+                    }
+                }
+            }
+        } catch (Exception error) {
+            if (!stopping) {
+                Log.e(TAG, "Audio pipeline failed", error);
+                fail("Ошибка голосовой станции: " + error.getMessage());
+            }
+        } finally {
+            if (recorder != null) {
+                try { recorder.stop(); } catch (IllegalStateException ignored) { }
+                recorder.release();
+            }
+            audioRecord = null;
+            if (recognizer != null) recognizer.close();
+            if (model != null) model.close();
+            Log.i(TAG, "Audio pipeline closed");
         }
     }
 
@@ -163,7 +260,6 @@ public final class VoiceListenerService extends Service implements RecognitionLi
     }
 
     private void waitingForWakeWord() {
-        handler.removeCallbacks(commandTimeout);
         commandWindowUntil = 0L;
         publishStatus("Жду: «Помогатор»");
     }
@@ -202,23 +298,14 @@ public final class VoiceListenerService extends Service implements RecognitionLi
             publishHeard(phrase, !partial);
             if (partial) return;
             String[] words = phrase.split("\\s+");
-            boolean hasWakeWord = isWakePhrase(phrase);
-            long now = System.currentTimeMillis();
-            if (hasWakeWord) {
-                commandWindowUntil = now + COMMAND_WINDOW_MILLIS;
-                handler.removeCallbacks(commandTimeout);
-                handler.postDelayed(commandTimeout, COMMAND_WINDOW_MILLIS + 100L);
-                publishStatus("Слушаю команду: назовите цвет");
-            }
+            long now = SystemClock.elapsedRealtime();
             ColorChoice choice = findColor(words);
-            if (choice != null && (hasWakeWord || now <= commandWindowUntil)) {
+            if (choice != null && commandWindowUntil != 0L) {
                 if (!phrase.equals(lastAppliedPhrase) || now - lastAppliedAt > 1500L) {
                     applyColor(choice, phrase);
                     lastAppliedPhrase = phrase;
                     lastAppliedAt = now;
                 }
-            } else if (commandWindowUntil != 0L && now > commandWindowUntil) {
-                waitingForWakeWord();
             }
         } catch (JSONException error) {
             publishStatus("Ошибка ответа Vosk: " + error.getMessage());
@@ -232,15 +319,6 @@ public final class VoiceListenerService extends Service implements RecognitionLi
                 .putExtra(EXTRA_IS_FINAL, isFinal));
     }
 
-    private boolean isWakePhrase(String phrase) {
-        String compact = phrase.replace(" ", "");
-        String firstWord = phrase.split("\\s+", 2)[0];
-        return firstWord.equals("помогать")
-                || compact.contains("помогатор")
-                || compact.contains("помогато")
-                || compact.contains("помогамотор");
-    }
-
     private ColorChoice findColor(String[] words) {
         for (String word : words) {
             ColorChoice choice = colors.get(word);
@@ -250,7 +328,6 @@ public final class VoiceListenerService extends Service implements RecognitionLi
     }
 
     private void applyColor(ColorChoice choice, String phrase) {
-        handler.removeCallbacks(commandTimeout);
         commandWindowUntil = 0L;
         getSharedPreferences("voice_state", MODE_PRIVATE).edit()
                 .putInt("color_value", choice.value)
@@ -264,21 +341,14 @@ public final class VoiceListenerService extends Service implements RecognitionLi
         publishStatus("Выполнено: экран " + choice.name);
     }
 
-    @Override public void onPartialResult(String hypothesis) { handleJson(hypothesis, true); }
-    @Override public void onResult(String hypothesis) { handleJson(hypothesis, false); }
-    @Override public void onFinalResult(String hypothesis) { handleJson(hypothesis, false); }
-    @Override public void onError(Exception error) {
-        fail("Ошибка микрофона Vosk: " + error.getMessage());
-    }
-    @Override public void onTimeout() { waitingForWakeWord(); }
-
     @Override
     public void onDestroy() {
         stopping = true;
-        handler.removeCallbacks(commandTimeout);
-        if (speechService != null) speechService.shutdown();
-        if (recognizer != null) recognizer.close();
-        if (model != null) model.close();
+        AudioRecord recorder = audioRecord;
+        if (recorder != null) {
+            try { recorder.stop(); } catch (IllegalStateException ignored) { }
+        }
+        // The worker owns model/session handles and closes them after its read loop exits.
         super.onDestroy();
     }
 

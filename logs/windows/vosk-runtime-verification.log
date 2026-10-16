@@ -262,3 +262,598 @@ SHA256    FE6690FE8F9045A855C61CF903F5E87861358A2DBC9898154A0CA135A6F2FC5C
 PowerShell transcript end
 End time: 20261015234729
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261016033800
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+& .tools/platform-tools/adb.exe logcat -d -s Pomogator:V AndroidRuntime:E | Select-Object -Last 60; & ./scripts/verify-vosk-runtime.ps1; & .tools/platform-tools/adb.exe shell dumpsys meminfo local.ivand.voicecolorstation | Select-String 'TOTAL PSS|TOTAL RSS|Native Heap|Java Heap'
+Process ID: 32756
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+=== APK identity and permissions ===
+
+package: name='local.ivand.voicecolorstation' versionCode='10' versionName='0.5.0' platformBuildVersionName='14'
+platformBuildVersionCode='34' compileSdkVersion='34' compileSdkVersionCodename='14'
+sdkVersion:'31'
+targetSdkVersion:'31'
+native-code: 'arm64-v8a'
+
+
+Algorithm : SHA256
+Hash      : 512FFF76EEB1F8D0FA05C05CC606140FD1033A65FFA8D2190E60367268FB5819
+Path      : D:\projects\local-server-on-lg-phone\lg-v50s-home-server\android\voice-color-station\artifacts\voice-color-
+            station-debug.apk
+
+=== Runtime process and foreground service ===
+
+  * ServiceRecord{2048ab5 u0 local.ivand.voicecolorstation/.VoiceListenerService}
+    isForeground=true foregroundId=71 foregroundNoti=Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)
+=== Microphone AppOps ===
+
+=== Effective notification status ===
+                android.text=String (Жду: «Помогатор» · 0.00 / 0.50)
+=== Recent relevant logcat ===
+10-16 03:38:23.203  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:319:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:23.204  2462  2462 D InterruptionStateProvider: No bubble up: not allowed to bubble:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:23.205  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:372:onNotificationUpdated()-AodServiceThread] NotificationLayer not supported, skipID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:23.205  2462  2462 D InterruptionStateProvider: No heads up: unimportant notification:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:23.213  2462  2462 D SignBoardManager:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@e915abc, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@6f11a45, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@107659a, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:23.214  2462  2462 D SignBoardManagerGlobal:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@e915abc, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@6f11a45, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@107659a, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:23.216  2462  2565 D PeopleSpaceWidgetMgr: Sbn doesn't contain valid PeopleTileKey:
+null/0/local.ivand.voicecolorstation
+10-16 03:38:23.217  2462  2462 I LightingEffectDeliver: SKIP! FLAG_ONGOING_EVENT, local.ivand.voicecolorstation@71/u0,
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:24.234  2111  2111 I NotificationServiceEx: LED remove() :
+mLights=0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:24.234  2111  2111 D NotificationServiceEx: updateLightListLocked
+:r=0|local.ivand.voicecolorstation|71|null|10316, action=2
+10-16 03:38:24.235  2111  2111 D NotificationServiceEx: notification=Notification(channel=local-vosk-listener-v1
+shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000
+backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+10-16 03:38:24.244  2462  2462 D NotificationEntryMgr:
+updateNotification(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:24.247  2462  2462 D InterruptionStateProvider: No bubble up: not allowed to bubble:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:24.249  2462  2462 D InterruptionStateProvider: No heads up: unimportant notification:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:24.252  4244  4244 I [SignBoard]NotificationListener/u0:
+[NotificationListener.java:208:onNotificationPosted()-AodServiceThread]
+onNotificationPosted(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:24.255  4244  4244 I [SignBoard]GroupLayout@205774500/u0:
+[GroupLayout.java:278:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:24.255  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:319:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:24.256  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:372:onNotificationUpdated()-AodServiceThread] NotificationLayer not supported, skipID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:24.257  2462  2462 D SignBoardManager:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@c0e15c1, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@e64166, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@4db1ca7, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:24.257  2462  2462 D SignBoardManagerGlobal:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@c0e15c1, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@e64166, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@4db1ca7, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:24.258  2462  2565 D PeopleSpaceWidgetMgr: Sbn doesn't contain valid PeopleTileKey:
+null/0/local.ivand.voicecolorstation
+10-16 03:38:24.259  2462  2462 I LightingEffectDeliver: SKIP! FLAG_ONGOING_EVENT, local.ivand.voicecolorstation@71/u0,
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:25.273  2111  2111 I NotificationServiceEx: LED remove() :
+mLights=0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:25.273  2111  2111 D NotificationServiceEx: updateLightListLocked
+:r=0|local.ivand.voicecolorstation|71|null|10316, action=2
+10-16 03:38:25.274  2111  2111 D NotificationServiceEx: notification=Notification(channel=local-vosk-listener-v1
+shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000
+backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+10-16 03:38:25.281  2462  2462 D NotificationEntryMgr:
+updateNotification(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:25.283  2462  2462 D InterruptionStateProvider: No bubble up: not allowed to bubble:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:25.284  2462  2462 D InterruptionStateProvider: No heads up: unimportant notification:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:25.291  2462  2462 D SignBoardManager:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@c850df2, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@a12dc43, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@7f662c0, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:25.292  4244  4244 I [SignBoard]NotificationListener/u0:
+[NotificationListener.java:208:onNotificationPosted()-AodServiceThread]
+onNotificationPosted(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:25.292  2462  2462 D SignBoardManagerGlobal:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@c850df2, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@a12dc43, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@7f662c0, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:25.293  2462  2565 D PeopleSpaceWidgetMgr: Sbn doesn't contain valid PeopleTileKey:
+null/0/local.ivand.voicecolorstation
+10-16 03:38:25.294  2462  2462 I LightingEffectDeliver: SKIP! FLAG_ONGOING_EVENT, local.ivand.voicecolorstation@71/u0,
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:25.295  4244  4244 I [SignBoard]GroupLayout@205774500/u0:
+[GroupLayout.java:278:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:25.295  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:319:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:25.296  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:372:onNotificationUpdated()-AodServiceThread] NotificationLayer not supported, skipID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:26.308  2111  2111 I NotificationServiceEx: LED remove() :
+mLights=0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:26.308  2111  2111 D NotificationServiceEx: updateLightListLocked
+:r=0|local.ivand.voicecolorstation|71|null|10316, action=2
+10-16 03:38:26.309  2111  2111 D NotificationServiceEx: notification=Notification(channel=local-vosk-listener-v1
+shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000
+backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+10-16 03:38:26.318  4244  4244 I [SignBoard]NotificationListener/u0:
+[NotificationListener.java:208:onNotificationPosted()-AodServiceThread]
+onNotificationPosted(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:26.319  2462  2462 D NotificationEntryMgr:
+updateNotification(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:26.321  4244  4244 I [SignBoard]GroupLayout@205774500/u0:
+[GroupLayout.java:278:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:26.321  2462  2462 D InterruptionStateProvider: No bubble up: not allowed to bubble:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:26.321  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:319:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:26.322  2462  2462 D InterruptionStateProvider: No heads up: unimportant notification:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:26.323  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:372:onNotificationUpdated()-AodServiceThread] NotificationLayer not supported, skipID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:26.329  2462  2462 D SignBoardManager:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@7cf99f, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@93eeaec, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@9e61eb5, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:26.330  2462  2462 D SignBoardManagerGlobal:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@7cf99f, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@93eeaec, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@9e61eb5, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:26.331  2462  2565 D PeopleSpaceWidgetMgr: Sbn doesn't contain valid PeopleTileKey:
+null/0/local.ivand.voicecolorstation
+10-16 03:38:26.333  2462  2462 I LightingEffectDeliver: SKIP! FLAG_ONGOING_EVENT, local.ivand.voicecolorstation@71/u0,
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:27.349  2111  2111 I NotificationServiceEx: LED remove() :
+mLights=0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:27.349  2111  2111 D NotificationServiceEx: updateLightListLocked
+:r=0|local.ivand.voicecolorstation|71|null|10316, action=2
+10-16 03:38:27.350  2111  2111 D NotificationServiceEx: notification=Notification(channel=local-vosk-listener-v1
+shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000
+backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+10-16 03:38:27.358  4244  4244 I [SignBoard]NotificationListener/u0:
+[NotificationListener.java:208:onNotificationPosted()-AodServiceThread]
+onNotificationPosted(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:27.361  2462  2462 D NotificationEntryMgr:
+updateNotification(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:27.361  4244  4244 I [SignBoard]GroupLayout@205774500/u0:
+[GroupLayout.java:278:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:27.361  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:319:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:27.363  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:372:onNotificationUpdated()-AodServiceThread] NotificationLayer not supported, skipID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:27.364  2462  2462 D InterruptionStateProvider: No bubble up: not allowed to bubble:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:27.365  2462  2462 D InterruptionStateProvider: No heads up: unimportant notification:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:27.373  2462  2462 D SignBoardManager:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@3a5c9d8, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@626f131, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@8f7d016, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:27.374  2462  2462 D SignBoardManagerGlobal:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@3a5c9d8, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@626f131, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@8f7d016, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:27.375  2462  2565 D PeopleSpaceWidgetMgr: Sbn doesn't contain valid PeopleTileKey:
+null/0/local.ivand.voicecolorstation
+10-16 03:38:27.376  2462  2462 I LightingEffectDeliver: SKIP! FLAG_ONGOING_EVENT, local.ivand.voicecolorstation@71/u0,
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:28.392  2111  2111 I NotificationServiceEx: LED remove() :
+mLights=0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:28.392  2111  2111 D NotificationServiceEx: updateLightListLocked
+:r=0|local.ivand.voicecolorstation|71|null|10316, action=2
+10-16 03:38:28.393  2111  2111 D NotificationServiceEx: notification=Notification(channel=local-vosk-listener-v1
+shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000
+backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+10-16 03:38:28.403  4244  4244 I [SignBoard]NotificationListener/u0:
+[NotificationListener.java:208:onNotificationPosted()-AodServiceThread]
+onNotificationPosted(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:28.406  4244  4244 I [SignBoard]GroupLayout@205774500/u0:
+[GroupLayout.java:278:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:28.406  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:319:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:28.408  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:372:onNotificationUpdated()-AodServiceThread] NotificationLayer not supported, skipID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:28.410  2462  2462 D NotificationEntryMgr:
+updateNotification(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:28.412  2462  2462 D InterruptionStateProvider: No bubble up: not allowed to bubble:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:28.413  2462  2462 D InterruptionStateProvider: No heads up: unimportant notification:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:28.421  2462  2462 D SignBoardManager:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@5c86f6d, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@398d7a2, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@3135c33, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:28.422  2462  2462 D SignBoardManagerGlobal:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@5c86f6d, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@398d7a2, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@3135c33, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:28.423  2462  2565 D PeopleSpaceWidgetMgr: Sbn doesn't contain valid PeopleTileKey:
+null/0/local.ivand.voicecolorstation
+10-16 03:38:28.424  2462  2462 I LightingEffectDeliver: SKIP! FLAG_ONGOING_EVENT, local.ivand.voicecolorstation@71/u0,
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:29.434  2111  2111 I NotificationServiceEx: LED remove() :
+mLights=0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:29.434  2111  2111 D NotificationServiceEx: updateLightListLocked
+:r=0|local.ivand.voicecolorstation|71|null|10316, action=2
+10-16 03:38:29.435  2111  2111 D NotificationServiceEx: notification=Notification(channel=local-vosk-listener-v1
+shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000
+backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+10-16 03:38:29.443  2462  2462 D NotificationEntryMgr:
+updateNotification(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:29.445  2462  2462 D InterruptionStateProvider: No bubble up: not allowed to bubble:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:29.446  2462  2462 D InterruptionStateProvider: No heads up: unimportant notification:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:29.447  4244  4244 I [SignBoard]NotificationListener/u0:
+[NotificationListener.java:208:onNotificationPosted()-AodServiceThread]
+onNotificationPosted(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:29.450  4244  4244 I [SignBoard]GroupLayout@205774500/u0:
+[GroupLayout.java:278:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:29.450  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:319:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:29.452  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:372:onNotificationUpdated()-AodServiceThread] NotificationLayer not supported, skipID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:29.454  2462  2462 D SignBoardManager:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@50cbee, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@89d888f, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@848e71c, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:29.455  2462  2462 D SignBoardManagerGlobal:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@50cbee, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@89d888f, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@848e71c, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:29.456  2462  2565 D PeopleSpaceWidgetMgr: Sbn doesn't contain valid PeopleTileKey:
+null/0/local.ivand.voicecolorstation
+10-16 03:38:29.456  2462  2462 I LightingEffectDeliver: SKIP! FLAG_ONGOING_EVENT, local.ivand.voicecolorstation@71/u0,
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:30.467  2111  2111 I NotificationServiceEx: LED remove() :
+mLights=0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:30.467  2111  2111 D NotificationServiceEx: updateLightListLocked
+:r=0|local.ivand.voicecolorstation|71|null|10316, action=2
+10-16 03:38:30.468  2111  2111 D NotificationServiceEx: notification=Notification(channel=local-vosk-listener-v1
+shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000
+backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+10-16 03:38:30.474  2462  2462 D NotificationEntryMgr:
+updateNotification(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:30.476  2462  2462 D InterruptionStateProvider: No bubble up: not allowed to bubble:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:30.476  2462  2462 D InterruptionStateProvider: No heads up: unimportant notification:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:30.477  4244  4244 I [SignBoard]NotificationListener/u0:
+[NotificationListener.java:208:onNotificationPosted()-AodServiceThread]
+onNotificationPosted(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:30.480  4244  4244 I [SignBoard]GroupLayout@205774500/u0:
+[GroupLayout.java:278:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:30.480  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:319:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:30.481  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:372:onNotificationUpdated()-AodServiceThread] NotificationLayer not supported, skipID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:30.482  2462  2462 D SignBoardManager:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@4f41eab, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@8b5908, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@4a588a1, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:30.483  2462  2462 D SignBoardManagerGlobal:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@4f41eab, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@8b5908, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@4a588a1, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:30.484  2462  2565 D PeopleSpaceWidgetMgr: Sbn doesn't contain valid PeopleTileKey:
+null/0/local.ivand.voicecolorstation
+10-16 03:38:30.484  2462  2462 I LightingEffectDeliver: SKIP! FLAG_ONGOING_EVENT, local.ivand.voicecolorstation@71/u0,
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:31.510  2111  2111 I NotificationServiceEx: LED remove() :
+mLights=0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:31.510  2111  2111 D NotificationServiceEx: updateLightListLocked
+:r=0|local.ivand.voicecolorstation|71|null|10316, action=2
+10-16 03:38:31.511  2111  2111 D NotificationServiceEx: notification=Notification(channel=local-vosk-listener-v1
+shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000
+backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+10-16 03:38:31.520  2462  2462 D NotificationEntryMgr:
+updateNotification(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:31.522  2462  2462 D InterruptionStateProvider: No bubble up: not allowed to bubble:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:31.523  2462  2462 D InterruptionStateProvider: No heads up: unimportant notification:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:31.524  4244  4244 I [SignBoard]NotificationListener/u0:
+[NotificationListener.java:208:onNotificationPosted()-AodServiceThread]
+onNotificationPosted(StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)))
+10-16 03:38:31.528  4244  4244 I [SignBoard]GroupLayout@205774500/u0:
+[GroupLayout.java:278:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:31.528  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:319:onNotificationUpdated()-AodServiceThread] onNotificationUpdated(ID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316)
+10-16 03:38:31.534  4244  4244 I [SignBoard]EventGroup@108135875/u0:
+[EventGroup.java:372:onNotificationUpdated()-AodServiceThread] NotificationLayer not supported, skipID: 71, Key:
+0|local.ivand.voicecolorstation|71|null|10316
+10-16 03:38:31.538  2462  2462 D SignBoardManager:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@700fdb4, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@5f10ddd, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@fca6d52, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:31.538  2462  2462 D SignBoardManagerGlobal:
+sendStatusBarIconInfos([com.lge.systemservice.core.StatusBarIconInfo@700fdb4, mStatusBarNotification =
+StatusBarNotification(pkg=android user=UserHandle{-1} id=34408198 tag=null key=-1|android|34408198|null|1000:
+Notification(channel=USB shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x2
+color=0xff13659d backgroundColor=0x00000000 vis=PUBLIC)), mIconType = 0,
+com.lge.systemservice.core.StatusBarIconInfo@5f10ddd, mStatusBarNotification =
+StatusBarNotification(pkg=com.android.phone user=UserHandle{0} id=33687415 tag=null
+key=0|com.android.phone|33687415|null|1001: Notification(channel=IccNotiController shortcut=null contentView=null
+vibrate=null sound=null defaults=0x0 flags=0x20 color=0x00000000 backgroundColor=0x00000000 vis=PRIVATE)), mIconType =
+0, com.lge.systemservice.core.StatusBarIconInfo@fca6d52, mStatusBarNotification =
+StatusBarNotification(pkg=local.ivand.voicecolorstation user=UserHandle{0} id=71 tag=null
+key=0|local.ivand.voicecolorstation|71|null|10316: Notification(channel=local-vosk-listener-v1 shortcut=null
+contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000
+category=service actions=1 vis=PRIVATE)), mIconType = 0])
+10-16 03:38:31.540  2462  2565 D PeopleSpaceWidgetMgr: Sbn doesn't contain valid PeopleTileKey:
+null/0/local.ivand.voicecolorstation
+10-16 03:38:31.541  2462  2462 I LightingEffectDeliver: SKIP! FLAG_ONGOING_EVENT, local.ivand.voicecolorstation@71/u0,
+0|local.ivand.voicecolorstation|71|null|10316
+**********************
+PowerShell transcript end
+End time: 20261016033801
+**********************
