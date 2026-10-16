@@ -5,6 +5,10 @@
 останавливаться при ошибках и не выполнять прошивку или сброс устройства.
 
 - `install-platform-tools.ps1` — локально устанавливает Android Platform Tools.
+- `start-lg-adb.ps1` — перезапускает ADB с `ADB_USB_LEGACY=1` для проверки
+  обрывов LG на новом USB backend Platform Tools 37. Откат:
+  `start-lg-adb.ps1 -DefaultUsbBackend`. Переменные задаются только процессу,
+  системные настройки Windows и телефона не меняются.
 - `get-lg-usb-driver.ps1` — получает LG Mobile Driver и проверяет подпись.
 - `collect-diagnostics.ps1` — собирает очищенный отчёт об устройстве.
 - `download-termux-apks.ps1` — загружает закреплённые стабильные APK Termux и

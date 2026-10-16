@@ -1107,3 +1107,22 @@ LG выведены из эксплуатации, использование к
 - Сбой сохранён в `logs/windows/personal-recording-import.log`. Для продолжения
   требуется восстановить соединение; перезаписывать validation не требуется.
 
+### 2026-10-16 — диагностика повторяемого обрыва ADB и USB compatibility backend
+
+- После нового подключения source SHA-256 validation получен:
+  `679B4CC61F333820BE38274DAE42305CFEF3A8CC2E607654B7E0AED3BAD13647`.
+  Pull повторно обрывается около 128 КиБ. Обычный restart ADB не вернул LG,
+  хотя Windows PnP продолжает показывать LGE Mobile ADB Interface со Status OK.
+- Установленная версия — Platform Tools 37.0.1-15733141. Официальные release
+  notes описывают новый libadbusb и способ отключения `ADB_USB_LEGACY=1`:
+  <https://developer.android.com/tools/releases/platform-tools>.
+- После остановки host adb-server и запуска с process-local
+  `ADB_USB_LEGACY=1` LG снова перечисляется без переподключения USB, пока в
+  статусе `unauthorized`. Это поддерживает гипотезу проблемы host backend,
+  но исправление передачи ещё не доказано: требуется подтверждение отладки
+  на телефоне и успешный pull с проверкой SHA-256.
+- Добавлен `scripts/start-lg-adb.ps1` для воспроизведения; переключатель
+  `-DefaultUsbBackend` возвращает стандартный backend. Скрипт перезапускает
+  host adb-server, не меняет драйверы, Windows user/system environment,
+  настройки телефона или файлы записи.
+

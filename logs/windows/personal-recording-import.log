@@ -82,3 +82,58 @@ WSManStackVersion: 3.0
 PowerShell transcript end
 End time: 20261016121850
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261016122716
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+& .tools/platform-tools/adb.exe devices -l; Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { $source='/sdcard/Recordings/20261016_121753_validation.m4a'; $sourceLine=(& .tools/platform-tools/adb.exe shell sha256sum $source | Out-String).Trim(); if($LASTEXITCODE -ne 0){throw 'Device/source unavailable'}; $sourceHash=$sourceLine.Split(' ')[0]; if($sourceHash -notmatch '^[a-fA-F0-9]{64}$'){throw 'Invalid source hash'}; Write-Host "Source SHA256=$sourceHash"; & .tools/platform-tools/adb.exe pull $source training/pomogator/private/inbox/20261016_121753_validation.m4a; if($LASTEXITCODE -ne 0){throw 'ADB transfer failed'}; $copy=Get-Item training/pomogator/private/inbox/20261016_121753_validation.m4a; $hash=(Get-FileHash -LiteralPath $copy.FullName -Algorithm SHA256).Hash; if($hash -ne $sourceHash){throw 'Source/copy mismatch'}; Write-Host "VERIFIED validation bytes=$($copy.Length) SHA256=$hash" } finally { Stop-Transcript | Out-Null }
+Process ID: 26428
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Source SHA256=679b4cc61f333820be38274dae42305cfef3a8cc2e607654b7e0aed3bad13647
+
+**********************
+PowerShell transcript end
+End time: 20261016122716
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016122748
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { & .tools/platform-tools/adb.exe kill-server; $env:ADB_USB_LEGACY='1'; Write-Host 'Testing documented ADB_USB_LEGACY=1 for host server only'; & .tools/platform-tools/adb.exe start-server; & .tools/platform-tools/adb.exe devices -l; & .tools/platform-tools/adb.exe host-features } finally { Stop-Transcript | Out-Null }
+Process ID: 14920
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+Testing documented ADB_USB_LEGACY=1 for host server only
+
+
+
+**********************
+PowerShell transcript end
+End time: 20261016122753
+**********************
