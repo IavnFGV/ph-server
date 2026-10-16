@@ -1,0 +1,38 @@
+**********************
+PowerShell transcript start
+Start time: 20261016035111
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+$adb='.tools/platform-tools/adb.exe'; $voicePid=(& $adb shell pidof local.ivand.voicecolorstation | Out-String).Trim(); Start-Transcript -Path logs/windows/wakeword-reliability-diagnosis.log -Append | Out-Null; try { Write-Host 'User reports unreliable live operation; read-only diagnosis, threshold unchanged at 0.50.'; $events=@(& $adb logcat -d --pid=$voicePid -s Pomogator:V AndroidRuntime:E); $events | Select-String 'SELF_TEST|READY:|WAKE |Audio pipeline failed|FATAL EXCEPTION' | ForEach-Object { Write-Host $_.Line }; $peaks=@($events | ForEach-Object { if($_ -match 'WAIT peak=([0-9.Ee+-]+)'){ [double]::Parse($Matches[1],[Globalization.CultureInfo]::InvariantCulture) } }); Write-Host "Recorded WAIT windows: $($peaks.Count)"; Write-Host "WAIT windows between 0.10 and 0.50: $(($peaks | Where-Object {$_ -ge 0.10 -and $_ -lt 0.50}).Count)"; Write-Host 'These are unlabeled sound episodes; cannot compute recall or false accepts from them.'; Write-Host 'Command transcripts and explicit success/timeout events were not logged by version 0.5.0; therefore cannot determine Vosk failure from logcat.'; Write-Host 'Read of app preferences via run-as failed: package is not debuggable; no permissions changed.' } finally { Stop-Transcript | Out-Null }
+Process ID: 34832
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+User reports unreliable live operation; read-only diagnosis, threshold unchanged at 0.50.
+10-16 03:39:56.919 10466 11051 I Pomogator: SELF_TEST passed; score=8.7320805E-4
+10-16 03:39:56.996 10466 11051 I Pomogator: READY: PCM16 16000Hz, single AudioRecord, threshold=0.5
+10-16 03:49:26.555 10466 11051 I Pomogator: WAKE score=0.62565017; command window=6000ms
+10-16 03:49:54.779 10466 11051 I Pomogator: WAKE score=0.50862354; command window=6000ms
+10-16 03:50:17.396 10466 11051 I Pomogator: WAKE score=0.5001342; command window=6000ms
+10-16 03:50:28.666 10466 11051 I Pomogator: WAKE score=0.6092218; command window=6000ms
+10-16 03:50:40.793 10466 11051 I Pomogator: WAKE score=0.5866183; command window=6000ms
+10-16 03:51:37.835 10466 11051 I Pomogator: WAKE score=0.76642877; command window=6000ms
+Recorded WAIT windows: 646
+WAIT windows between 0.10 and 0.50: 7
+These are unlabeled sound episodes; cannot compute recall or false accepts from them.
+Command transcripts and explicit success/timeout events were not logged by version 0.5.0; therefore cannot determine Vosk failure from logcat.
+Read of app preferences via run-as failed: package is not debuggable; no permissions changed.
+**********************
+PowerShell transcript end
+End time: 20261016035111
+**********************
