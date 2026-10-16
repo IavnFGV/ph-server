@@ -69,7 +69,7 @@ public final class MainActivity extends Activity {
         status.setTextSize(27f);
         status.setTextColor(Color.WHITE);
         status.setText("Загружаю локальную модель…\n"
-                + "Скажите: «Эй, Помогатор, включи синий»");
+                + "Скажите «Эй, Помогатор», дождитесь «Слушаю команду», затем назовите цвет");
         root.addView(status, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));

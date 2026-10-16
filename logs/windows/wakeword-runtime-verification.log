@@ -163,3 +163,47 @@ APK SHA256: C8BACA39DD71EA724D3EB94E79C0E60E1FFCBE44A2F4CAD1929FF1313C8E4C35
 PowerShell transcript end
 End time: 20261016134356
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261016135916
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+./scripts/install-voice-color-station.ps1
+if ($LASTEXITCODE -ne 0) { throw 'Install failed' }
+python -S -u -c "import sys,runpy;sys.path[:0]=[r'.tools/personal-training',r'.tools/onnx-inspect',r'training/pomogator'];runpy.run_path('training/pomogator/test_train_personal.py',run_name='__main__')"
+if ($LASTEXITCODE -ne 0) { throw 'Personal tests failed' }
+./scripts/verify-wakeword-runtime.ps1 -ExpectedProfile personal-v2
+Process ID: 27216
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+    versionCode=12 minSdk=31 targetSdk=31
+    versionName=0.6.1
+  * ServiceRecord{aacfec5 u0 local.ivand.voicecolorstation/.VoiceListenerService}
+    isForeground=true foregroundId=71 foregroundNoti=Notification(channel=local-vosk-listener-v1 shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+
+           Java Heap:     2276                          14744
+         Native Heap:   191788                         192784
+           TOTAL PSS:   255054            TOTAL RSS:   352008       TOTAL SWAP PSS:      268
+Algorithm Hash
+--------- ----
+SHA256    5BC495463102136BEBDBA4AA0ED6543376BED329A9E0C043A6069A06CA6053BD
+--------- beginning of main
+10-16 13:59:47.818 31635 32222 I Pomogator: SELF_TEST passed; score=9.11206E-4; profile=personal-v2; model=A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48; threshold=0.65
+10-16 13:59:47.912 31635 32222 I Pomogator: READY: PCM16 16000Hz, single AudioRecord, preroll=0, ASR=after-wake; profile=personal-v2; model=A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48; threshold=0.65
+10-16 13:59:48.076 31635 32222 D Pomogator: WAIT peak=0.0
+APK SHA256: 5BC495463102136BEBDBA4AA0ED6543376BED329A9E0C043A6069A06CA6053BD
+**********************
+PowerShell transcript end
+End time: 20261016135917
+**********************

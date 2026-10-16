@@ -143,12 +143,10 @@ public final class VoiceListenerService extends Service {
             recorder.startRecording();
             if (recorder.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) throw new IOException("Microphone did not start");
             short[] frame = new short[WakeWordDetector.FRAME_SAMPLES];
-            short[] preRoll = new short[6400];
-            int preRollWrite = 0;
             long lastScoreAt = 0L;
             float peak = 0f;
             waitingForWakeWord();
-            Log.i(TAG, "READY: PCM16 16000Hz, single AudioRecord; " + detector.identity());
+            Log.i(TAG, "READY: PCM16 16000Hz, single AudioRecord, preroll=0, ASR=after-wake; " + detector.identity());
             while (!stopping) {
                 int offset = 0;
                 while (offset < frame.length && !stopping) {
@@ -160,10 +158,6 @@ public final class VoiceListenerService extends Service {
                     offset += count;
                 }
                 if (stopping) break;
-                for (short value : frame) {
-                    preRoll[preRollWrite] = value;
-                    preRollWrite = (preRollWrite + 1) % preRoll.length;
-                }
                 long now = SystemClock.elapsedRealtime();
                 if (commandWindowUntil != 0L) {
                     boolean complete = recognizer.acceptWaveForm(frame, frame.length);
@@ -182,13 +176,12 @@ public final class VoiceListenerService extends Service {
                     peak = Math.max(peak, score);
                     if (score >= wakeThreshold) {
                         recognizer.reset();
-                        short[] lead = new short[preRoll.length];
-                        for (int i = 0; i < lead.length; i++) lead[i] = preRoll[(preRollWrite + i) % lead.length];
-                        recognizer.acceptWaveForm(lead, lead.length);
+                        // Never feed the wake frame or previous audio to Vosk.
+                        // The next AudioRecord frame enters the command branch.
                         commandWindowUntil = now + COMMAND_WINDOW_MILLIS;
-                        publishHeard(wakePhrase + " — сработал детектор", true);
-                        publishStatus(wakePhrase + " услышан. Слушаю команду…");
-                        Log.i(TAG, "WAKE score=" + score + "; command window=6000ms");
+                        publishHeard("", false);
+                        publishStatus("Обращение услышано. Слушаю команду…");
+                        Log.i(TAG, "WAKE score=" + score + "; command window=6000ms; ASR=next-frame; preroll=0");
                     } else if (now - lastScoreAt >= 1000L) {
                         // Scores are UI telemetry; avoid updating Android's notification every second.
                         sendBroadcast(new Intent(ACTION_STATUS_CHANGED).setPackage(getPackageName())

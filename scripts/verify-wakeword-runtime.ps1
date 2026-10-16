@@ -19,6 +19,7 @@ try {
     $events | Select-Object -Last 50
     if (-not ($events -match 'SELF_TEST passed')) { throw 'No successful ONNX self-test for this process.' }
     if (-not ($events -match 'READY:')) { throw 'Microphone pipeline did not become ready.' }
+    if (-not ($events -match 'READY:.*preroll=0, ASR=after-wake')) { throw 'Post-wake-only ASR pipeline not confirmed.' }
     $profiles = Get-Content -Raw -Encoding UTF8 (Join-Path $root 'training/pomogator/android-profiles.json') | ConvertFrom-Json
     $expected = $profiles.$ExpectedProfile
     $identity = "profile=$ExpectedProfile; model=$($expected.model_sha256); threshold=$($expected.threshold)"

@@ -346,3 +346,34 @@ WSManStackVersion: 3.0
 PowerShell transcript end
 End time: 20261016134351
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261016135910
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+./scripts/install-voice-color-station.ps1
+if ($LASTEXITCODE -ne 0) { throw 'Install failed' }
+python -S -u -c "import sys,runpy;sys.path[:0]=[r'.tools/personal-training',r'.tools/onnx-inspect',r'training/pomogator'];runpy.run_path('training/pomogator/test_train_personal.py',run_name='__main__')"
+if ($LASTEXITCODE -ne 0) { throw 'Personal tests failed' }
+./scripts/verify-wakeword-runtime.ps1 -ExpectedProfile personal-v2
+Process ID: 27216
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+
+
+**********************
+PowerShell transcript end
+End time: 20261016135914
+**********************
