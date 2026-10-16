@@ -57,3 +57,28 @@ Verified source/copy match
 PowerShell transcript end
 End time: 20261016120130
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261016121849
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { $source='/sdcard/Recordings/20261016_121753_validation.m4a'; $remoteHash=(& .tools/platform-tools/adb.exe shell sha256sum $source | Out-String).Trim().Split(' ')[0]; if($LASTEXITCODE -ne 0 -or $remoteHash -notmatch '^[a-fA-F0-9]{64}$'){throw 'Cannot verify source hash'}; & .tools/platform-tools/adb.exe pull $source training/pomogator/private/inbox/20261016_121753_validation.m4a; if($LASTEXITCODE -ne 0){throw 'ADB transfer failed'}; $copy=Get-Item training/pomogator/private/inbox/20261016_121753_validation.m4a; $hash=(Get-FileHash -LiteralPath $copy.FullName -Algorithm SHA256).Hash; if($hash -ne $remoteHash){throw 'Source/copy hash mismatch'}; Write-Host "Verified validation: bytes=$($copy.Length) SHA256=$hash" } finally { Stop-Transcript | Out-Null }; $audioFfmpeg=(Get-ChildItem .tools/audio-inspect/imageio_ffmpeg/binaries -Filter '*.exe' | Select-Object -First 1).FullName; python -S -c "import sys,runpy; sys.path[:0]=[r'.tools/audio-inspect',r'.tools/onnx-inspect']; sys.argv=['inspect','--source','training/pomogator/private/inbox/20261016_121753_validation.m4a','--output','training/pomogator/private/analysis/validation-v1','--ffmpeg',r'$audioFfmpeg','--vosk-model','.tools/vosk/assets/vosk-model-small-ru-0.22']; runpy.run_path('training/pomogator/inspect_personal_recording.py',run_name='__main__')"
+Process ID: 19896
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+**********************
+PowerShell transcript end
+End time: 20261016121850
+**********************
