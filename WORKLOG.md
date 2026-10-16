@@ -1182,3 +1182,64 @@ LG выведены из эксплуатации, использование к
   поставлено в очередь интерфейса. Для обучения требуется пользовательская
   проверка полной фразы в кандидатах. Аугментация/обучение ещё не запускались.
 
+### 2026-10-16 — ручная разметка и локальное дообучение «Эй, Помогатор»
+
+- Пользователь завершил localhost review. Проверены все 56 решений: принято
+  40 train и 10 validation; отброшено 6 train (011, 015, 021, 033, 041, 046).
+  Test не показывался. После сохранения task-owned review server остановлен;
+  страница 8766 больше не обслуживается. Приложенный случайно скриншот не
+  использовался как источник решений — прочитан private JSON с разметкой.
+- Вместо переноса голоса в Colab выбран локальный CPU-путь: PyTorch 2.8.0+cpu
+  из официального https://download.pytorch.org/whl/cpu установлен в ignored
+  `.tools/personal-training`; NumPy 2.2.6, ONNX 1.19.1, ORT 1.22.1 используются
+  из `.tools/onnx-inspect`. Глобальный Python и Windows environment не менялись.
+  Скачивание пакетов не передавало личные записи; аудио/новая модель не загружены
+  в облако или Git. Для воспроизведения добавлен `train-personal-wakeword.ps1`.
+- `train_personal.py` воспроизводит DNN из исходного checkpoint и дообучает
+  только классификатор; mel/embedding ONNX заморожены. В train — 30 вариантов
+  на фразу: темп/высота совместно 0.9–1.1, gain −18..+5 dB, sparse reflections,
+  позиция в двухсекундном окне и negative_train background при SNR 10–30 dB.
+  Фиксированный seed 20261016. Записываются SHA-256 источников, решений и clips.
+- Negative разделена ДО аугментации: 0–132 с train, 132–136 с исключены,
+  136–196.0925 с validation. Это непересекающиеся отрезки одной сессии,
+  а не независимая проверка других акустических условий. Validation positives
+  не аугментируются и не попадают в градиентные шаги. Потоковые признаки
+  повторяют Android: блок 1280 samples, context 480, 76 mel frames, 16 embeddings;
+  начальные 32 шага не оцениваются. False events считаются с debounce 2 с,
+  а не как точная симуляция шестисекундного Android command window.
+- Первый prepare сохранил конечные массивы, затем упал только при печати
+  русского JSON в cp1252-консоль. Исправлено на ensure_ascii для stdout;
+  private JSON остаётся UTF-8. Перед fit проверены shape/finite сохранённых
+  features: 1200 positives, 2560 negatives, validation 344 шага, negative 751.
+  Исходная модель: 8/10 validation при 0.5, 0 false events. Первый personal-v1:
+  10/10, но 1 false event за ~60 с, negative peak около 0.98. Не установлен.
+- Во втором run `personal-v2` добавлены 1200 неполных фраз (prefix/suffix
+  обрезки ТОЛЬКО принятых train), всего 1200 positives и 3760 negatives.
+  Adam lr 1e-4, weight_decay 1e-4, batch 64 positive + 64 negative, negative
+  loss weight 2, 1200 шагов. Оценка каждые 100 шагов. Первый критерий выбора
+  максимизировал positive peak; уточнён до validation margin: минимум false
+  events, максимум hits, максимум min_positive − max_negative. Повторный fit
+  воспроизводим с тем же seed; итоговые файлы/log v2 заменили промежуточный fit
+  в том же run (исходники/голос не менялись). Для отдельных исторических fit
+  нужны разные run-каталоги. Выбран checkpoint шага 600, а не последний шаг:
+  на более поздних шагах возвращались ложные срабатывания.
+- Итог validation v2: 10/10, min positive 0.9557869, max negative 0.3439233,
+  0 false events на 60.0925 с исходного negative holdout (после warm-up
+  оценивается примерно 57.5 с). Порог 0.65 выбран по midpoint margin и
+  зафиксирован ДО test. Размер ONNX 205430 байт, SHA-256
+  `A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48`.
+  Модель, checkpoint, исходные записи и подробные отчёты — только в private.
+- ONNX checker и PyTorch/ORT сравнение на трёх validation feature windows
+  пройдены (atol 1e-5). `verify_model.py` дополнительно подтвердил input
+  `[1,16,96]`, finite output и совпадение всех 10 весовых тензоров с checkpoint
+  без его десериализации. Добавлены и пройдены 3 regression tests: детерминизм/
+  размер/finite аугментации, отказ без полной разметки/при ином source hash,
+  сохранение существующего prepare run. PowerShell parser ошибок не нашёл.
+- Test по-прежнему не читался обучением/детектором и не участвовал в выборе
+  модели. 10 validation positives и минута negative не подтверждают бытовую
+  надёжность; нужны held-out test, похожие обращения, телевизор и длительный
+  прогон. Android APK/установленная generic модель НЕ изменены. Перед personal
+  APK нужны финальная проверка и обновление generic-зависимых hash/self-test.
+  Откат текущего эксперимента не требует действий на телефоне: старый APK и
+  generic checkpoint сохранены, local private runs можно оставить для сравнения.
+

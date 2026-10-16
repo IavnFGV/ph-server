@@ -3,7 +3,7 @@ PowerShell transcript start
 Start time: 20261016033610
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & ./scripts/build-voice-color-station.ps1
@@ -31,7 +31,7 @@ PowerShell transcript start
 Start time: 20261016033714
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & ./scripts/build-voice-color-station.ps1
@@ -59,7 +59,7 @@ PowerShell transcript start
 Start time: 20261016033830
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & ./scripts/build-voice-color-station.ps1
@@ -81,4 +81,116 @@ Prepared wakeword assets and ARM64 ONNX Runtime
 **********************
 PowerShell transcript end
 End time: 20261016033830
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016125739
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+python -S -c "import sys,json,pathlib; sys.path.insert(0,r'.tools/onnx-inspect'); import numpy as np; root=pathlib.Path('training/pomogator/private/runs/personal-v1'); m=json.loads((root/'dataset.json').read_text(encoding='utf-8')); print('Prepared:',m['train_originals'],m['validation_originals'],m['augmented_positive_count']); files=['positive.npy','negative.npy','validation-stream.npy','negative-validation-stream.npy']; arrays=[np.load(root/p) for p in files]; print([(p,a.shape,bool(np.isfinite(a).all())) for p,a in zip(files,arrays)]); assert all(a.shape[1:]==(16,96) and np.isfinite(a).all() for a in arrays); print('Cached features verified after console encoding failure')"; & ./scripts/train-personal-wakeword.ps1 -Stage fit -RunName personal-v1
+Process ID: 16404
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Verified onnxruntime-android-1.22.0.aar: 04A4617A9C797CF49225595E45B5546081CB34C86AC817581141577D3B7DBFE2
+Verified embedding_model.onnx: 70D164290C1D095D1D4EE149BC5E00543250A7316B59F31D056CFF7BD3075C1F
+Verified melspectrogram.onnx: BA2B0E0F8B7B875369A2C89CB13360FF53BAC436F2895CCED9F479FA65EB176F
+Prepared wakeword assets and ARM64 ONNX Runtime
+**********************
+PowerShell transcript end
+End time: 20261016125739
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016125854
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+& ./scripts/train-personal-wakeword.ps1 -Stage prepare -RunName personal-v2 -HardNegatives 30
+Process ID: 7908
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Verified onnxruntime-android-1.22.0.aar: 04A4617A9C797CF49225595E45B5546081CB34C86AC817581141577D3B7DBFE2
+Verified embedding_model.onnx: 70D164290C1D095D1D4EE149BC5E00543250A7316B59F31D056CFF7BD3075C1F
+Verified melspectrogram.onnx: BA2B0E0F8B7B875369A2C89CB13360FF53BAC436F2895CCED9F479FA65EB176F
+Prepared wakeword assets and ARM64 ONNX Runtime
+**********************
+PowerShell transcript end
+End time: 20261016125854
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016130007
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+& ./scripts/train-personal-wakeword.ps1 -Stage fit -RunName personal-v2
+Process ID: 21300
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Verified onnxruntime-android-1.22.0.aar: 04A4617A9C797CF49225595E45B5546081CB34C86AC817581141577D3B7DBFE2
+Verified embedding_model.onnx: 70D164290C1D095D1D4EE149BC5E00543250A7316B59F31D056CFF7BD3075C1F
+Verified melspectrogram.onnx: BA2B0E0F8B7B875369A2C89CB13360FF53BAC436F2895CCED9F479FA65EB176F
+Prepared wakeword assets and ARM64 ONNX Runtime
+**********************
+PowerShell transcript end
+End time: 20261016130007
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016130035
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+& ./scripts/train-personal-wakeword.ps1 -Stage fit -RunName personal-v2
+Process ID: 9048
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Verified onnxruntime-android-1.22.0.aar: 04A4617A9C797CF49225595E45B5546081CB34C86AC817581141577D3B7DBFE2
+Verified embedding_model.onnx: 70D164290C1D095D1D4EE149BC5E00543250A7316B59F31D056CFF7BD3075C1F
+Verified melspectrogram.onnx: BA2B0E0F8B7B875369A2C89CB13360FF53BAC436F2895CCED9F479FA65EB176F
+Prepared wakeword assets and ARM64 ONNX Runtime
+**********************
+PowerShell transcript end
+End time: 20261016130035
 **********************

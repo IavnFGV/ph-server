@@ -30,6 +30,9 @@
   feature-моделей openWakeWord и обученного «Помогатора», готовит assets/ARM64.
 - `verify-wakeword-runtime.ps1` — проверяет self-test трёх ONNX-моделей, READY,
   foreground-службу, микрофон, память и ошибки только текущего процесса.
+- `train-personal-wakeword.ps1` — локальные CPU-этапы `prepare`/`fit` для
+  проверенных личных записей; аугментация, frozen ONNX-признаки, дообучение
+  классификатора. Голос/модель остаются в ignored `private/`, логи — в `logs/`.
 - `install-voice-color-station.ps1` — устанавливает собранный APK через ADB и
   открывает приложение; разрешение на микрофон остаётся за пользователем.
 - `verify-vosk-runtime.ps1` — сохраняет версию/разрешения APK, состояние
