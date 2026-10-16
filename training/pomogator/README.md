@@ -57,6 +57,23 @@ negative holdout. Во второй добавлены 1200 обрезков tra
 Локальный результат: `private/runs/personal-v2/hey-pomogator-personal.onnx`,
 SHA-256 `A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48`.
 
+### Отдельная проверка test
+
+После фиксации модели/порога нарезка поддерживает `--split test` только вместе
+с `--frozen-report private/runs/personal-v2/training-report.json` (пути от этой
+папки). SHA-256 ONNX проверяется до чтения test, hash и threshold сохраняются
+в test manifest. Это разметка полноты фразы, без предсказаний детектора.
+
+```powershell
+python training/pomogator/review_personal_recordings.py --test training/pomogator/private/candidates/test-v1 --decisions training/pomogator/private/test-review-decisions.json
+```
+
+Команда из корня открывает сервер на `http://127.0.0.1:8766/`. Обрабатывается
+только test, без train/validation. Неполные/сомнительные фразы отмечаются отдельно;
+если склеились несколько полных повторов, нужно уточнить границы, а не молча
+исключить их. При оценке следует указать покрытие исходной записи/исключения.
+Test labels не добавляются в train; параметры после просмотра test не подбираются.
+
 [Открыть notebook в Google Colab](https://colab.research.google.com/github/IavnFGV/ph-server/blob/feature/vosk-local-wakeword/training/pomogator/Pomogator_openWakeWord.ipynb)
 
 ## Почему не достаточно официального quick-start

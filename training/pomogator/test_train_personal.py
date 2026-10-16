@@ -1,5 +1,7 @@
 """Small deterministic regression checks; no personal recordings are read."""
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -10,6 +12,16 @@ from train_personal import approved, augment, frame, prepare
 
 
 class PersonalTrainingTests(unittest.TestCase):
+    def test_test_segmentation_requires_frozen_report_before_reading_audio(self):
+        script = Path(__file__).with_name('prepare_personal_candidates.py')
+        result = subprocess.run([
+            sys.executable, '-S', str(script), '--split', 'test',
+            '--wav', 'does-not-exist.wav', '--output', 'does-not-exist-output',
+            '--ffmpeg', 'does-not-exist-ffmpeg',
+        ], capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Freeze model and threshold before opening test', result.stderr)
+
     def test_augmentation_shape_finite_peak_and_seed(self):
         audio = (4000 * np.sin(np.arange(16000) / 12)).astype(np.float32)
         background = np.ones(64000, np.float32) * 100

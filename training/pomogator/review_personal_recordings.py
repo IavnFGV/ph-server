@@ -1,4 +1,4 @@
-"""Local-only audio review for train/validation candidates. Never serves test or originals."""
+"""Local-only candidate review. Test is a separate, explicit frozen-evaluation mode."""
 import argparse
 import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -61,30 +61,54 @@ fetch('/state').then(r=>r.json()).then(data=>{state=data;const pending=state.cli
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--train', type=Path, required=True)
-    parser.add_argument('--validation', type=Path, required=True)
+    parser.add_argument('--train', type=Path)
+    parser.add_argument('--validation', type=Path)
+    parser.add_argument('--test', type=Path)
     parser.add_argument('--decisions', type=Path, required=True)
     parser.add_argument('--port', type=int, default=8766)
     args = parser.parse_args()
+    if args.test:
+        if args.train or args.validation:
+            parser.error('Test must be reviewed separately from training/validation')
+        sources = [('test', args.test)]
+    else:
+        if not args.train or not args.validation:
+            parser.error('Provide both --train and --validation, or only --test')
+        sources = [('train', args.train), ('validation', args.validation)]
     clips, paths = [], {}
     provenance = {}
-    for split, directory in [('train', args.train), ('validation', args.validation)]:
+    frozen = None
+    for split, directory in sources:
         manifest = json.loads((directory / 'review.json').read_text(encoding='utf-8'))
         if manifest['split'] != split:
             raise ValueError('Wrong split directory')
+        if split == 'test':
+            frozen = manifest['frozen_evaluation']
         provenance[split] = manifest['source_pcm_sha256']
         for item in manifest['clips']:
             identifier = split + '/' + item['file']
             paths[identifier] = directory / item['file']
             clips.append({'id': identifier, 'flags': item['review_flags']})
-    if provenance['train'] == provenance['validation']:
+    if not args.test and provenance['train'] == provenance['validation']:
         raise ValueError('Train and validation sources must be independent')
     decisions = {}
     if args.decisions.exists():
         saved = json.loads(args.decisions.read_text(encoding='utf-8'))
         if saved['source_pcm_sha256'] != provenance:
             raise ValueError('Saved decisions belong to another dataset')
+        if saved.get('frozen_evaluation') != frozen:
+            raise ValueError('Saved test decisions belong to another frozen model/threshold')
         decisions.update(saved['decisions'])
+
+    page = HTML
+    if args.test:
+        page = page.replace('Это локальная проверка нарезки.',
+            'Это отдельная TEST-запись, не обучение. Модель и порог уже зафиксированы. '
+            'Оценивай только полноту фразы, не громкость и не ожидаемое срабатывание.')
+        page = page.replace('Сначала train, затем validation. Test здесь не показывается.',
+            'Только test. Решения не добавляются в обучение. '
+            'Если встретятся несколько полных повторов в одном фрагменте — сообщи в чат: '
+            'это проблема нарезки, а не плохая запись.')
 
     class Handler(BaseHTTPRequestHandler):
         def respond(self, payload, content_type='application/json'):
@@ -98,7 +122,7 @@ def main():
         def do_GET(self):
             from urllib.parse import unquote
             if self.path == '/':
-                self.respond(HTML.encode('utf-8'), 'text/html; charset=utf-8')
+                self.respond(page.encode('utf-8'), 'text/html; charset=utf-8')
             elif self.path == '/state':
                 self.respond(json.dumps({'clips': clips, 'decisions': decisions}).encode())
             elif self.path.startswith('/audio/') and unquote(self.path[7:]) in paths:
@@ -122,6 +146,7 @@ def main():
                 args.decisions.parent.mkdir(parents=True, exist_ok=True)
                 args.decisions.write_text(json.dumps({
                     'source_pcm_sha256': provenance, 'decisions': decisions,
+                    'frozen_evaluation': frozen,
                 }, indent=2), encoding='utf-8')
                 self.respond(b'{"saved":true}')
             except (ValueError, KeyError):

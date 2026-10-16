@@ -1,6 +1,6 @@
 """Make reviewable speech candidates from pauses; labels require human approval.
 
-Input is an already decoded mono PCM16 WAV. Does not read the held-out test.
+Input is an already decoded mono PCM16 WAV. Test requires a frozen model report.
 FFmpeg's silence threshold is configurable; this is segmentation, not ASR.
 """
 import argparse
@@ -32,10 +32,22 @@ def main():
     parser.add_argument('--wav', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--ffmpeg', required=True)
-    parser.add_argument('--split', choices=['train', 'validation'], required=True)
+    parser.add_argument('--split', choices=['train', 'validation', 'test'], required=True)
+    parser.add_argument('--frozen-report', type=Path)
     parser.add_argument('--silence-db', type=float, default=-35)
     parser.add_argument('--silence-seconds', type=float, default=0.55)
     args = parser.parse_args()
+    frozen = None
+    if args.split == 'test':
+        if not args.frozen_report:
+            raise ValueError('Freeze model and threshold before opening test')
+        report = json.loads(args.frozen_report.read_text(encoding='utf-8'))
+        model = args.frozen_report.parent / 'hey-pomogator-personal.onnx'
+        if hashlib.sha256(model.read_bytes()).hexdigest() != report['onnx_sha256']:
+            raise ValueError('Frozen model hash mismatch')
+        frozen = {'model_sha256': report['onnx_sha256'],
+                  'threshold': report['suggested_threshold'],
+                  'training_report_sha256': hashlib.sha256(args.frozen_report.read_bytes()).hexdigest()}
     if args.output.exists():
         raise SystemExit('Use a new directory; previous candidates are preserved')
     with wave.open(str(args.wav), 'rb') as source:
@@ -76,6 +88,8 @@ def main():
         'silence_db': args.silence_db, 'silence_seconds': args.silence_seconds,
         'review_required': True, 'clips': entries,
     }
+    if frozen:
+        manifest['frozen_evaluation'] = frozen
     (args.output / 'review.json').write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2), encoding='utf-8')
     print(f'{args.split}: {len(entries)} candidates (not approved for training)')
