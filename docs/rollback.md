@@ -92,6 +92,27 @@ Home Assistant/PRoot-сессию можно безопасно останови
 
 ## Удалить прототип Voice Color Station
 
+### Вернуть исходный детектор без удаления данных
+
+Для отката с personal-v2 на generic не нужно удалять приложение:
+
+```powershell
+.\scripts\build-voice-color-station.ps1 -WakeProfile generic
+.\scripts\install-voice-color-station.ps1
+.\scripts\verify-wakeword-runtime.ps1 -ExpectedProfile generic
+```
+
+Оба профиля имеют версию 0.6.0 / versionCode 11 и подписаны тем же локальным
+ключом: `adb install -r` заменяет APK с сохранением данных. Это возврат
+исходной модели/порога, не downgrade всего приложения на 0.5.0.
+Прежний APK 0.5.0 сохранён локально в ignored artifacts как
+`voice-color-station-0.5.0-generic-backup.apk`; его прямая установка поверх
+0.6.0 может быть запрещена Android как downgrade. Не обходить это удалением
+пакета, если нужно сохранить данные. Персональная копия APK также остаётся
+локально; она содержит личные веса и не должна публиковаться вместе с логами.
+
+### Полностью удалить прототип
+
 Прототип устанавливается отдельным Android-пакетом и не изменяет Termux,
 Ubuntu или Home Assistant. Остановить и полностью удалить только его можно так:
 

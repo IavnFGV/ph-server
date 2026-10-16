@@ -1,0 +1,18 @@
+{
+  "generic": {
+    "model_path": "training/pomogator/model/pomogator.onnx",
+    "model_sha256": "DF24F76DA9F2FF6DB7661AC36320FE4C097EE576A39407E61BE2CCB76F4384CA",
+    "threshold": 0.5,
+    "phrase": "Помогатор",
+    "self_test_score": 0.000873178244,
+    "self_test_feature": -5.33099842
+  },
+  "personal-v2": {
+    "model_path": "training/pomogator/private/runs/personal-v2/hey-pomogator-personal.onnx",
+    "model_sha256": "A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48",
+    "threshold": 0.65,
+    "phrase": "Эй, Помогатор",
+    "self_test_score": 0.000911206007,
+    "self_test_feature": -5.33099842
+  }
+}

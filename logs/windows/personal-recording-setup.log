@@ -1,0 +1,29 @@
+**********************
+PowerShell transcript start
+Start time: 20261016115625
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+New-Item -ItemType Directory -Force training/pomogator/private/inbox | Out-Null; Start-Transcript -Path logs/windows/personal-recording-setup.log -Append | Out-Null; try { & .tools/platform-tools/adb.exe shell cmd package resolve-activity --brief com.lge.hifirecorder; & .tools/platform-tools/adb.exe shell am force-stop local.ivand.voicecolorstation; & .tools/platform-tools/adb.exe shell monkey -p com.lge.hifirecorder -c android.intent.category.LAUNCHER 1; & .tools/platform-tools/adb.exe shell appops get local.ivand.voicecolorstation RECORD_AUDIO; git check-ignore training/pomogator/private/inbox/train.wav } finally { Stop-Transcript | Out-Null }
+Process ID: 32936
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+
+
+
+
+**********************
+PowerShell transcript end
+End time: 20261016115627
+**********************

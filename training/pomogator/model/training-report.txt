@@ -1,0 +1,14 @@
+model=pomogator.onnx
+model_size=205431
+model_sha256=DF24F76DA9F2FF6DB7661AC36320FE4C097EE576A39407E61BE2CCB76F4384CA
+onnx_ir_version=7
+onnx_opset=ai.onnx:13
+input=onnx::Flatten_0 [1, 16, 96] tensor(float)
+output=39 [1, 1] tensor(float)
+zero_input_score=0.067564189
+checkpoint=pomogator-checkpoint.pt
+checkpoint_size=205909
+checkpoint_sha256=727BCB35BBCA069BDDE70B32672449300B754E9D2FC60784086BD7E976FE4A6E
+checkpoint_deserialized=false
+checkpoint_matching_weight_tensors=10
+verified_utc=2026-10-16T00:32:47.111451+00:00

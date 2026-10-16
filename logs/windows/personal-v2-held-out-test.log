@@ -1,0 +1,277 @@
+{
+  "frozen_evaluation": {
+    "model_sha256": "a21044274f5032063faa45b28f25e26fd9f1f2c89d1a2964f73e30c09ad1fa48",
+    "threshold": 0.65,
+    "training_report_sha256": "678cc74646a098ec418c3980ea4fca93a96c531c0b48e92767bb4fd8d4c5c61a"
+  },
+  "test_pcm_sha256": "746b23397a8ff308be2ae2fc654a0fac3f6539ed29d98a18b5550523d81a81fc",
+  "review_sha256": "010e07ed958ddaa0796b55fe1904ec8e53bcab8201078ac2a6099fb8c8d38507",
+  "candidate_manifest_sha256": "d03b83202ae26d139300df1ef39bf0c848b291dd48281a7e70e2a2290eabaa8c",
+  "duration_seconds": 35.92125,
+  "candidate_count": 15,
+  "excluded_candidates": [
+    "test-004.wav",
+    "test-015.wav"
+  ],
+  "excluded_candidate_speech_seconds": 9.654563,
+  "comparisons": {
+    "personal_v2": {
+      "threshold": 0.65,
+      "detected": 13,
+      "total_approved": 13,
+      "clips": [
+        {
+          "file": "test-001.wav",
+          "human_full_single_phrase": true,
+          "source_start": 1.33925,
+          "source_end": 4.656438,
+          "peak": 0.9579358696937561,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-002.wav",
+          "human_full_single_phrase": true,
+          "source_start": 5.386375,
+          "source_end": 6.473375,
+          "peak": 0.9576674103736877,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-003.wav",
+          "human_full_single_phrase": true,
+          "source_start": 6.953875,
+          "source_end": 8.088125,
+          "peak": 0.9577615261077881,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-004.wav",
+          "human_full_single_phrase": false,
+          "source_start": 8.627063,
+          "source_end": 13.302563,
+          "peak": 0.9574699401855469,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-005.wav",
+          "human_full_single_phrase": true,
+          "source_start": 13.952188,
+          "source_end": 14.970625,
+          "peak": 0.9573172330856323,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-006.wav",
+          "human_full_single_phrase": true,
+          "source_start": 15.63275,
+          "source_end": 16.689875,
+          "peak": 0.9579818844795227,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-007.wav",
+          "human_full_single_phrase": true,
+          "source_start": 17.312625,
+          "source_end": 18.350313,
+          "peak": 0.9570202827453613,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-008.wav",
+          "human_full_single_phrase": true,
+          "source_start": 18.97275,
+          "source_end": 19.977688,
+          "peak": 0.957888126373291,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-009.wav",
+          "human_full_single_phrase": true,
+          "source_start": 20.753063,
+          "source_end": 21.826125,
+          "peak": 0.9576293230056763,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-010.wav",
+          "human_full_single_phrase": true,
+          "source_start": 22.418625,
+          "source_end": 23.515313,
+          "peak": 0.9571734666824341,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-011.wav",
+          "human_full_single_phrase": true,
+          "source_start": 24.18625,
+          "source_end": 25.246625,
+          "peak": 0.9575833082199097,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-012.wav",
+          "human_full_single_phrase": true,
+          "source_start": 25.900125,
+          "source_end": 26.89075,
+          "peak": 0.956446647644043,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-013.wav",
+          "human_full_single_phrase": true,
+          "source_start": 27.63,
+          "source_end": 28.623687,
+          "peak": 0.9575555324554443,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-014.wav",
+          "human_full_single_phrase": true,
+          "source_start": 29.288688,
+          "source_end": 30.277125,
+          "peak": 0.954622745513916,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-015.wav",
+          "human_full_single_phrase": false,
+          "source_start": 30.942187,
+          "source_end": 35.92125,
+          "peak": 0.9574927091598511,
+          "threshold_reached": true
+        }
+      ],
+      "model_sha256": "a21044274f5032063faa45b28f25e26fd9f1f2c89d1a2964f73e30c09ad1fa48"
+    },
+    "generic_baseline": {
+      "threshold": 0.5,
+      "detected": 13,
+      "total_approved": 13,
+      "clips": [
+        {
+          "file": "test-001.wav",
+          "human_full_single_phrase": true,
+          "source_start": 1.33925,
+          "source_end": 4.656438,
+          "peak": 0.8156083822250366,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-002.wav",
+          "human_full_single_phrase": true,
+          "source_start": 5.386375,
+          "source_end": 6.473375,
+          "peak": 0.853926420211792,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-003.wav",
+          "human_full_single_phrase": true,
+          "source_start": 6.953875,
+          "source_end": 8.088125,
+          "peak": 0.8299320340156555,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-004.wav",
+          "human_full_single_phrase": false,
+          "source_start": 8.627063,
+          "source_end": 13.302563,
+          "peak": 0.8237255215644836,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-005.wav",
+          "human_full_single_phrase": true,
+          "source_start": 13.952188,
+          "source_end": 14.970625,
+          "peak": 0.7337081432342529,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-006.wav",
+          "human_full_single_phrase": true,
+          "source_start": 15.63275,
+          "source_end": 16.689875,
+          "peak": 0.7811306715011597,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-007.wav",
+          "human_full_single_phrase": true,
+          "source_start": 17.312625,
+          "source_end": 18.350313,
+          "peak": 0.8150216341018677,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-008.wav",
+          "human_full_single_phrase": true,
+          "source_start": 18.97275,
+          "source_end": 19.977688,
+          "peak": 0.7702112197875977,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-009.wav",
+          "human_full_single_phrase": true,
+          "source_start": 20.753063,
+          "source_end": 21.826125,
+          "peak": 0.8170447945594788,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-010.wav",
+          "human_full_single_phrase": true,
+          "source_start": 22.418625,
+          "source_end": 23.515313,
+          "peak": 0.816618800163269,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-011.wav",
+          "human_full_single_phrase": true,
+          "source_start": 24.18625,
+          "source_end": 25.246625,
+          "peak": 0.8179492354393005,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-012.wav",
+          "human_full_single_phrase": true,
+          "source_start": 25.900125,
+          "source_end": 26.89075,
+          "peak": 0.7920026779174805,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-013.wav",
+          "human_full_single_phrase": true,
+          "source_start": 27.63,
+          "source_end": 28.623687,
+          "peak": 0.5100055932998657,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-014.wav",
+          "human_full_single_phrase": true,
+          "source_start": 29.288688,
+          "source_end": 30.277125,
+          "peak": 0.845758318901062,
+          "threshold_reached": true
+        },
+        {
+          "file": "test-015.wav",
+          "human_full_single_phrase": false,
+          "source_start": 30.942187,
+          "source_end": 35.92125,
+          "peak": 0.7529333829879761,
+          "threshold_reached": true
+        }
+      ],
+      "model_sha256": "df24f76da9f2ff6db7661ac36320fe4c097ee576a39407e61be2ccb76f4384ca"
+    }
+  },
+  "training_performed": false,
+  "limitations": "Positive-window detection only, not Android six-second command-window simulation. Rejected clips are unscored, NOT negatives; their activation is not a false alarm. No fully labelled negative test session; no held-out false-alarm-rate claim. Candidate segmentation may miss speech; this is not recall over every utterance in the original recording."
+}

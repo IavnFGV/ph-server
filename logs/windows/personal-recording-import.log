@@ -1,0 +1,222 @@
+**********************
+PowerShell transcript start
+Start time: 20261016115951
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { & .tools/platform-tools/adb.exe pull /sdcard/Recordings/20261016_115758_train.m4a training/pomogator/private/inbox/20261016_115758_train.m4a; Get-FileHash training/pomogator/private/inbox/20261016_115758_train.m4a -Algorithm SHA256 | Format-List; git check-ignore training/pomogator/private/inbox/20261016_115758_train.m4a } finally { Stop-Transcript | Out-Null }; Get-Command ffmpeg,ffprobe -ErrorAction SilentlyContinue | Select-Object Name,Source; Get-ChildItem .tools -Directory | Select-Object Name
+Process ID: 26924
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+
+Algorithm : SHA256
+Hash      : 2A8BA9EC3F852B65DF295DD85256BCAFB0B1E700C8A0F30C5E4E3A0946610DA2
+Path      : D:\projects\local-server-on-lg-phone\lg-v50s-home-server\training\pomogator\private\inbox\20261016_115758_t
+            rain.m4a
+
+
+**********************
+PowerShell transcript end
+End time: 20261016115951
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016120130
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { & .tools/platform-tools/adb.exe pull /sdcard/Recordings/20261016_115758_train.m4a training/pomogator/private/inbox/20261016_115758_train.m4a; if($LASTEXITCODE -ne 0){ throw 'ADB transfer failed' }; $file=Get-Item training/pomogator/private/inbox/20261016_115758_train.m4a; $hash=(Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash; Write-Host "Size=$($file.Length) SHA256=$hash"; if($file.Length -ne 1327660 -or $hash -ne 'D6F42D0EC4A98A95D70A58CDFFFBAB6E8080BE615C5DD780EC1CCC1D8203509A'){throw 'Source/copy mismatch'}; Write-Host 'Verified source/copy match' } finally { Stop-Transcript | Out-Null }
+Process ID: 17692
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+Size=1327660 SHA256=D6F42D0EC4A98A95D70A58CDFFFBAB6E8080BE615C5DD780EC1CCC1D8203509A
+Verified source/copy match
+**********************
+PowerShell transcript end
+End time: 20261016120130
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016121849
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { $source='/sdcard/Recordings/20261016_121753_validation.m4a'; $remoteHash=(& .tools/platform-tools/adb.exe shell sha256sum $source | Out-String).Trim().Split(' ')[0]; if($LASTEXITCODE -ne 0 -or $remoteHash -notmatch '^[a-fA-F0-9]{64}$'){throw 'Cannot verify source hash'}; & .tools/platform-tools/adb.exe pull $source training/pomogator/private/inbox/20261016_121753_validation.m4a; if($LASTEXITCODE -ne 0){throw 'ADB transfer failed'}; $copy=Get-Item training/pomogator/private/inbox/20261016_121753_validation.m4a; $hash=(Get-FileHash -LiteralPath $copy.FullName -Algorithm SHA256).Hash; if($hash -ne $remoteHash){throw 'Source/copy hash mismatch'}; Write-Host "Verified validation: bytes=$($copy.Length) SHA256=$hash" } finally { Stop-Transcript | Out-Null }; $audioFfmpeg=(Get-ChildItem .tools/audio-inspect/imageio_ffmpeg/binaries -Filter '*.exe' | Select-Object -First 1).FullName; python -S -c "import sys,runpy; sys.path[:0]=[r'.tools/audio-inspect',r'.tools/onnx-inspect']; sys.argv=['inspect','--source','training/pomogator/private/inbox/20261016_121753_validation.m4a','--output','training/pomogator/private/analysis/validation-v1','--ffmpeg',r'$audioFfmpeg','--vosk-model','.tools/vosk/assets/vosk-model-small-ru-0.22']; runpy.run_path('training/pomogator/inspect_personal_recording.py',run_name='__main__')"
+Process ID: 19896
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+**********************
+PowerShell transcript end
+End time: 20261016121850
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016122716
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+& .tools/platform-tools/adb.exe devices -l; Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { $source='/sdcard/Recordings/20261016_121753_validation.m4a'; $sourceLine=(& .tools/platform-tools/adb.exe shell sha256sum $source | Out-String).Trim(); if($LASTEXITCODE -ne 0){throw 'Device/source unavailable'}; $sourceHash=$sourceLine.Split(' ')[0]; if($sourceHash -notmatch '^[a-fA-F0-9]{64}$'){throw 'Invalid source hash'}; Write-Host "Source SHA256=$sourceHash"; & .tools/platform-tools/adb.exe pull $source training/pomogator/private/inbox/20261016_121753_validation.m4a; if($LASTEXITCODE -ne 0){throw 'ADB transfer failed'}; $copy=Get-Item training/pomogator/private/inbox/20261016_121753_validation.m4a; $hash=(Get-FileHash -LiteralPath $copy.FullName -Algorithm SHA256).Hash; if($hash -ne $sourceHash){throw 'Source/copy mismatch'}; Write-Host "VERIFIED validation bytes=$($copy.Length) SHA256=$hash" } finally { Stop-Transcript | Out-Null }
+Process ID: 26428
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Source SHA256=679b4cc61f333820be38274dae42305cfef3a8cc2e607654b7e0aed3bad13647
+
+**********************
+PowerShell transcript end
+End time: 20261016122716
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016122748
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { & .tools/platform-tools/adb.exe kill-server; $env:ADB_USB_LEGACY='1'; Write-Host 'Testing documented ADB_USB_LEGACY=1 for host server only'; & .tools/platform-tools/adb.exe start-server; & .tools/platform-tools/adb.exe devices -l; & .tools/platform-tools/adb.exe host-features } finally { Stop-Transcript | Out-Null }
+Process ID: 14920
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+Testing documented ADB_USB_LEGACY=1 for host server only
+
+
+
+**********************
+PowerShell transcript end
+End time: 20261016122753
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016122848
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { $source='/sdcard/Recordings/20261016_121753_validation.m4a'; & .tools/platform-tools/adb.exe pull $source training/pomogator/private/inbox/20261016_121753_validation.m4a; if($LASTEXITCODE -ne 0){throw 'ADB pull failed'}; $copy=Get-Item training/pomogator/private/inbox/20261016_121753_validation.m4a; $hash=(Get-FileHash -LiteralPath $copy.FullName -Algorithm SHA256).Hash; Write-Host "Bytes=$($copy.Length) SHA256=$hash"; if($hash -ne '679B4CC61F333820BE38274DAE42305CFEF3A8CC2E607654B7E0AED3BAD13647'){throw 'Hash mismatch'}; & .tools/platform-tools/adb.exe devices -l; Write-Host 'Verified validation transfer using compatibility backend' } finally { Stop-Transcript | Out-Null }; $audioFfmpeg=(Get-ChildItem .tools/audio-inspect/imageio_ffmpeg/binaries -Filter '*.exe' | Select-Object -First 1).FullName; python -S -c "import sys,runpy; sys.path[:0]=[r'.tools/audio-inspect',r'.tools/onnx-inspect']; sys.argv=['inspect','--source','training/pomogator/private/inbox/20261016_121753_validation.m4a','--output','training/pomogator/private/analysis/validation-v1','--ffmpeg',r'$audioFfmpeg','--vosk-model','.tools/vosk/assets/vosk-model-small-ru-0.22']; runpy.run_path('training/pomogator/inspect_personal_recording.py',run_name='__main__')"
+Process ID: 16168
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+Bytes=736004 SHA256=679B4CC61F333820BE38274DAE42305CFEF3A8CC2E607654B7E0AED3BAD13647
+
+Verified validation transfer using compatibility backend
+**********************
+PowerShell transcript end
+End time: 20261016122848
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016123513
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { $source='/sdcard/Recordings/20261016_123428_test.m4a'; $sourceHash=(& .tools/platform-tools/adb.exe shell sha256sum $source | Out-String).Trim().Split(' ')[0]; if($LASTEXITCODE -ne 0 -or $sourceHash -notmatch '^[a-fA-F0-9]{64}$'){throw 'Cannot verify source'}; Write-Host "Source SHA256=$sourceHash"; & .tools/platform-tools/adb.exe pull $source training/pomogator/private/inbox/20261016_123428_test.m4a; if($LASTEXITCODE -ne 0){throw 'ADB transfer failed'}; $copy=Get-Item training/pomogator/private/inbox/20261016_123428_test.m4a; $hash=(Get-FileHash -LiteralPath $copy.FullName -Algorithm SHA256).Hash; if($hash -ne $sourceHash){throw 'Source/copy mismatch'}; Write-Host "VERIFIED test bytes=$($copy.Length) SHA256=$hash"; & .tools/platform-tools/adb.exe devices -l } finally { Stop-Transcript | Out-Null }; $audioFfmpeg=(Get-ChildItem .tools/audio-inspect/imageio_ffmpeg/binaries -Filter '*.exe' | Select-Object -First 1).FullName; python -S -c "import sys,runpy; sys.path[:0]=[r'.tools/audio-inspect',r'.tools/onnx-inspect']; sys.argv=['inspect','--source','training/pomogator/private/inbox/20261016_123428_test.m4a','--output','training/pomogator/private/analysis/test-v1','--ffmpeg',r'$audioFfmpeg']; runpy.run_path('training/pomogator/inspect_personal_recording.py',run_name='__main__')"
+Process ID: 26604
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Source SHA256=b7e800707119510294852d96ee14f2833dadd219c10adca7d9a2f9c1ea246e12
+
+VERIFIED test bytes=836386 SHA256=B7E800707119510294852D96EE14F2833DADD219C10ADCA7D9A2F9C1EA246E12
+
+**********************
+PowerShell transcript end
+End time: 20261016123513
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016124041
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { $source='/sdcard/Recordings/20261016_123716_negative.m4a'; $sourceHash=(& .tools/platform-tools/adb.exe shell sha256sum $source | Out-String).Trim().Split(' ')[0]; if($LASTEXITCODE -ne 0 -or $sourceHash -notmatch '^[a-fA-F0-9]{64}$'){throw 'Cannot verify source'}; Write-Host "Source SHA256=$sourceHash"; & .tools/platform-tools/adb.exe pull $source training/pomogator/private/inbox/20261016_123716_negative.m4a; if($LASTEXITCODE -ne 0){throw 'ADB transfer failed'}; $copy=Get-Item training/pomogator/private/inbox/20261016_123716_negative.m4a; $hash=(Get-FileHash -LiteralPath $copy.FullName -Algorithm SHA256).Hash; if($hash -ne $sourceHash){throw 'Source/copy mismatch'}; Write-Host "VERIFIED negative bytes=$($copy.Length) SHA256=$hash" } finally { Stop-Transcript | Out-Null }; $audioFfmpeg=(Get-ChildItem .tools/audio-inspect/imageio_ffmpeg/binaries -Filter '*.exe' | Select-Object -First 1).FullName; python -S -c "import sys,runpy; sys.path[:0]=[r'.tools/audio-inspect',r'.tools/onnx-inspect']; sys.argv=['inspect','--source','training/pomogator/private/inbox/20261016_123716_negative.m4a','--output','training/pomogator/private/analysis/negative-v1','--ffmpeg',r'$audioFfmpeg']; runpy.run_path('training/pomogator/inspect_personal_recording.py',run_name='__main__')"
+Process ID: 11104
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Source SHA256=db1a906c30406075a6908fc73b19e4cfda91f631a91a54a29e72cfb1427b58f9
+
+VERIFIED negative bytes=2758425 SHA256=DB1A906C30406075A6908FC73B19E4CFDA91F631A91A54A29E72CFB1427B58F9
+**********************
+PowerShell transcript end
+End time: 20261016124042
+**********************

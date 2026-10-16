@@ -1,0 +1,152 @@
+positive: features 0/1200
+positive: features 160/1200
+positive: features 320/1200
+positive: features 480/1200
+positive: features 640/1200
+positive: features 800/1200
+positive: features 960/1200
+positive: features 1120/1200
+negative: features 0/3760
+negative: features 160/3760
+negative: features 320/3760
+negative: features 480/3760
+negative: features 640/3760
+negative: features 800/3760
+negative: features 960/3760
+negative: features 1120/3760
+negative: features 1280/3760
+negative: features 1440/3760
+negative: features 1600/3760
+negative: features 1760/3760
+negative: features 1920/3760
+negative: features 2080/3760
+negative: features 2240/3760
+negative: features 2400/3760
+negative: features 2560/3760
+negative: features 2720/3760
+negative: features 2880/3760
+negative: features 3040/3760
+negative: features 3200/3760
+negative: features 3360/3760
+negative: features 3520/3760
+negative: features 3680/3760
+{
+  "target_phrase": "\u042d\u0439, \u041f\u043e\u043c\u043e\u0433\u0430\u0442\u043e\u0440",
+  "seed": 20261016,
+  "train_originals": 40,
+  "validation_originals": 10,
+  "augmented_positive_count": 1200,
+  "negative_count": 3760,
+  "augmentation_variants_per_original": 30,
+  "incomplete_target_negatives_per_original": 30,
+  "review_sha256": "2dcb16634f8db60017457f332f4d7284cb244b8cef5ed447bcdd4be61160e96e",
+  "approved_train_sha256": {
+    "train-001.wav": "8c7fec1801f6d9adbf3713ab7952cfec58a300488c29336a3763022b6af739f2",
+    "train-002.wav": "be644dfc72ec6a246fd2cc64996bc9882fae5694d1cbda616fa4988d6fa654b5",
+    "train-003.wav": "18d459b3fb48dfc2a5c9d21b9336ed01a72916b93c9ce2641376e129438b826d",
+    "train-004.wav": "483c6b55ff8e6a966858109f757ed9bea7d889e059f26336c2205387f03c3602",
+    "train-005.wav": "9f5528631db561073e7d619557857237f302fb222657c88d8ecb3cfbb21ad156",
+    "train-006.wav": "c291d3f19ea12a08392a77a77fc1025fd81d79d0d8a8fba1c3e9828865c5b506",
+    "train-007.wav": "0def21c7bfcaba56aa179ec0bcc98fafcf471563c5ea0115d88a9fd3d9c212e0",
+    "train-008.wav": "18cb6ddd1f4eb1d906a1b74255af38159fc8665c50bd6be1b8b6814364ba0fcf",
+    "train-009.wav": "d5d534334eea76717a166385f2f8583b3f1333799ac7ecaf1290106b6ee24570",
+    "train-010.wav": "904d39c6e846a6efdc01958bf29d82185f6ce02e4f99dfc37d9aabc6f2d81cad",
+    "train-012.wav": "542fbc4449942b35ceb99fc5764582a82ef60c411275c4a5beca19d614dfbb89",
+    "train-013.wav": "409e76c556a03549f28a7489119977a559918d94f1ed42e3db74dcd829b522b4",
+    "train-014.wav": "78956285c4d1227d01f4a7c845d7aff8e188a87ddec94cd65a885dc4ca76cdbe",
+    "train-016.wav": "cbef0399a31faae801700cba8f66c190626d44bc64dd26331077c902b914135d",
+    "train-017.wav": "63eea69f04f62ad1e3987718c5465d4739f4604b82979cff1238336f2f4ae137",
+    "train-018.wav": "238a5d7b6913a01a47d6c747a726b796560af52e6f8026b5a516aac9fbdfdb67",
+    "train-019.wav": "34193a1484ee0bbbc08a840ea4683e23948b942955feed257c177b22b8958cce",
+    "train-020.wav": "6182770061e7965132fad197062c81953527b34542c2d7770a4fdbdee3e1f0f4",
+    "train-022.wav": "02c2a8e90d059f7a88d2d60584045b335d8b2aeb3989597c1280a3d124bf3d17",
+    "train-023.wav": "2c42f902e5d964292e76ba9a124b0a1a520b7fb924daadad76d2f9810cb41547",
+    "train-024.wav": "6ab25265ac7e4f77aaddb9cb2cac29bfa8882f9b4c970fc3e9d24402b69b5eb9",
+    "train-025.wav": "8c0d6544980fa9808a3d7016a6346f22ffd05e58e1e36f3f05b10ed0209aa2b7",
+    "train-026.wav": "1e9cd4749dbaddba998afd622b3a41c15bb9b05796d41e213c8a70e19fd212ab",
+    "train-027.wav": "84493d3a017343dbe51c3bf56bfd9d1ce139b56e928f53b1c8bcecaca0ea1b95",
+    "train-028.wav": "57b1b6595be25bcde404f611d536fa17bffec0e21beb2f7766c57539b287e088",
+    "train-029.wav": "acd05e218ea6f2bc8fe070668b4397f3aa4f83be2d388dbc50500c4628d1aa18",
+    "train-030.wav": "b1ac41632e008d1eba49b51387335cac3990fc7bbb23109dc5aa8b6ad83f93ad",
+    "train-031.wav": "9a669af71ea88792878fcb6b29e484ed25081538d4d940983c0366f180f91ece",
+    "train-032.wav": "b3e465176fba7b02f66a26eb0471b577e03b7a20cb66884d774f40746b632800",
+    "train-034.wav": "91386d0fd3776fc949b916844e8adbb71b862f55124e1921cf0662baea700e74",
+    "train-035.wav": "2dfe5d5047c8867734fef001ef68340d1fb4f979718ada693bf42752f29813bf",
+    "train-036.wav": "bc5a49ecfae16bbd99a4a19669850d2e5f24bb8b39eda8c52d94766706363ea1",
+    "train-037.wav": "e944dbd8a26be0fe62823a6c74f9690a412b0a763d3b3ae7aebba10b766d11d9",
+    "train-038.wav": "e41de152ccb5a3c262c017cb40dd7412817a9b3c164ad08aa56d3b692eb0dd8b",
+    "train-039.wav": "8a021cf0b94a4f7668e2d067a430958c9a244c66af824b5edc7e7b8420544966",
+    "train-040.wav": "3e156554400202354ded679e7c5aae0b0f3289bc9c825645de3e75f84eb00985",
+    "train-042.wav": "7fb1d0d72c102461e980538e48ef41bc5a93869c5e6bd06082c0cbeef47adf7b",
+    "train-043.wav": "a1679d6f4b2a86fd4ab5b7f715ff623bbcb310e774d09ece7afbab8acfe888aa",
+    "train-044.wav": "55233e683bd26f05606dac95bce66baa5b18967fdb873c86abc65e9a26ac61a7",
+    "train-045.wav": "917241408a9915d5338791cac3df06e8278db3de59628f4970135fdd621c296f"
+  },
+  "approved_validation_sha256": {
+    "validation-001.wav": "c204da6fa3f3a153122b73d75fad17636613881c0af96a5375cccc639df7b31e",
+    "validation-002.wav": "4e69bfbc89ca16c36261b7b7a17b01d7fb3c4d4378a2fc3b2b4963deac45e156",
+    "validation-003.wav": "100e41bd554e3c64566a90effb4711e098a97d54421d1f0d2637c2832e51fc32",
+    "validation-004.wav": "cfebf38143138f803ea7fb98d96ad6ec21e402261de55fc80e399fd5a6c6653b",
+    "validation-005.wav": "72daa7ae9ecb6c6bac8c2ce925d6dfdc0e01bdfc328f7b9a5dc5134f301a1f37",
+    "validation-006.wav": "18b1d5f135aa647d8d4aa6f051441a182312e3472be4727a262d5548415d646b",
+    "validation-007.wav": "e8c4389157954d99b9242c721df35d9062cfdfae01e24dc0ed1559602e0372bf",
+    "validation-008.wav": "72a6177cb71e963abf27c37b9d2316226a9bfdceb377c1763f188595b00b170d",
+    "validation-009.wav": "9fe8c21224a1bbd509489a26ada3c27049b42e7cbf6469d1d9e698804c2841e4",
+    "validation-010.wav": "11083196a24eb28630390c571964edf57362d6644ca72e4a36a03735fecd328c"
+  },
+  "train_source_sha256": "b73b03c22323bfcc42155f89f38b7e50642584f9db566a8195e96e53f557b0be",
+  "validation_source_sha256": "e511d1b7a434808bf684c2a8da7adc9e432bf3500ce59ee03e41a4f8e32b1676",
+  "negative_source_sha256": "63e1a035e510b3c4d80d3f09badff3dce6fb1dfafdb74d6eee419b26eb13cfa9",
+  "negative_train_seconds": [
+    0,
+    132
+  ],
+  "negative_validation_seconds": [
+    136,
+    196.0925
+  ],
+  "negative_validation_duration": 60.0925,
+  "validation_positive_intervals": [
+    [
+      4.43625,
+      5.413938
+    ],
+    [
+      6.462875,
+      7.492625
+    ],
+    [
+      8.674437,
+      9.695
+    ],
+    [
+      10.740625,
+      11.666813
+    ],
+    [
+      12.792125,
+      13.696938
+    ],
+    [
+      14.848125,
+      15.736875
+    ],
+    [
+      16.753937,
+      17.642625
+    ],
+    [
+      18.627938,
+      19.553875
+    ],
+    [
+      20.7445,
+      21.487
+    ],
+    [
+      22.723625,
+      23.693938
+    ]
+  ],
+  "test_accessed": false
+}
