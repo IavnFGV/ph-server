@@ -94,7 +94,8 @@ command window, не полнота всех произнесений и не и
 шестисекундное окно Vosk, порог 0.65. `android-profiles.json` закрепляет пути,
 SHA-256 и synthetic references для generic/personal. Встроенная hash-проверка,
 self-test и READY personal-v2 подтверждены на устройстве. Голосовая проверка
-цветов пользователем и длительная negative сессия ещё не завершены.
+цветов выполнена пользователем: он сообщил о заметном улучшении и разрешил
+merge. Количественный длительный negative/soak-test ещё не завершён.
 
 [Открыть notebook в Google Colab](https://colab.research.google.com/github/IavnFGV/ph-server/blob/feature/vosk-local-wakeword/training/pomogator/Pomogator_openWakeWord.ipynb)
 
