@@ -28,8 +28,13 @@
   модель и совместимый R8/D8, проверяет SHA-256 и готовит assets/ARM64 `.so`.
 - `prepare-wakeword-dependencies.ps1` — проверяет SHA-256 ONNX Runtime Android,
   feature-моделей openWakeWord и обученного «Помогатора», готовит assets/ARM64.
+  `-WakeProfile personal-v2` выбирает локальную личную модель, `generic` —
+  исходную; default generic. Build принимает тот же параметр. В assets
+  генерируется config с hash, порогом, фразой и эталоном self-test.
 - `verify-wakeword-runtime.ps1` — проверяет self-test трёх ONNX-моделей, READY,
   foreground-службу, микрофон, память и ошибки только текущего процесса.
+  `-ExpectedProfile personal-v2` дополнительно требует правильные profile/hash/
+  threshold в self-test текущего PID; default generic.
 - `train-personal-wakeword.ps1` — локальные CPU-этапы `prepare`/`fit` для
   проверенных личных записей; аугментация, frozen ONNX-признаки, дообучение
   классификатора. Голос/модель остаются в ignored `private/`, логи — в `logs/`.

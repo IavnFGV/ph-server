@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param()
+param([ValidateSet('generic','personal-v2')][string]$ExpectedProfile = 'generic')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $adb = Join-Path $root '.tools\platform-tools\adb.exe'
@@ -19,6 +19,12 @@ try {
     $events | Select-Object -Last 50
     if (-not ($events -match 'SELF_TEST passed')) { throw 'No successful ONNX self-test for this process.' }
     if (-not ($events -match 'READY:')) { throw 'Microphone pipeline did not become ready.' }
+    $profiles = Get-Content -Raw -Encoding UTF8 (Join-Path $root 'training/pomogator/android-profiles.json') | ConvertFrom-Json
+    $expected = $profiles.$ExpectedProfile
+    $identity = "profile=$ExpectedProfile; model=$($expected.model_sha256); threshold=$($expected.threshold)"
+    if (-not ($events | Where-Object { $_.Contains('SELF_TEST passed') -and $_.Contains($identity) })) {
+        throw "Installed wake profile does not match expected: $identity"
+    }
     if ($events -match 'Audio pipeline failed|FATAL EXCEPTION') { throw 'Runtime error detected.' }
     Write-Host "APK SHA256: $((Get-FileHash -LiteralPath $apk -Algorithm SHA256).Hash)"
 } finally { Stop-Transcript | Out-Null }

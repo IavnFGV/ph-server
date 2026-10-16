@@ -69,7 +69,7 @@ public final class MainActivity extends Activity {
         status.setTextSize(27f);
         status.setTextColor(Color.WHITE);
         status.setText("Загружаю локальную модель…\n"
-                + "Скажите: «Помогатор, включи синий»");
+                + "Скажите: «Эй, Помогатор, включи синий»");
         root.addView(status, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));
@@ -87,7 +87,7 @@ public final class MainActivity extends Activity {
     }
 
     private void startVoiceService() {
-        serviceStatus = "Запускаю детектор «Помогатор» и Vosk…";
+        serviceStatus = "Запускаю детектор обращения и Vosk…";
         renderStatus();
         startForegroundService(new Intent(this, VoiceListenerService.class));
     }

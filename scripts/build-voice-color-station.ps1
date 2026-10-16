@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
-    [string]$AndroidSdk = (Join-Path $env:LOCALAPPDATA 'Android\Sdk')
+    [string]$AndroidSdk = (Join-Path $env:LOCALAPPDATA 'Android\Sdk'),
+    [ValidateSet('generic','personal-v2')][string]$WakeProfile = 'generic'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -13,7 +14,7 @@ $logDirectory = Join-Path $projectRoot 'logs\windows'
 $logPath = Join-Path $logDirectory 'voice-color-station-build.log'
 
 & (Join-Path $PSScriptRoot 'prepare-vosk-dependencies.ps1')
-& (Join-Path $PSScriptRoot 'prepare-wakeword-dependencies.ps1')
+& (Join-Path $PSScriptRoot 'prepare-wakeword-dependencies.ps1') -WakeProfile $WakeProfile
 
 New-Item -ItemType Directory -Force -Path $logDirectory,$artifacts,$toolState | Out-Null
 Start-Transcript -Path $logPath -Append | Out-Null
@@ -54,7 +55,7 @@ try {
     & $aapt2 link -o $resourcesApk -I $androidJar `
         --manifest (Join-Path $appRoot 'AndroidManifest.xml') `
         --min-sdk-version 31 --target-sdk-version 31 `
-        --version-code 10 --version-name '0.5.0'
+        --version-code 11 --version-name '0.6.0'
     if ($LASTEXITCODE -ne 0) { throw "aapt2 link failed: $LASTEXITCODE" }
 
     & jar uf $resourcesApk -C $voskRoot assets
@@ -113,6 +114,8 @@ try {
 
     Get-FileHash -Algorithm SHA256 -LiteralPath $outputApk |
         Select-Object Path,Algorithm,Hash
+    Copy-Item -LiteralPath $outputApk -Destination (Join-Path $artifacts "voice-color-station-0.6.0-$WakeProfile.apk")
+    Write-Host "Build profile=$WakeProfile; version=0.6.0; versionCode=11"
 }
 finally {
     Stop-Transcript | Out-Null

@@ -1316,3 +1316,54 @@ LG выведены из эксплуатации, использование к
   по-прежнему невозможен; далее нужна Android-проверка и независимая negative
   сессия. Телефон и APK этим уточнением не менялись.
 
+### 2026-10-16 — personal-v2 установлен на LG, APK 0.6.0
+
+- По разрешению пользователя продолжена Android-интеграция. ADB transport
+  `device`; установленная версия до работ 0.5.0 / versionCode 10. Исходный APK
+  SHA-256 `76EF1ACE9CE4AF2E31B9B65ACAA6942676371F35BE80042F7963E6F24BF42CF5`
+  проверен и сохранён как ignored `voice-color-station-0.5.0-generic-backup.apk`.
+  Данные приложения, Termux/Ubuntu/HA, системные разрешения не удалялись.
+- Добавлен `android-profiles.json`: generic/personal-v2 с закреплёнными путями,
+  model hashes, threshold, phrase и golden synthetic references. Prepare/build
+  принимают `-WakeProfile`; default generic оставлен для воспроизведения из
+  публичного репозитория без личных весов. Personal model не перемещалась в
+  публичную model-папку. В assets head всегда называется pomogator.onnx.
+- Build генерирует UTF-8 config.json. Android каждый запуск копирует config и
+  модели из assets, проверяет head SHA-256, затем выполняет ONNX self-test с
+  выбранным reference. Service использует threshold/phrase из того же config,
+  пишет profile/hash/threshold в self-test и READY. Убраны жёсткие generic
+  константы 0.5 и golden score. UI подсказка изменена на «Эй, Помогатор».
+- Python synthetic test (40 кадров квадратного PCM ±3000, period 80) подтвердил
+  generic score 0.000873178244 и personal 0.000911206007; feature −5.330998420715
+  у обоих. `verify_streaming_reference.py` получил проверяемые model profiles.
+  Эти проверки не читают пользовательский голос и не подбирают порог.
+- Собрана версия 0.6.0 / code 11. После первой сборки уточнён текст UI и
+  выполнена повторная сборка; обе прошли javac/D8 и APK signature v3 validation.
+  Перед установкой read-only ZIP-проверка подтвердила personal config и hash
+  head. Первый диагностический print русского config упал в cp1252 после
+  успешных assertions, установка не началась; повтор с json.dumps ensure_ascii
+  прошёл. Ошибка и успешный вывод сохранены отдельными log-файлами.
+- Итог APK SHA-256
+  `C8BACA39DD71EA724D3EB94E79C0E60E1FFCBE44A2F4CAD1929FF1313C8E4C35`.
+  `adb install -r` завершился Success; MainActivity открыта. В ignored artifacts
+  сохранена отдельная копия `voice-color-station-0.6.0-personal-v2.apk`.
+  APK содержит личные веса и в Git не публикуется.
+- `verify-wakeword-runtime.ps1 -ExpectedProfile personal-v2` успешно проверил
+  текущий PID: version 0.6.0, foreground service с sound=null, RECORD_AUDIO
+  running, SELF_TEST score 0.000911206, правильные model hash / threshold 0.65,
+  READY, без Audio pipeline failed/FATAL EXCEPTION. PSS 254256 KiB (~248 MiB),
+  RSS 354548 KiB. Это проверка запуска, а не живого распознавания пользователя.
+- Сам микрофон/PCM/шестисекундный Vosk window не менялись; после reset остаётся
+  прогрев ~2.56 с. Пользователю предложено «Эй, Помогатор», дождаться статуса,
+  затем «включи синий». Реальный результат команды ещё не подтверждён.
+- Откат модели документирован: build generic той же 0.6.0/code11 + install -r,
+  verify ExpectedProfile generic. Это не проверенный downgrade на старую 0.5.0:
+  Android может запретить его для non-debuggable приложения. Не требуется
+  uninstall/стирание данных. Прошивка/root/глобальные Android settings не тронуты.
+- После завершения разметки остановлен только наш review process PID 30104
+  (перед остановкой проверена command line с test-v1); освободившиеся server
+  logs теперь доступны для сохранения в Git. Страница 8766 больше не нужна
+  для текущего этапа. Повторно пройдены все 5 regression tests и PowerShell
+  syntax parse трёх изменённых build/prepare/verify скриптов. Логам механически
+  нормализованы LF/trailing whitespace без изменения содержательных строк.
+

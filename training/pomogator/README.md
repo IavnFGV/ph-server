@@ -52,8 +52,8 @@ negative holdout. Во второй добавлены 1200 обрезков tra
 | Персональная v2, порог 0.65 | 10/10 | 0 |
 
 Это выбор по validation, не финальная оценка: один голос и минута отрицательной
-речи не доказывают надёжность. Test ещё не использован. На телефоне пока
-исходная модель; подмена APK требует проверки test и обновления self-test.
+речи не доказывают надёжность. На момент выбора test ещё не использовался;
+последующие test и установка описаны ниже.
 Локальный результат: `private/runs/personal-v2/hey-pomogator-personal.onnx`,
 SHA-256 `A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48`.
 
@@ -89,6 +89,12 @@ test stream. Существующий итог не перезаписывает
 Это не false alarms; число и индивидуальные границы повторов не подтверждены,
 поэтому дополнительные hits не приписываем. Это positive-window метрика, не симуляция Android
 command window, не полнота всех произнесений и не измерение ложных событий/час.
+
+После test personal-v2 установлен на LG в APK 0.6.0: один AudioRecord, прежнее
+шестисекундное окно Vosk, порог 0.65. `android-profiles.json` закрепляет пути,
+SHA-256 и synthetic references для generic/personal. Встроенная hash-проверка,
+self-test и READY personal-v2 подтверждены на устройстве. Голосовая проверка
+цветов пользователем и длительная negative сессия ещё не завершены.
 
 [Открыть notebook в Google Colab](https://colab.research.google.com/github/IavnFGV/ph-server/blob/feature/vosk-local-wakeword/training/pomogator/Pomogator_openWakeWord.ipynb)
 

@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param()
+param([ValidateSet('generic','personal-v2')][string]$WakeProfile = 'generic')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $state = Join-Path $root '.tools\wakeword'
@@ -30,11 +30,17 @@ try {
     foreach ($name in @('embedding_model.onnx','melspectrogram.onnx')) {
         Copy-Item -LiteralPath (Join-Path $downloads $name) -Destination $assets
     }
-    $model = Join-Path $root 'training\pomogator\model\pomogator.onnx'
+    $profiles = Get-Content -Raw -Encoding UTF8 (Join-Path $root 'training/pomogator/android-profiles.json') | ConvertFrom-Json
+    $profile = $profiles.$WakeProfile
+    $model = Join-Path $root $profile.model_path
     $hash = (Get-FileHash -LiteralPath $model -Algorithm SHA256).Hash
-    if ($hash -ne 'DF24F76DA9F2FF6DB7661AC36320FE4C097EE576A39407E61BE2CCB76F4384CA') {
+    if ($hash -ne $profile.model_sha256) {
         throw "Unexpected Pomogator model SHA-256: $hash"
     }
-    Copy-Item -LiteralPath $model -Destination $assets
+    Copy-Item -LiteralPath $model -Destination (Join-Path $assets 'pomogator.onnx')
+    $config = [ordered]@{profile=$WakeProfile; model_sha256=$hash; threshold=$profile.threshold;
+        phrase=$profile.phrase; self_test_score=$profile.self_test_score; self_test_feature=$profile.self_test_feature}
+    $config | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $assets 'config.json') -Encoding utf8NoBOM
+    Write-Host "Wake profile=$WakeProfile; model=$hash; threshold=$($profile.threshold)"
     Write-Host "Prepared wakeword assets and ARM64 ONNX Runtime"
 } finally { Stop-Transcript | Out-Null }

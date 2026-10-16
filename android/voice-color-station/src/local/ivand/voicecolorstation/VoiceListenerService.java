@@ -51,7 +51,7 @@ public final class VoiceListenerService extends Service {
 
     private final Map<String, ColorChoice> colors = new LinkedHashMap<>();
     private static final String TAG = "Pomogator";
-    private static final float WAKE_THRESHOLD = 0.5f;
+    private String wakePhrase = "Эй, Помогатор";
     private Model model;
     private Recognizer recognizer;
     private Thread audioThread;
@@ -112,7 +112,7 @@ public final class VoiceListenerService extends Service {
     private File prepareWakeModels() throws IOException {
         File directory = new File(getFilesDir(), "wakeword-v1");
         if (!directory.isDirectory() && !directory.mkdirs()) throw new IOException("Cannot create wakeword directory");
-        for (String name : new String[]{"pomogator.onnx", "melspectrogram.onnx", "embedding_model.onnx"}) {
+        for (String name : new String[]{"pomogator.onnx", "melspectrogram.onnx", "embedding_model.onnx", "config.json"}) {
             try (InputStream input = getAssets().open("wakeword/" + name);
                  FileOutputStream output = new FileOutputStream(new File(directory, name))) {
                 byte[] buffer = new byte[65536];
@@ -126,7 +126,9 @@ public final class VoiceListenerService extends Service {
     private void audioLoop() {
         AudioRecord recorder = null;
         try (WakeWordDetector detector = new WakeWordDetector(prepareWakeModels())) {
-            Log.i(TAG, "SELF_TEST passed; score=" + detector.selfTest());
+            wakePhrase = detector.phrase();
+            final float wakeThreshold = detector.threshold();
+            Log.i(TAG, "SELF_TEST passed; score=" + detector.selfTest() + "; " + detector.identity());
             recognizer = new Recognizer(model, 16000f);
             recognizer.setWords(true);
             int minimum = AudioRecord.getMinBufferSize(16000, AudioFormat.CHANNEL_IN_MONO,
@@ -146,7 +148,7 @@ public final class VoiceListenerService extends Service {
             long lastScoreAt = 0L;
             float peak = 0f;
             waitingForWakeWord();
-            Log.i(TAG, "READY: PCM16 16000Hz, single AudioRecord, threshold=" + WAKE_THRESHOLD);
+            Log.i(TAG, "READY: PCM16 16000Hz, single AudioRecord; " + detector.identity());
             while (!stopping) {
                 int offset = 0;
                 while (offset < frame.length && !stopping) {
@@ -178,20 +180,20 @@ public final class VoiceListenerService extends Service {
                 } else {
                     float score = detector.process(frame);
                     peak = Math.max(peak, score);
-                    if (score >= WAKE_THRESHOLD) {
+                    if (score >= wakeThreshold) {
                         recognizer.reset();
                         short[] lead = new short[preRoll.length];
                         for (int i = 0; i < lead.length; i++) lead[i] = preRoll[(preRollWrite + i) % lead.length];
                         recognizer.acceptWaveForm(lead, lead.length);
                         commandWindowUntil = now + COMMAND_WINDOW_MILLIS;
-                        publishHeard("Помогатор — сработал детектор", true);
-                        publishStatus("Помогатор услышан. Слушаю команду…");
+                        publishHeard(wakePhrase + " — сработал детектор", true);
+                        publishStatus(wakePhrase + " услышан. Слушаю команду…");
                         Log.i(TAG, "WAKE score=" + score + "; command window=6000ms");
                     } else if (now - lastScoreAt >= 1000L) {
                         // Scores are UI telemetry; avoid updating Android's notification every second.
                         sendBroadcast(new Intent(ACTION_STATUS_CHANGED).setPackage(getPackageName())
                                 .putExtra(EXTRA_STATUS, String.format(Locale.ROOT,
-                                        "Жду: «Помогатор» · %.2f / %.2f", peak, WAKE_THRESHOLD)));
+                                        "Жду: «%s» · %.2f / %.2f", wakePhrase, peak, wakeThreshold)));
                         Log.d(TAG, "WAIT peak=" + peak);
                         peak = 0f;
                         lastScoreAt = now;
@@ -261,7 +263,7 @@ public final class VoiceListenerService extends Service {
 
     private void waitingForWakeWord() {
         commandWindowUntil = 0L;
-        publishStatus("Жду: «Помогатор»");
+        publishStatus("Жду: «" + wakePhrase + "»");
     }
 
     private void registerColors() {

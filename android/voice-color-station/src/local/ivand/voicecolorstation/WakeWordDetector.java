@@ -6,6 +6,12 @@ import ai.onnxruntime.OrtException;
 import ai.onnxruntime.OrtSession;
 import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import org.json.JSONObject;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,8 +29,37 @@ public final class WakeWordDetector implements Closeable {
     private final float[] melHistory = new float[76 * 32];
     private final float[] features = new float[16 * 96];
     private int frames;
+    private final float threshold;
+    private final float referenceScore;
+    private final float referenceFeature;
+    private final String phrase;
+    private final String profile;
+    private final String modelHash;
 
-    public WakeWordDetector(File directory) throws OrtException {
+    public WakeWordDetector(File directory) throws OrtException, IOException {
+        try {
+            JSONObject config = new JSONObject(new String(Files.readAllBytes(
+                    new File(directory, "config.json").toPath()), StandardCharsets.UTF_8));
+            threshold = (float) config.getDouble("threshold");
+            referenceScore = (float) config.getDouble("self_test_score");
+            referenceFeature = (float) config.getDouble("self_test_feature");
+            phrase = config.getString("phrase");
+            profile = config.getString("profile");
+            modelHash = config.getString("model_sha256");
+            if (!(threshold > 0f && threshold < 1f) || !Float.isFinite(referenceScore)
+                    || !Float.isFinite(referenceFeature)) throw new IOException("Invalid wake config");
+            MessageDigest sha = MessageDigest.getInstance("SHA-256");
+            try (FileInputStream input = new FileInputStream(new File(directory, "pomogator.onnx"))) {
+                byte[] buffer = new byte[65536];
+                int count;
+                while ((count = input.read(buffer)) != -1) sha.update(buffer, 0, count);
+            }
+            StringBuilder actual = new StringBuilder();
+            for (byte value : sha.digest()) actual.append(String.format(java.util.Locale.ROOT, "%02X", value & 255));
+            if (!actual.toString().equalsIgnoreCase(modelHash)) throw new IOException("Wake model hash mismatch");
+        } catch (Exception error) {
+            throw new IOException("Cannot verify wake configuration", error);
+        }
         OrtSession mel = null;
         OrtSession embedding = null;
         OrtSession classifier = null;
@@ -46,6 +81,10 @@ public final class WakeWordDetector implements Closeable {
         reset();
     }
 
+    public float threshold() { return threshold; }
+    public String phrase() { return phrase; }
+    public String identity() { return "profile=" + profile + "; model=" + modelHash + "; threshold=" + threshold; }
+
     public void reset() {
         Arrays.fill(context, 0f);
         Arrays.fill(melHistory, 1f);
@@ -61,8 +100,8 @@ public final class WakeWordDetector implements Closeable {
         float score = 0f;
         for (int i = 0; i < 40; i++) score = process(frame);
         float feature = features[features.length - 96];
-        if (Math.abs(score - 0.000873178244f) > 0.0001f
-                || Math.abs(feature - (-5.33099842f)) > 0.01f) {
+        if (Math.abs(score - referenceScore) > 0.0001f
+                || Math.abs(feature - referenceFeature) > 0.01f) {
             throw new IllegalStateException("Wake pipeline self-test mismatch: " + score + ", " + feature);
         }
         reset();

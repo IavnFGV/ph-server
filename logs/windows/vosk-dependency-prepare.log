@@ -3,7 +3,7 @@ PowerShell transcript start
 Start time: 20261015231736
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & .\scripts\build-voice-color-station.ps1
@@ -28,7 +28,7 @@ PowerShell transcript start
 Start time: 20261015231746
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & .\scripts\build-voice-color-station.ps1
@@ -56,7 +56,7 @@ PowerShell transcript start
 Start time: 20261015231807
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & .\scripts\build-voice-color-station.ps1
@@ -84,7 +84,7 @@ PowerShell transcript start
 Start time: 20261015231844
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & .\scripts\build-voice-color-station.ps1
@@ -112,7 +112,7 @@ PowerShell transcript start
 Start time: 20261015231926
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & .\scripts\build-voice-color-station.ps1
@@ -141,7 +141,7 @@ PowerShell transcript start
 Start time: 20261015232015
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & .\scripts\build-voice-color-station.ps1; $apk='android\voice-color-station\artifacts\voice-color-station-debug.apk'; jar tf $apk | Select-String '^(classes.*\.dex|lib/arm64-v8a/|assets/vosk-model-small-ru-0.22/(uuid|am/final.mdl|graph/Gr.fst))'; Get-FileHash -Algorithm SHA256 $apk | Format-List
@@ -170,7 +170,7 @@ PowerShell transcript start
 Start time: 20261015232109
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & .\scripts\build-voice-color-station.ps1; if($LASTEXITCODE -eq 0){ & .\scripts\install-voice-color-station.ps1 }
@@ -199,7 +199,7 @@ PowerShell transcript start
 Start time: 20261015234344
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & .\scripts\build-voice-color-station.ps1; if($LASTEXITCODE -eq 0){ & .\scripts\install-voice-color-station.ps1 }
@@ -228,7 +228,7 @@ PowerShell transcript start
 Start time: 20261015234654
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 rg -n 'Помощ|Помоги|Помогатор|помог' android\voice-color-station; & .\scripts\build-voice-color-station.ps1
@@ -257,7 +257,7 @@ PowerShell transcript start
 Start time: 20261015234944
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & .\scripts\build-voice-color-station.ps1; if($LASTEXITCODE -eq 0){ & .\scripts\install-voice-color-station.ps1 }; Start-Sleep -Seconds 8; $adb='.tools\platform-tools\adb.exe'; & $adb shell dumpsys package local.ivand.voicecolorstation | Select-String 'versionCode=|versionName='; & $adb shell appops get local.ivand.voicecolorstation RECORD_AUDIO; & $adb shell dumpsys notification --noredact | Select-String 'android.text=String \((Жду|Слушаю|Выполнено|Ошибка)' | Select-Object -Last 3; & $adb logcat -d -t 250 | Select-String 'FATAL EXCEPTION|AndroidRuntime' | Select-Object -Last 20
@@ -286,7 +286,7 @@ PowerShell transcript start
 Start time: 20261016033609
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & ./scripts/build-voice-color-station.ps1
@@ -315,7 +315,7 @@ PowerShell transcript start
 Start time: 20261016033714
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & ./scripts/build-voice-color-station.ps1
@@ -344,7 +344,7 @@ PowerShell transcript start
 Start time: 20261016033829
 Username: IVAN-YOGA-7\ivand
 RunAs User: IVAN-YOGA-7\ivand
-Configuration Name: 
+Configuration Name:
 Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & ./scripts/build-voice-color-station.ps1
@@ -367,4 +367,71 @@ Vosk dependencies are ready in D:\projects\local-server-on-lg-phone\lg-v50s-home
 **********************
 PowerShell transcript end
 End time: 20261016033829
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016134224
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+$ErrorActionPreference = 'Stop'
+$oldApk = 'android/voice-color-station/artifacts/voice-color-station-debug.apk'
+$backupApk = 'android/voice-color-station/artifacts/voice-color-station-0.5.0-generic-backup.apk'
+if (-not (Test-Path -LiteralPath $backupApk)) { Copy-Item -LiteralPath $oldApk -Destination $backupApk }
+if ((Get-FileHash $backupApk -Algorithm SHA256).Hash -ne '76EF1ACE9CE4AF2E31B9B65ACAA6942676371F35BE80042F7963E6F24BF42CF5') { throw 'Unexpected backup APK' }
+foreach ($profile in @('generic','personal-v2')) {
+ python -S -u -c "import sys,runpy;sys.path.insert(0,r'.tools/onnx-inspect');sys.argv=['verify_streaming_reference.py','--profile','$profile'];runpy.run_path('training/pomogator/verify_streaming_reference.py',run_name='__main__')" 2>&1 | Tee-Object -FilePath "logs/windows/streaming-reference-$profile.log"
+ if ($LASTEXITCODE -ne 0) { throw 'Streaming reference failed' }
+}
+./scripts/build-voice-color-station.ps1 -WakeProfile personal-v2
+Process ID: 6220
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Verified cached vosk-android-0.3.75.aar: AB2F8B91AC8051561AA325546B35FED9A68B36B8121BAC5C6FB927525C4ADFAD
+Verified cached jna-5.18.1.aar: 7F053E3EC99E14DD71259C82C1C8A02738D64A13C31226B2ACC170F3060951E0
+Verified cached vosk-model-small-ru-0.22.zip: 961D5FF98A17F4AA6DE69864D0AA71FA5BAC682301D2B5D17A3F24C5C99A46D4
+Verified cached r8-9.5.26.jar: 3502F087388CE95BBF5254555927F09385DC2636873964D0BD53F3EAF4FB49AD
+Vosk dependencies are ready in D:\projects\local-server-on-lg-phone\lg-v50s-home-server\.tools\vosk
+**********************
+PowerShell transcript end
+End time: 20261016134224
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016134258
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+./scripts/build-voice-color-station.ps1 -WakeProfile personal-v2
+Process ID: 13496
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Verified cached vosk-android-0.3.75.aar: AB2F8B91AC8051561AA325546B35FED9A68B36B8121BAC5C6FB927525C4ADFAD
+Verified cached jna-5.18.1.aar: 7F053E3EC99E14DD71259C82C1C8A02738D64A13C31226B2ACC170F3060951E0
+Verified cached vosk-model-small-ru-0.22.zip: 961D5FF98A17F4AA6DE69864D0AA71FA5BAC682301D2B5D17A3F24C5C99A46D4
+Verified cached r8-9.5.26.jar: 3502F087388CE95BBF5254555927F09385DC2636873964D0BD53F3EAF4FB49AD
+Vosk dependencies are ready in D:\projects\local-server-on-lg-phone\lg-v50s-home-server\.tools\vosk
+**********************
+PowerShell transcript end
+End time: 20261016134258
 **********************
