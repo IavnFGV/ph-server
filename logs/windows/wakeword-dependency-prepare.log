@@ -414,3 +414,34 @@ Prepared wakeword assets and ARM64 ONNX Runtime
 PowerShell transcript end
 End time: 20261016141813
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261017003732
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+python android/voice-color-station/test_audio_routing.py 2>&1 | Tee-Object -FilePath logs/windows/screen-off-source-tests.log
+if ($LASTEXITCODE -ne 0) { throw 'Regression tests failed' }
+./scripts/build-voice-color-station.ps1 -WakeProfile personal-v2
+Process ID: 25856
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Verified onnxruntime-android-1.22.0.aar: 04A4617A9C797CF49225595E45B5546081CB34C86AC817581141577D3B7DBFE2
+Verified embedding_model.onnx: 70D164290C1D095D1D4EE149BC5E00543250A7316B59F31D056CFF7BD3075C1F
+Verified melspectrogram.onnx: BA2B0E0F8B7B875369A2C89CB13360FF53BAC436F2895CCED9F479FA65EB176F
+Wake profile=personal-v2; model=A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48; threshold=0.65
+Prepared wakeword assets and ARM64 ONNX Runtime
+**********************
+PowerShell transcript end
+End time: 20261017003732
+**********************

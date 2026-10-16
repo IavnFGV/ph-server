@@ -52,10 +52,14 @@ try {
     $dex = New-Item -ItemType Directory -Force -Path (Join-Path $buildRoot 'dex')
 
     $resourcesApk = Join-Path $buildRoot 'resources.apk'
+    $compiledResources = Join-Path $buildRoot 'compiled-resources.zip'
+    & $aapt2 compile --dir (Join-Path $appRoot 'res') -o $compiledResources
+    if ($LASTEXITCODE -ne 0) { throw "aapt2 compile failed: $LASTEXITCODE" }
     & $aapt2 link -o $resourcesApk -I $androidJar `
+        -R $compiledResources `
         --manifest (Join-Path $appRoot 'AndroidManifest.xml') `
         --min-sdk-version 31 --target-sdk-version 31 `
-        --version-code 13 --version-name '0.7.0'
+        --version-code 14 --version-name '0.7.1'
     if ($LASTEXITCODE -ne 0) { throw "aapt2 link failed: $LASTEXITCODE" }
 
     & jar uf $resourcesApk -C $voskRoot assets
@@ -114,8 +118,8 @@ try {
 
     Get-FileHash -Algorithm SHA256 -LiteralPath $outputApk |
         Select-Object Path,Algorithm,Hash
-    Copy-Item -LiteralPath $outputApk -Destination (Join-Path $artifacts "voice-color-station-0.7.0-$WakeProfile.apk")
-    Write-Host "Build profile=$WakeProfile; version=0.7.0; versionCode=13"
+    Copy-Item -LiteralPath $outputApk -Destination (Join-Path $artifacts "voice-color-station-0.7.1-$WakeProfile.apk")
+    Write-Host "Build profile=$WakeProfile; version=0.7.1; versionCode=14"
 }
 finally {
     Stop-Transcript | Out-Null

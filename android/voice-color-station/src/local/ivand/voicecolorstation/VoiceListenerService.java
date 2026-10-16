@@ -5,6 +5,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioFormat;
@@ -328,6 +330,10 @@ public final class VoiceListenerService extends Service {
             if (phrase.isEmpty()) return;
             publishHeard(phrase, !partial);
             if (partial) return;
+            if (commandWindowUntil != 0L && "отбой".equals(phrase)) {
+                screenOff();
+                return;
+            }
             String[] words = phrase.split("\\s+");
             long now = SystemClock.elapsedRealtime();
             ColorChoice choice = findColor(words);
@@ -340,6 +346,25 @@ public final class VoiceListenerService extends Service {
             }
         } catch (JSONException error) {
             publishStatus("Ошибка ответа Vosk: " + error.getMessage());
+        }
+    }
+
+    private void screenOff() {
+        commandWindowUntil = 0L;
+        DevicePolicyManager policies = getSystemService(DevicePolicyManager.class);
+        ComponentName admin = new ComponentName(this, ScreenLockAdminReceiver.class);
+        if (!policies.isAdminActive(admin)) {
+            publishStatus("Для «отбой» разрешите блокировку экрана в настройках фоновой работы");
+            Log.w(TAG, "SCREEN_OFF blocked: force-lock admin not enabled");
+            return;
+        }
+        try {
+            publishStatus("Отбой. Экран выключен, фоновое слушание продолжается");
+            policies.lockNow();
+            Log.i(TAG, "SCREEN_OFF requested by final command; background listener retained");
+        } catch (SecurityException error) {
+            publishStatus("Android не разрешил блокировку экрана");
+            Log.w(TAG, "SCREEN_OFF denied", error);
         }
     }
 

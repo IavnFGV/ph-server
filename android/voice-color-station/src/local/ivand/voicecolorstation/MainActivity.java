@@ -2,9 +2,11 @@ package local.ivand.voicecolorstation;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.admin.DevicePolicyManager;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -198,17 +200,24 @@ public final class MainActivity extends Activity {
 
     private void showBackgroundSettings() {
         PowerManager power = getSystemService(PowerManager.class);
+        final ComponentName lockAdmin = new ComponentName(this, ScreenLockAdminReceiver.class);
+        DevicePolicyManager policies = getSystemService(DevicePolicyManager.class);
         String[] choices = {
                 "Поверх других приложений: " + (Settings.canDrawOverlays(this) ? "разрешено" : "нужно разрешить"),
-                "Без экономии батареи: " + (power.isIgnoringBatteryOptimizations(getPackageName()) ? "да" : "нужно разрешить")};
+                "Без экономии батареи: " + (power.isIgnoringBatteryOptimizations(getPackageName()) ? "да" : "нужно разрешить"),
+                "Команда «отбой»: " + (policies.isAdminActive(lockAdmin) ? "разрешена" : "разрешить блокировку экрана")};
         new AlertDialog.Builder(this).setTitle("Постоянная голосовая станция")
                 .setItems(choices, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
                     Intent settings;
                     if (which == 0) settings = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                             Uri.parse("package:" + getPackageName()));
-                    else settings = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                    else if (which == 1) settings = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
                             Uri.parse("package:" + getPackageName()));
+                    else settings = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
+                            .putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, lockAdmin)
+                            .putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                                    "Только погасить и заблокировать экран по команде «отбой». Микрофон продолжает слушать. Для разблокировки может понадобиться PIN/пароль.");
                     try { startActivity(settings); }
                     catch (RuntimeException error) { serviceStatus = "Откройте разрешения вручную в настройках Android"; renderStatus(); }
                     }

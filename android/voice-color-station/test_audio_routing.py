@@ -41,6 +41,20 @@ class AudioRoutingContract(unittest.TestCase):
         self.assertIn('releaseCpuLock();', self.source.split('} finally {', 1)[1])
         self.assertIn('releaseCpuLock();', self.source.split('public void onDestroy()', 1)[1])
 
+    def test_screen_off_requires_final_exact_command_in_command_window(self):
+        handler = self.source.split('private void handleJson', 1)[1].split('private void screenOff', 1)[0]
+        self.assertLess(handler.index('if (partial) return;'), handler.index('screenOff();'))
+        self.assertIn('commandWindowUntil != 0L && "отбой".equals(phrase)', handler)
+        screen = self.source.split('private void screenOff()', 1)[1].split('private void publishHeard', 1)[0]
+        self.assertLess(screen.index('isAdminActive(admin)'), screen.index('policies.lockNow()'))
+        self.assertNotIn('stopSelf(', screen)
+        self.assertNotIn('releaseCpuLock(', screen)
+
+    def test_device_admin_requests_only_force_lock(self):
+        import xml.etree.ElementTree as ET
+        admin = ET.parse(Path(__file__).parent / 'res/xml/screen_lock_admin.xml').getroot()
+        self.assertEqual([policy.tag for policy in admin.find('uses-policies')], ['force-lock'])
+
 
 if __name__ == '__main__':
     unittest.main()

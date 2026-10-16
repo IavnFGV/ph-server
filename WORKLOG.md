@@ -1469,3 +1469,49 @@ LG выведены из эксплуатации, использование к
   доказательство Android UI поведения. Реальная voice/lockscreen проверка
   продолжится после разрешений. Настройка, границы и откат описаны в docs.
 
+### 2026-10-17 — команда «отбой», APK 0.7.1
+
+- Пользователь подключил LG и попросил гасить экран по слову «отбой».
+  Согласованный в комментарии маршрут сохраняет архитектуру: обращение
+  openWakeWord → окно Vosk → отдельная финальная фраза «отбой». Вне command
+  window Vosk не декодирует; после выполненного цвета для «отбой» нужно новое
+  обращение. Не добавлены ни второй always-on ASR, ни wake-модель слова «отбой».
+- Проверен официальный DevicePolicyManager.lockNow API (ссылка в research-log).
+  Реализован optional ScreenLockAdminReceiver только с force-lock. Разрешение
+  выдаёт сам пользователь через ACTION_ADD_DEVICE_ADMIN; нет wipe-data,
+  управления паролями, device-owner provisioning, Accessibility/root/системных
+  permission bypass. Пользователь предупреждён о возможном PIN/пароле после lock.
+- В настройках фона добавлен третий пункт разрешения «отбой». В handleJson
+  команда проверяется только после final, при commandWindowUntil != 0, через
+  точное равенство всей фразы. «не отбой» и partial не выполняются. При отсутствии
+  admin выводится понятный статус; security failure не гасит pipeline.
+  Успешный lockNow закрывает command window, но не останавливает службу/микрофон
+  и не освобождает CPU wake lock. Это настоящая блокировка, не просто чёрный цвет.
+- Добавлен res/xml/screen_lock_admin.xml; build теперь делает aapt2 compile
+  ресурсов перед link. Версия 0.7.1 / code14, personal-v2/hash/threshold 0.65
+  не менялись. Сборка javac/D8/signature v3 прошла; профильный APK 0.7.0 сохранён,
+  новый ignored APK имеет имя 0.7.1. Итог SHA-256
+  `D6ADD0B29B5E68A0A30E8858F8F9D07ACF3DFD4602A781A91603DF655C82D4CA`.
+- Install -r Success, Activity открыта. Runtime verification прошёл:
+  версия 0.7.1, SELF_TEST 0.000911206, READY after-wake/preroll=0,
+  foreground microphone running, CPU lock held, overlay allow и battery
+  exemption True. Эти два старых разрешения теперь подтверждены read-only.
+  Пользователь ранее сообщил «вроде работает» про фоновый прототип; это
+  не заменяет долгий soak-test. PSS на текущем старте 257814 KiB (~252 MiB).
+- Пройдены 7 Android source-contract tests (включая финальный точный «отбой»,
+  admin guard, сохранение listener и только одну force-lock policy) и 5 personal
+  regression tests. Это не реальные voice/screen-off испытания.
+- Первая попытка открыть системный admin dialog из ADB с текстовым explanation
+  не прошла: adb remote-shell разбил пробелы/точку с запятой, intent получил
+  лишний package=only; второй shell fragment дал inaccessible/not found.
+  Установка и приложение не затронуты. Повтор без необязательного explanation
+  открыл ACTION_ADD_DEVICE_ADMIN с ComponentName; вывод сохранён в отдельном log.
+  Через приложение тот же запрос формируется типизированным Intent, не shell.
+- Запрос активации показан пользователю, подтверждение автоматически не нажималось.
+  Живой результат «отбой», погашение экрана и повторное пробуждение пока не
+  подтверждены. Пользователю дана последовательность для проверки; текущая
+  ветка feature/background-lockscreen сохраняется отдельно от main.
+- README, background docs, research/rollback обновлены. Перед uninstall надо
+  деактивировать admin в Android UI; иначе Android может запретить удаление.
+  Изменения не затрагивают Termux/HA/прошивку/пароли. Личные APK/веса не публикуются.
+

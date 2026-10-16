@@ -967,3 +967,43 @@ Build profile=personal-v2; version=0.7.0; versionCode=13
 PowerShell transcript end
 End time: 20261016141831
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261017003733
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+python android/voice-color-station/test_audio_routing.py 2>&1 | Tee-Object -FilePath logs/windows/screen-off-source-tests.log
+if ($LASTEXITCODE -ne 0) { throw 'Regression tests failed' }
+./scripts/build-voice-color-station.ps1 -WakeProfile personal-v2
+Process ID: 25856
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+
+
+
+
+
+
+
+
+
+
+
+
+Build profile=personal-v2; version=0.7.1; versionCode=14
+**********************
+PowerShell transcript end
+End time: 20261017003754
+**********************

@@ -485,3 +485,13 @@ SHA-256 совпал с телефоном, transport остался в сост
   Это не гарантия от Doze/OEM-kill/force-stop. Частичное удержание CPU повышает
   расход батареи; долгий тест на зарядке не заменяет idle без зарядки.
 
+# 2026-10-17: погасить экран командой «отбой»
+
+- [DevicePolicyManager.lockNow](https://developer.android.com/reference/android/app/admin/DevicePolicyManager#lockNow()):
+  для штатного приложения нужен активный Device Admin с USES_POLICY_FORCE_LOCK.
+  Выбран optional receiver с единственной policy force-lock; активация через
+  ACTION_ADD_DEVICE_ADMIN подтверждается пользователем. Нет provisioning
+  Device Owner, Accessibility Service, root, WRITE_SECURE_SETTINGS и wipe policy.
+  lockNow — именно блокировка, не изменение яркости; может потребовать сильную
+  аутентификацию при разблокировке. Перед uninstall активного admin нужно снять.
+
