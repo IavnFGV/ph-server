@@ -6,6 +6,10 @@
 Следующий эксперимент — персональная фраза **«Эй, Помогатор»**:
 [пошаговая запись и разделение данных](RECORDING_GUIDE.md).
 
+`inspect_personal_recording.py` проверяет целостное декодирование и уровни
+звука, сохраняет PCM-копию и private JSON-отчёт. Опциональный Vosk даёт
+подсказки word timestamps, которые не считаются подтверждённой разметкой.
+
 [Открыть notebook в Google Colab](https://colab.research.google.com/github/IavnFGV/ph-server/blob/feature/vosk-local-wakeword/training/pomogator/Pomogator_openWakeWord.ipynb)
 
 ## Почему не достаточно официального quick-start

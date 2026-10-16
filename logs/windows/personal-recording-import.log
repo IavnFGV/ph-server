@@ -30,3 +30,30 @@ Path      : D:\projects\local-server-on-lg-phone\lg-v50s-home-server\training\po
 PowerShell transcript end
 End time: 20261016115951
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261016120130
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { & .tools/platform-tools/adb.exe pull /sdcard/Recordings/20261016_115758_train.m4a training/pomogator/private/inbox/20261016_115758_train.m4a; if($LASTEXITCODE -ne 0){ throw 'ADB transfer failed' }; $file=Get-Item training/pomogator/private/inbox/20261016_115758_train.m4a; $hash=(Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash; Write-Host "Size=$($file.Length) SHA256=$hash"; if($file.Length -ne 1327660 -or $hash -ne 'D6F42D0EC4A98A95D70A58CDFFFBAB6E8080BE615C5DD780EC1CCC1D8203509A'){throw 'Source/copy mismatch'}; Write-Host 'Verified source/copy match' } finally { Stop-Transcript | Out-Null }
+Process ID: 17692
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+Size=1327660 SHA256=D6F42D0EC4A98A95D70A58CDFFFBAB6E8080BE615C5DD780EC1CCC1D8203509A
+Verified source/copy match
+**********************
+PowerShell transcript end
+End time: 20261016120130
+**********************
