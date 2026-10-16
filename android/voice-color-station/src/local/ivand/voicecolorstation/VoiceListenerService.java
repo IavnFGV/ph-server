@@ -12,6 +12,8 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -52,6 +54,8 @@ public final class VoiceListenerService extends Service {
     private final Map<String, ColorChoice> colors = new LinkedHashMap<>();
     private static final String TAG = "Pomogator";
     private String wakePhrase = "Эй, Помогатор";
+    public static volatile String currentStatus;
+    private volatile PowerManager.WakeLock cpuLock;
     private Model model;
     private Recognizer recognizer;
     private Thread audioThread;
@@ -74,6 +78,7 @@ public final class VoiceListenerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && ACTION_STOP.equals(intent.getAction())) {
+            getSharedPreferences("voice_state", MODE_PRIVATE).edit().putBoolean("listening_enabled", false).apply();
             stopping = true;
             stopForeground(true);
             stopSelf();
@@ -142,6 +147,12 @@ public final class VoiceListenerService extends Service {
             if (recorder.getState() != AudioRecord.STATE_INITIALIZED) throw new IOException("Microphone unavailable");
             recorder.startRecording();
             if (recorder.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) throw new IOException("Microphone did not start");
+            cpuLock = getSystemService(PowerManager.class).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "VoiceColorStation:microphone");
+            cpuLock.setReferenceCounted(false);
+            cpuLock.acquire(10 * 60 * 1000L);
+            long renewLockAt = SystemClock.elapsedRealtime() + 5 * 60 * 1000L;
+            Log.i(TAG, "BACKGROUND: partial wake lock acquired; overlay=" + Settings.canDrawOverlays(this)
+                    + "; batteryExempt=" + getSystemService(PowerManager.class).isIgnoringBatteryOptimizations(getPackageName()));
             short[] frame = new short[WakeWordDetector.FRAME_SAMPLES];
             long lastScoreAt = 0L;
             float peak = 0f;
@@ -159,6 +170,10 @@ public final class VoiceListenerService extends Service {
                 }
                 if (stopping) break;
                 long now = SystemClock.elapsedRealtime();
+                if (now >= renewLockAt) {
+                    cpuLock.acquire(10 * 60 * 1000L);
+                    renewLockAt = now + 5 * 60 * 1000L;
+                }
                 if (commandWindowUntil != 0L) {
                     boolean complete = recognizer.acceptWaveForm(frame, frame.length);
                     handleJson(complete ? recognizer.getResult() : recognizer.getPartialResult(), !complete);
@@ -181,6 +196,7 @@ public final class VoiceListenerService extends Service {
                         commandWindowUntil = now + COMMAND_WINDOW_MILLIS;
                         publishHeard("", false);
                         publishStatus("Обращение услышано. Слушаю команду…");
+                        showWakeScreen();
                         Log.i(TAG, "WAKE score=" + score + "; command window=6000ms; ASR=next-frame; preroll=0");
                     } else if (now - lastScoreAt >= 1000L) {
                         // Scores are UI telemetry; avoid updating Android's notification every second.
@@ -199,6 +215,7 @@ public final class VoiceListenerService extends Service {
                 fail("Ошибка голосовой станции: " + error.getMessage());
             }
         } finally {
+            releaseCpuLock();
             if (recorder != null) {
                 try { recorder.stop(); } catch (IllegalStateException ignored) { }
                 recorder.release();
@@ -242,11 +259,30 @@ public final class VoiceListenerService extends Service {
     }
 
     private void publishStatus(String message) {
+        currentStatus = message;
         getSystemService(NotificationManager.class)
                 .notify(NOTIFICATION_ID, buildNotification(message));
         sendBroadcast(new Intent(ACTION_STATUS_CHANGED)
                 .setPackage(getPackageName())
                 .putExtra(EXTRA_STATUS, message));
+    }
+
+    private void showWakeScreen() {
+        if (MainActivity.visible && getSystemService(PowerManager.class).isInteractive()) return;
+        if (!Settings.canDrawOverlays(this)) {
+            Log.w(TAG, "WAKE_UI unavailable: grant overlay permission or tap notification");
+            return;
+        }
+        try {
+            startActivity(new Intent(this, MainActivity.class).setAction(MainActivity.ACTION_WAKE_SCREEN)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
+            Log.i(TAG, "WAKE_UI requested; keyguard is not dismissed");
+        } catch (RuntimeException error) { Log.w(TAG, "WAKE_UI blocked", error); }
+    }
+
+    private synchronized void releaseCpuLock() {
+        PowerManager.WakeLock held = cpuLock;
+        if (held != null && held.isHeld()) held.release();
     }
 
     private void fail(String message) {
@@ -339,6 +375,7 @@ public final class VoiceListenerService extends Service {
     @Override
     public void onDestroy() {
         stopping = true;
+        releaseCpuLock();
         AudioRecord recorder = audioRecord;
         if (recorder != null) {
             try { recorder.stop(); } catch (IllegalStateException ignored) { }

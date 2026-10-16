@@ -467,3 +467,21 @@ SHA-256 совпал с телефоном, transport остался в сост
 Наблюдение не исключает другие причины и не заменяет длительную проверку USB.
 
 
+# 2026-10-16: фон, запуск окна и блокировка Android 12
+
+- [Activity security / BAL exceptions](https://developer.android.com/guide/components/activities/secure-bal):
+  foreground-служба не равна видимой Activity; granted SYSTEM_ALERT_WINDOW —
+  документированное исключение запуска окна из фона. Применяем только после
+  ручной выдачи пользователем, без appops override. Само overlay-окно не нужно.
+- [Activity API](https://developer.android.com/reference/android/app/Activity):
+  showWhenLocked/turnScreenOn используются для показа собственной Activity;
+  keyguard не снимается. Нужен реальный тест LG, а не вывод только из API.
+- [Foreground service restrictions](https://developer.android.com/develop/background-work/services/fgs/restrictions-bg-start):
+  ограничения запуска из фона и while-in-use permissions не позволяют обещать
+  произвольный boot microphone. Выбран BootReceiver с тихим уведомлением и
+  запуском пользователем через Activity, не автоматическая запись на старте ОС.
+- [Doze / App Standby](https://developer.android.com/training/monitoring-device-state/doze-standby):
+  добавлен запрос per-app battery exemption и CPU wake lock с timeout/cleanup.
+  Это не гарантия от Doze/OEM-kill/force-stop. Частичное удержание CPU повышает
+  расход батареи; долгий тест на зарядке не заменяет idle без зарядки.
+

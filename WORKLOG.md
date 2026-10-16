@@ -1413,3 +1413,59 @@ LG выведены из эксплуатации, использование к
   pre-roll. Для возврата pre-roll нужен старый исходник с допустимым versionCode,
   не uninstall/downgrade со стиранием данных. Root/ОС/Termux/HA не менялись.
 
+### 2026-10-16 — фоновая служба и показ Activity над блокировкой, 0.7.0
+
+- Пользователь запросил постоянное фоновое слушание и открытие станции по
+  обращению из другого приложения/заблокированного экрана. Прочитаны актуальные
+  официальные Android BAL/FGS/Activity/Doze docs; ссылки и ограничения сохранены
+  в research-log и docs/background-voice.md. Отдельная ветка
+  `feature/background-lockscreen`; main 0.6.1 пока не меняется.
+- Существующие microphone foreground-service, START_STICKY и stopWithTask=false
+  сохранены. Добавлен PARTIAL_WAKE_LOCK с 10-минутным timeout, продлением
+  каждые 5 минут и release в worker finally/onDestroy. CPU не засыпает во время
+  прослушивания, но экран удержанием CPU не включается; расход батареи выше.
+  Это не обещание бессмертного процесса/работы после force-stop.
+- MainActivity получила ручную настройку двух специальных разрешений: overlay
+  и per-app battery exemption. Добавлены только их manifest permissions и
+  REQUEST_IGNORE_BATTERY_OPTIMIZATIONS; пользователь подтверждает Android UI.
+  Через ADB/appops/глобальные whitelist эти разрешения не выдавались.
+- При wake Service запрашивает собственную Activity, только если overlay
+  разрешён и UI не видим/экран погашен. singleTop/CLEAR_TOP избегают лишних
+  экземпляров. showWhenLocked и turnScreenOn позволяют показать станцию над
+  keyguard, но PIN/пароль не снимаются (requestDismissKeyguard отсутствует).
+  Если permission нет — слушание/уведомление остаются, auto UI не запрашивается.
+- При возврате Activity восстанавливаются сохранённый цвет и актуальный статус
+  службы, чтобы пропущенный в фоне broadcast не оставлял старый экран.
+  Pre-roll не возвращён; personal-v2/hash и threshold 0.65 не менялись.
+- Добавлен BootReminderReceiver: только тихое уведомление с Activity PendingIntent,
+  не запуск FGS/микрофона из boot. После reboot один раз нужен user tap.
+  «Остановить» сохраняет listening_enabled=false и выключает напоминание до
+  следующего ручного запуска. Система после force-stop может не доставлять boot.
+  Реальная перезагрузка не выполнялась: на телефоне также работает HA.
+- Первая попытка patch manifest не совпала с self-closing service tag и была
+  отклонена без изменений. Аналогично исправлен неудачный контекст docs patch.
+  Первая сборка упала: упрощённый javac bootclasspath Android stubs не содержит
+  LambdaMetafactory.metafactory. Лямбды UI заменены обычными anonymous listeners;
+  последующие сборки прошли. После мелких UI/lifecycle поправок выполнена
+  итоговая повторная сборка, чтобы установленный APK совпадал с исходниками.
+- Установлено 0.7.0 / versionCode13, install -r Success, прежние данные сохранены.
+  APK SHA-256 `570ABC75A2EDD302716138B87B86669152D2D4514823BC77814B6150890072FE`;
+  прежние profile APK 0.6.0/0.6.1 остаются ignored локально. Личные веса/APK
+  не публикуются. На старте показан диалог настройки фона.
+- Первичный verify запущен слишком рано: микрофон/ONNX ещё инициализировались,
+  wake lock не успел появиться. Logcat показал успешный SELF_TEST/READY и
+  BACKGROUND без ошибок через мгновение. Verify исправлен: bounded wait READY
+  до 15 с с ранним fail по runtime errors; wake lock ищется только в текущем
+  PARTIAL_WAKE_LOCK, не в истории. Повторная проверка прошла: mic running,
+  personal-v2/0.65, pre-roll=0, CPU lock held. PSS ~290 MiB на короткой проверке.
+- На момент проверки overlay=false и batteryExempt=false. Пользователю уже
+  предложено вручную включить оба пункта. Вызов -RequireBackgroundPermissions
+  предназначен для проверки после выдачи. Проверяется текущее appops/полное
+  per-app deviceidle whitelist состояние, не устаревший startup log. Автопоказ над другим
+  приложением/lockscreen и длительный screen-off пока НЕ подтверждены.
+- Пройдены 5 source-contract checks: routing после wake, отсутствие synthetic
+  transcript, guard overlay, отсутствие keyguard-dismiss, boot без microphone
+  service, timeout/cleanup wake lock. Это проверки структуры исходника, не
+  доказательство Android UI поведения. Реальная voice/lockscreen проверка
+  продолжится после разрешений. Настройка, границы и откат описаны в docs.
+

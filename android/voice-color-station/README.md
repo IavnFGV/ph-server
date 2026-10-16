@@ -1,4 +1,4 @@
-# Voice Color Station 0.6.1
+# Voice Color Station 0.7.0
 
 Локальный голосовой POC для LG V50S на Android 12. Foreground-service слушает
 микрофон через один `AudioRecord`, openWakeWord и Vosk без сети. Выполняются
@@ -52,7 +52,13 @@ APK содержит `wakeword/config.json` с профилем, фразой, �
 
 Нужен PowerShell 7. SHA-256 обоих профилей и golden scores закреплены в
 `training/pomogator/android-profiles.json`. Сборка создаёт обычный debug APK
-и отдельную копию `voice-color-station-0.6.1-<profile>.apk` в ignored artifacts.
+и отдельную копию `voice-color-station-0.7.0-<profile>.apk` в ignored artifacts.
+
+В 0.7.0 добавлены настройки overlay/battery exemption, partial CPU wake lock
+и открытие Activity по обращению над другим приложением/экраном блокировки.
+Разрешения пользователь выдаёт вручную, keyguard не снимается. После reboot
+нужно нажать тихое boot-уведомление для запуска микрофона. Гарантии бессмертного
+процесса нет. [Настройка и план проверки](../../docs/background-voice.md).
 
 Первый сценарий скачивает закреплённые Vosk/JNA, русскую модель, R8/D8,
 ONNX Runtime Android 1.22.0 и две feature-модели openWakeWord v0.5.1,

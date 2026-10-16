@@ -2,13 +2,19 @@ package local.ivand.voicecolorstation;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.net.Uri;
+import android.provider.Settings;
+import android.widget.Button;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public final class MainActivity extends Activity {
+    public static final String ACTION_WAKE_SCREEN = "local.ivand.voicecolorstation.WAKE_SCREEN";
+    public static volatile boolean visible;
     private static final int MICROPHONE_PERMISSION_REQUEST = 1001;
 
     private LinearLayout root;
@@ -50,6 +58,8 @@ public final class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setShowWhenLocked(true);
+        setTurnScreenOn(ACTION_WAKE_SCREEN.equals(getIntent().getAction()));
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         enterImmersiveMode();
         createInterface();
@@ -72,7 +82,13 @@ public final class MainActivity extends Activity {
                 + "Скажите «Эй, Помогатор», дождитесь «Слушаю команду», затем назовите цвет");
         root.addView(status, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT));
+                0, 1f));
+        Button backgroundSettings = new Button(this);
+        backgroundSettings.setText("Настройки фоновой работы");
+        backgroundSettings.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) { showBackgroundSettings(); }
+        });
+        root.addView(backgroundSettings);
         setContentView(root);
     }
 
@@ -87,6 +103,8 @@ public final class MainActivity extends Activity {
     }
 
     private void startVoiceService() {
+        getSystemService(android.app.NotificationManager.class).cancel(72);
+        getSharedPreferences("voice_state", MODE_PRIVATE).edit().putBoolean("listening_enabled", true).apply();
         serviceStatus = "Запускаю детектор обращения и Vosk…";
         renderStatus();
         startForegroundService(new Intent(this, VoiceListenerService.class));
@@ -134,6 +152,7 @@ public final class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+        visible = true;
         IntentFilter filter = new IntentFilter();
         filter.addAction(VoiceListenerService.ACTION_COLOR_CHANGED);
         filter.addAction(VoiceListenerService.ACTION_STATUS_CHANGED);
@@ -144,6 +163,7 @@ public final class MainActivity extends Activity {
 
     @Override
     protected void onStop() {
+        visible = false;
         if (receiverRegistered) {
             unregisterReceiver(serviceReceiver);
             receiverRegistered = false;
@@ -154,7 +174,46 @@ public final class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        restoreLastColor();
+        String current = VoiceListenerService.currentStatus;
+        if (current != null) { serviceStatus = current; renderStatus(); }
         enterImmersiveMode();
+        if (!ACTION_WAKE_SCREEN.equals(getIntent().getAction())
+                && !getSharedPreferences("voice_state", MODE_PRIVATE).getBoolean("background_setup_shown", false)) {
+            getSharedPreferences("voice_state", MODE_PRIVATE).edit().putBoolean("background_setup_shown", true).apply();
+            status.post(new Runnable() {
+                @Override public void run() { if (!isFinishing()) showBackgroundSettings(); }
+            });
+        }
+    }
+
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        if (ACTION_WAKE_SCREEN.equals(intent.getAction())) {
+            setTurnScreenOn(true);
+            lastHeard = null;
+        }
+    }
+
+    private void showBackgroundSettings() {
+        PowerManager power = getSystemService(PowerManager.class);
+        String[] choices = {
+                "Поверх других приложений: " + (Settings.canDrawOverlays(this) ? "разрешено" : "нужно разрешить"),
+                "Без экономии батареи: " + (power.isIgnoringBatteryOptimizations(getPackageName()) ? "да" : "нужно разрешить")};
+        new AlertDialog.Builder(this).setTitle("Постоянная голосовая станция")
+                .setItems(choices, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                    Intent settings;
+                    if (which == 0) settings = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + getPackageName()));
+                    else settings = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                            Uri.parse("package:" + getPackageName()));
+                    try { startActivity(settings); }
+                    catch (RuntimeException error) { serviceStatus = "Откройте разрешения вручную в настройках Android"; renderStatus(); }
+                    }
+                })
+                .setNegativeButton("Позже", null).show();
     }
 
     private void enterImmersiveMode() {

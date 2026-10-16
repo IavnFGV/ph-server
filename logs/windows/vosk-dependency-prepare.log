@@ -466,3 +466,125 @@ Vosk dependencies are ready in D:\projects\local-server-on-lg-phone\lg-v50s-home
 PowerShell transcript end
 End time: 20261016135831
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261016141630
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+git switch -c feature/background-lockscreen
+if ($LASTEXITCODE -ne 0) { throw 'Cannot create feature branch' }
+python android/voice-color-station/test_audio_routing.py
+if ($LASTEXITCODE -ne 0) { throw 'Routing regression failed' }
+./scripts/build-voice-color-station.ps1 -WakeProfile personal-v2
+Process ID: 31976
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Verified cached vosk-android-0.3.75.aar: AB2F8B91AC8051561AA325546B35FED9A68B36B8121BAC5C6FB927525C4ADFAD
+Verified cached jna-5.18.1.aar: 7F053E3EC99E14DD71259C82C1C8A02738D64A13C31226B2ACC170F3060951E0
+Verified cached vosk-model-small-ru-0.22.zip: 961D5FF98A17F4AA6DE69864D0AA71FA5BAC682301D2B5D17A3F24C5C99A46D4
+Verified cached r8-9.5.26.jar: 3502F087388CE95BBF5254555927F09385DC2636873964D0BD53F3EAF4FB49AD
+Vosk dependencies are ready in D:\projects\local-server-on-lg-phone\lg-v50s-home-server\.tools\vosk
+**********************
+PowerShell transcript end
+End time: 20261016141630
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016141652
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+./scripts/build-voice-color-station.ps1 -WakeProfile personal-v2
+Process ID: 24784
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Verified cached vosk-android-0.3.75.aar: AB2F8B91AC8051561AA325546B35FED9A68B36B8121BAC5C6FB927525C4ADFAD
+Verified cached jna-5.18.1.aar: 7F053E3EC99E14DD71259C82C1C8A02738D64A13C31226B2ACC170F3060951E0
+Verified cached vosk-model-small-ru-0.22.zip: 961D5FF98A17F4AA6DE69864D0AA71FA5BAC682301D2B5D17A3F24C5C99A46D4
+Verified cached r8-9.5.26.jar: 3502F087388CE95BBF5254555927F09385DC2636873964D0BD53F3EAF4FB49AD
+Vosk dependencies are ready in D:\projects\local-server-on-lg-phone\lg-v50s-home-server\.tools\vosk
+**********************
+PowerShell transcript end
+End time: 20261016141652
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016141735
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+python android/voice-color-station/test_audio_routing.py 2>&1 | Tee-Object -FilePath logs/windows/background-lockscreen-source-tests.log
+if ($LASTEXITCODE -ne 0) { throw 'Source contracts failed' }
+./scripts/build-voice-color-station.ps1 -WakeProfile personal-v2
+Process ID: 10896
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Verified cached vosk-android-0.3.75.aar: AB2F8B91AC8051561AA325546B35FED9A68B36B8121BAC5C6FB927525C4ADFAD
+Verified cached jna-5.18.1.aar: 7F053E3EC99E14DD71259C82C1C8A02738D64A13C31226B2ACC170F3060951E0
+Verified cached vosk-model-small-ru-0.22.zip: 961D5FF98A17F4AA6DE69864D0AA71FA5BAC682301D2B5D17A3F24C5C99A46D4
+Verified cached r8-9.5.26.jar: 3502F087388CE95BBF5254555927F09385DC2636873964D0BD53F3EAF4FB49AD
+Vosk dependencies are ready in D:\projects\local-server-on-lg-phone\lg-v50s-home-server\.tools\vosk
+**********************
+PowerShell transcript end
+End time: 20261016141735
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016141813
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+./scripts/build-voice-color-station.ps1 -WakeProfile personal-v2
+Process ID: 17784
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Verified cached vosk-android-0.3.75.aar: AB2F8B91AC8051561AA325546B35FED9A68B36B8121BAC5C6FB927525C4ADFAD
+Verified cached jna-5.18.1.aar: 7F053E3EC99E14DD71259C82C1C8A02738D64A13C31226B2ACC170F3060951E0
+Verified cached vosk-model-small-ru-0.22.zip: 961D5FF98A17F4AA6DE69864D0AA71FA5BAC682301D2B5D17A3F24C5C99A46D4
+Verified cached r8-9.5.26.jar: 3502F087388CE95BBF5254555927F09385DC2636873964D0BD53F3EAF4FB49AD
+Vosk dependencies are ready in D:\projects\local-server-on-lg-phone\lg-v50s-home-server\.tools\vosk
+**********************
+PowerShell transcript end
+End time: 20261016141813
+**********************

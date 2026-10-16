@@ -207,3 +207,204 @@ APK SHA256: 5BC495463102136BEBDBA4AA0ED6543376BED329A9E0C043A6069A06CA6053BD
 PowerShell transcript end
 End time: 20261016135917
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261016141907
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+./scripts/install-voice-color-station.ps1
+if ($LASTEXITCODE -ne 0) { throw 'Install failed' }
+python android/voice-color-station/test_audio_routing.py
+if ($LASTEXITCODE -ne 0) { throw 'Routing tests failed' }
+./scripts/verify-wakeword-runtime.ps1 -ExpectedProfile personal-v2
+Process ID: 15916
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+    versionCode=13 minSdk=31 targetSdk=31
+    versionName=0.7.0
+  * ServiceRecord{83a32e5 u0 local.ivand.voicecolorstation/.VoiceListenerService}
+    isForeground=true foregroundId=71 foregroundNoti=Notification(channel=local-vosk-listener-v1 shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+
+
+**********************
+PowerShell transcript end
+End time: 20261016141907
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016141949
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+./scripts/verify-wakeword-runtime.ps1 -ExpectedProfile personal-v2
+Process ID: 33012
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+    versionCode=13 minSdk=31 targetSdk=31
+    versionName=0.7.0
+  * ServiceRecord{83a32e5 u0 local.ivand.voicecolorstation/.VoiceListenerService}
+    isForeground=true foregroundId=71 foregroundNoti=Notification(channel=local-vosk-listener-v1 shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+
+
+  PARTIAL_WAKE_LOCK              'VoiceColorStation:microphone' ACQ=-41s920ms (uid=10316 pid=32691)
+           Java Heap:    17924                          30668
+         Native Heap:   204764                         205772
+           TOTAL PSS:   297325            TOTAL RSS:   397968       TOTAL SWAP PSS:      246
+--------- beginning of main
+10-16 14:19:40.427 32691  1725 I Pomogator: SELF_TEST passed; score=9.11206E-4; profile=personal-v2; model=A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48; threshold=0.65
+10-16 14:19:40.512 32691  1725 I Pomogator: BACKGROUND: partial wake lock acquired; overlay=false; batteryExempt=false
+10-16 14:19:40.515 32691  1725 I Pomogator: READY: PCM16 16000Hz, single AudioRecord, preroll=0, ASR=after-wake; profile=personal-v2; model=A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48; threshold=0.65
+10-16 14:19:40.663 32691  1725 D Pomogator: WAIT peak=0.0
+10-16 14:19:41.703 32691  1725 D Pomogator: WAIT peak=0.0
+10-16 14:19:42.743 32691  1725 D Pomogator: WAIT peak=0.0
+10-16 14:19:43.786 32691  1725 D Pomogator: WAIT peak=7.774532E-4
+10-16 14:19:44.824 32691  1725 D Pomogator: WAIT peak=8.39144E-4
+10-16 14:19:45.870 32691  1725 D Pomogator: WAIT peak=9.827316E-4
+10-16 14:19:46.904 32691  1725 D Pomogator: WAIT peak=9.39548E-4
+10-16 14:19:47.946 32691  1725 D Pomogator: WAIT peak=0.0013608634
+10-16 14:19:48.984 32691  1725 D Pomogator: WAIT peak=0.009904504
+10-16 14:19:50.026 32691  1725 D Pomogator: WAIT peak=8.774996E-4
+10-16 14:19:51.066 32691  1725 D Pomogator: WAIT peak=0.0011175573
+10-16 14:19:52.106 32691  1725 D Pomogator: WAIT peak=0.0010322034
+10-16 14:19:53.146 32691  1725 D Pomogator: WAIT peak=0.0023835897
+10-16 14:19:54.183 32691  1725 D Pomogator: WAIT peak=9.252429E-4
+10-16 14:19:55.224 32691  1725 D Pomogator: WAIT peak=9.763241E-4
+10-16 14:19:56.266 32691  1725 D Pomogator: WAIT peak=0.0010041595
+10-16 14:19:57.306 32691  1725 D Pomogator: WAIT peak=0.001039356
+10-16 14:19:58.346 32691  1725 D Pomogator: WAIT peak=0.0035211742
+10-16 14:19:59.379 32691  1725 D Pomogator: WAIT peak=0.0014458299
+10-16 14:20:00.426 32691  1725 D Pomogator: WAIT peak=0.0033421516
+10-16 14:20:01.466 32691  1725 D Pomogator: WAIT peak=0.003720075
+10-16 14:20:02.506 32691  1725 D Pomogator: WAIT peak=9.817779E-4
+10-16 14:20:03.545 32691  1725 D Pomogator: WAIT peak=9.704232E-4
+10-16 14:20:03.870 32691  1725 I Pomogator: WAKE score=0.8568188; command window=6000ms; ASR=next-frame; preroll=0
+10-16 14:20:10.089 32691  1725 D Pomogator: WAIT peak=0.8568188
+10-16 14:20:11.145 32691  1725 D Pomogator: WAIT peak=0.0
+10-16 14:20:12.184 32691  1725 D Pomogator: WAIT peak=0.0
+10-16 14:20:13.226 32691  1725 D Pomogator: WAIT peak=0.001326412
+10-16 14:20:14.267 32691  1725 D Pomogator: WAIT peak=8.8626146E-4
+10-16 14:20:15.307 32691  1725 D Pomogator: WAIT peak=9.986758E-4
+10-16 14:20:16.344 32691  1725 D Pomogator: WAIT peak=0.0011689663
+10-16 14:20:17.386 32691  1725 D Pomogator: WAIT peak=0.0011065304
+10-16 14:20:18.426 32691  1725 D Pomogator: WAIT peak=8.7964535E-4
+10-16 14:20:19.463 32691  1725 D Pomogator: WAIT peak=8.933842E-4
+10-16 14:20:20.506 32691  1725 D Pomogator: WAIT peak=0.0010035634
+10-16 14:20:21.546 32691  1725 D Pomogator: WAIT peak=0.0028237998
+10-16 14:20:22.583 32691  1725 D Pomogator: WAIT peak=0.0016572177
+APK SHA256: 570ABC75A2EDD302716138B87B86669152D2D4514823BC77814B6150890072FE
+**********************
+PowerShell transcript end
+End time: 20261016141951
+**********************
+**********************
+PowerShell transcript start
+Start time: 20261016142109
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+$ErrorActionPreference = 'Stop'
+$parseErrors = $null
+[System.Management.Automation.Language.Parser]::ParseFile((Join-Path (Get-Location) 'scripts/verify-wakeword-runtime.ps1'), [ref]$null, [ref]$parseErrors) | Out-Null
+if ($parseErrors) { throw ($parseErrors | Out-String) }
+./scripts/verify-wakeword-runtime.ps1 -ExpectedProfile personal-v2
+if ($LASTEXITCODE -ne 0) { throw 'Runtime verification failed' }
+Process ID: 15096
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+    versionCode=13 minSdk=31 targetSdk=31
+    versionName=0.7.0
+  * ServiceRecord{83a32e5 u0 local.ivand.voicecolorstation/.VoiceListenerService}
+    isForeground=true foregroundId=71 foregroundNoti=Notification(channel=local-vosk-listener-v1 shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+
+SYSTEM_ALERT_WINDOW: default; rejectTime=+15h55m48s431ms ago
+Battery exemption currently present: False
+  PARTIAL_WAKE_LOCK              'VoiceColorStation:microphone' ACQ=-2m2s211ms LONG (uid=10316 pid=32691)
+           Java Heap:    22328                          40992
+         Native Heap:   204500                         205524
+           TOTAL PSS:   307347            TOTAL RSS:   411092       TOTAL SWAP PSS:      132
+10-16 14:20:51.703 32691  1725 D Pomogator: WAIT peak=0.0011734068
+10-16 14:20:52.744 32691  1725 D Pomogator: WAIT peak=0.0014958084
+10-16 14:20:53.786 32691  1725 D Pomogator: WAIT peak=0.0040504336
+10-16 14:20:54.830 32691  1725 D Pomogator: WAIT peak=0.0016895235
+10-16 14:20:55.866 32691  1725 D Pomogator: WAIT peak=0.0012941658
+10-16 14:20:56.903 32691  1725 D Pomogator: WAIT peak=0.002560258
+10-16 14:20:57.946 32691  1725 D Pomogator: WAIT peak=9.2312694E-4
+10-16 14:20:58.984 32691  1725 D Pomogator: WAIT peak=0.0010145009
+10-16 14:21:00.022 32691  1725 D Pomogator: WAIT peak=0.0016015768
+10-16 14:21:01.066 32691  1725 D Pomogator: WAIT peak=0.0015365779
+10-16 14:21:02.107 32691  1725 D Pomogator: WAIT peak=0.0010489523
+10-16 14:21:03.145 32691  1725 D Pomogator: WAIT peak=0.0014395416
+10-16 14:21:04.186 32691  1725 D Pomogator: WAIT peak=0.0014116466
+10-16 14:21:05.226 32691  1725 D Pomogator: WAIT peak=0.0020056963
+10-16 14:21:06.266 32691  1725 D Pomogator: WAIT peak=0.0010849237
+10-16 14:21:07.306 32691  1725 D Pomogator: WAIT peak=0.001049757
+10-16 14:21:08.346 32691  1725 D Pomogator: WAIT peak=0.002312392
+10-16 14:21:09.386 32691  1725 D Pomogator: WAIT peak=0.0015895367
+10-16 14:21:10.423 32691  1725 D Pomogator: WAIT peak=0.0023068488
+10-16 14:21:11.467 32691  1725 D Pomogator: WAIT peak=0.0013690889
+10-16 14:21:12.506 32691  1725 D Pomogator: WAIT peak=0.0011727512
+10-16 14:21:13.546 32691  1725 D Pomogator: WAIT peak=0.001203686
+10-16 14:21:14.586 32691  1725 D Pomogator: WAIT peak=0.0010024011
+10-16 14:21:15.626 32691  1725 D Pomogator: WAIT peak=0.0010399818
+10-16 14:21:16.667 32691  1725 D Pomogator: WAIT peak=9.982288E-4
+10-16 14:21:17.706 32691  1725 D Pomogator: WAIT peak=0.0019546747
+10-16 14:21:18.746 32691  1725 D Pomogator: WAIT peak=0.0010840595
+10-16 14:21:19.783 32691  1725 D Pomogator: WAIT peak=0.0019469261
+10-16 14:21:20.825 32691  1725 D Pomogator: WAIT peak=0.0013480484
+10-16 14:21:21.866 32691  1725 D Pomogator: WAIT peak=0.00158149
+10-16 14:21:22.906 32691  1725 D Pomogator: WAIT peak=0.0016527474
+10-16 14:21:23.946 32691  1725 D Pomogator: WAIT peak=0.0035923123
+10-16 14:21:24.985 32691  1725 D Pomogator: WAIT peak=0.0011613071
+10-16 14:21:26.026 32691  1725 D Pomogator: WAIT peak=0.0021899343
+10-16 14:21:27.067 32691  1725 D Pomogator: WAIT peak=0.0013470948
+10-16 14:21:28.106 32691  1725 D Pomogator: WAIT peak=0.0027255416
+10-16 14:21:29.142 32691  1725 D Pomogator: WAIT peak=0.0013339818
+10-16 14:21:30.175 32691  1725 D Pomogator: WAIT peak=0.0015524924
+10-16 14:21:31.226 32691  1725 D Pomogator: WAIT peak=0.009753674
+10-16 14:21:32.264 32691  1725 D Pomogator: WAIT peak=0.0011836588
+10-16 14:21:33.306 32691  1725 D Pomogator: WAIT peak=0.007926881
+10-16 14:21:34.346 32691  1725 D Pomogator: WAIT peak=9.639859E-4
+10-16 14:21:35.386 32691  1725 D Pomogator: WAIT peak=0.0012450516
+10-16 14:21:36.422 32691  1725 D Pomogator: WAIT peak=9.621382E-4
+10-16 14:21:37.465 32691  1725 D Pomogator: WAIT peak=0.0011132658
+10-16 14:21:38.505 32691  1725 D Pomogator: WAIT peak=0.001601398
+10-16 14:21:39.546 32691  1725 D Pomogator: WAIT peak=0.0018929839
+10-16 14:21:40.584 32691  1725 D Pomogator: WAIT peak=0.0011023879
+10-16 14:21:41.624 32691  1725 D Pomogator: WAIT peak=9.5152855E-4
+10-16 14:21:42.663 32691  1725 D Pomogator: WAIT peak=0.001193136
+APK SHA256: 570ABC75A2EDD302716138B87B86669152D2D4514823BC77814B6150890072FE
+**********************
+PowerShell transcript end
+End time: 20261016142111
+**********************
