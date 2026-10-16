@@ -10,6 +10,13 @@
 звука, сохраняет PCM-копию и private JSON-отчёт. Опциональный Vosk даёт
 подсказки word timestamps, которые не считаются подтверждённой разметкой.
 
+`prepare_personal_candidates.py` выделяет кандидаты по паузам, но не назначает
+автоматически positive labels. `review_personal_recordings.py` поднимает
+localhost-страницу для прослушивания только train/validation и сохраняет
+пользовательские решения в private JSON. Принимать следует ровно одну полную
+фразу «Эй, Помогатор»; обрезки, несколько повторов и сомнительные клипы
+отбрасываются. Test и оригинальные длинные записи сервер не публикует.
+
 [Открыть notebook в Google Colab](https://colab.research.google.com/github/IavnFGV/ph-server/blob/feature/vosk-local-wakeword/training/pomogator/Pomogator_openWakeWord.ipynb)
 
 ## Почему не достаточно официального quick-start
