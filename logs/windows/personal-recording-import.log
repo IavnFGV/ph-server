@@ -137,3 +137,31 @@ Testing documented ADB_USB_LEGACY=1 for host server only
 PowerShell transcript end
 End time: 20261016122753
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261016122848
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name: 
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+Start-Transcript -Path logs/windows/personal-recording-import.log -Append | Out-Null; try { $source='/sdcard/Recordings/20261016_121753_validation.m4a'; & .tools/platform-tools/adb.exe pull $source training/pomogator/private/inbox/20261016_121753_validation.m4a; if($LASTEXITCODE -ne 0){throw 'ADB pull failed'}; $copy=Get-Item training/pomogator/private/inbox/20261016_121753_validation.m4a; $hash=(Get-FileHash -LiteralPath $copy.FullName -Algorithm SHA256).Hash; Write-Host "Bytes=$($copy.Length) SHA256=$hash"; if($hash -ne '679B4CC61F333820BE38274DAE42305CFEF3A8CC2E607654B7E0AED3BAD13647'){throw 'Hash mismatch'}; & .tools/platform-tools/adb.exe devices -l; Write-Host 'Verified validation transfer using compatibility backend' } finally { Stop-Transcript | Out-Null }; $audioFfmpeg=(Get-ChildItem .tools/audio-inspect/imageio_ffmpeg/binaries -Filter '*.exe' | Select-Object -First 1).FullName; python -S -c "import sys,runpy; sys.path[:0]=[r'.tools/audio-inspect',r'.tools/onnx-inspect']; sys.argv=['inspect','--source','training/pomogator/private/inbox/20261016_121753_validation.m4a','--output','training/pomogator/private/analysis/validation-v1','--ffmpeg',r'$audioFfmpeg','--vosk-model','.tools/vosk/assets/vosk-model-small-ru-0.22']; runpy.run_path('training/pomogator/inspect_personal_recording.py',run_name='__main__')"
+Process ID: 16168
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+Bytes=736004 SHA256=679B4CC61F333820BE38274DAE42305CFEF3A8CC2E607654B7E0AED3BAD13647
+
+Verified validation transfer using compatibility backend
+**********************
+PowerShell transcript end
+End time: 20261016122848
+**********************
