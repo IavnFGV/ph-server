@@ -17,7 +17,8 @@
 1. Открыть `Pomogator_openWakeWord.ipynb` в Google Colab.
 2. Включить GPU: **Среда выполнения → Сменить среду выполнения → T4 GPU**.
 3. Выполнить ячейки по порядку. Первый POC: 1000 train + 500 test примеров.
-4. Скачать `pomogator.onnx` и `training-report.txt`.
+4. Скачать `pomogator.onnx`, checkpoint, два stage-лога и
+   `training-report.txt`.
 5. Проверить модель на реальных записях до включения постоянного прослушивания.
 
 Рабочие данные занимают десятки гигабайт: только общий набор отрицательных
@@ -32,3 +33,11 @@
 - false reject и false activation при нескольких порогах.
 
 Порог и интеграцию в Android выбираем только после этих измерений.
+
+## Исправления для актуального Colab
+
+`colab_pipeline.py` закрепляет ревизии датасетов, проверяет SHA-256 AudioSet,
+ставит совместимый PyArrow, загружает Git LFS до чтения RIR, исправляет удаление
+`torchaudio.info`, включает legacy ONNX exporter и сохраняет checkpoint до
+экспорта. Все compatibility patches fail-fast: при изменении upstream они
+останавливаются вместо тихого изменения неизвестного кода.
