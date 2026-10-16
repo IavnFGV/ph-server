@@ -3,6 +3,9 @@
 Цель — получить отдельную акустическую ONNX-модель, которая слышит именно
 «Помогатор». После срабатывания команду по-прежнему распознаёт Vosk.
 
+Следующий эксперимент — персональная фраза **«Эй, Помогатор»**:
+[пошаговая запись и разделение данных](RECORDING_GUIDE.md).
+
 [Открыть notebook в Google Colab](https://colab.research.google.com/github/IavnFGV/ph-server/blob/feature/vosk-local-wakeword/training/pomogator/Pomogator_openWakeWord.ipynb)
 
 ## Почему не достаточно официального quick-start

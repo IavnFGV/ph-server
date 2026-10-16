@@ -3,4 +3,5 @@ android/voice-color-station/build/
 android/voice-color-station/artifacts/
 __pycache__/
 *.pyc
+training/pomogator/private/
 
