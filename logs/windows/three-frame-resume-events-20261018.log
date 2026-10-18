@@ -1,0 +1,19 @@
+10-18 15:00:46.687 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.94713986; frames=1/3
+10-18 15:00:46.767 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.9509119; frames=2/3
+10-18 15:00:46.855 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.9319812; frames=3/3
+10-18 15:00:46.864 24750 25443 I Pomogator: WAKE score=0.9319812; confirmFrames=3; command window=6000ms; ASR=next-frame; preroll=0
+10-18 15:00:48.889 24750 25443 I Pomogator: SCREEN_OFF requested by final command; background listener retained
+10-18 15:08:04.890 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.7653811; frames=1/3
+10-18 15:08:04.966 24750 25443 D Pomogator: WAKE_REJECTED frames=1; peak=0.7653811
+10-18 15:36:30.914 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.8247024; frames=1/3
+10-18 15:36:30.996 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.7982689; frames=2/3
+10-18 15:36:31.074 24750 25443 D Pomogator: WAKE_REJECTED frames=2; peak=0.8247024
+10-18 15:36:33.075 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.88880056; frames=1/3
+10-18 15:36:33.155 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.9533751; frames=2/3
+10-18 15:36:33.239 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.9558321; frames=3/3
+10-18 15:36:33.242 24750 25443 I Pomogator: WAKE score=0.9558321; confirmFrames=3; command window=6000ms; ASR=next-frame; preroll=0
+10-18 15:36:43.324 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.8513164; frames=1/3
+10-18 15:36:43.406 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.9538295; frames=2/3
+10-18 15:36:43.485 24750 25443 D Pomogator: WAKE_CANDIDATE score=0.9569831; frames=3/3
+10-18 15:36:43.494 24750 25443 I Pomogator: WAKE score=0.9569831; confirmFrames=3; command window=6000ms; ASR=next-frame; preroll=0
+10-18 15:36:45.491 24750 25443 I Pomogator: SCREEN_OFF requested by final command; background listener retained

@@ -135,6 +135,7 @@ public final class VoiceListenerService extends Service {
         try (WakeWordDetector detector = new WakeWordDetector(prepareWakeModels())) {
             wakePhrase = detector.phrase();
             final float wakeThreshold = detector.threshold();
+            WakeConfirmation wakeConfirmation = new WakeConfirmation(wakeThreshold, 3);
             Log.i(TAG, "SELF_TEST passed; score=" + detector.selfTest() + "; " + detector.identity());
             recognizer = new Recognizer(model, 16000f);
             recognizer.setWords(true);
@@ -159,7 +160,7 @@ public final class VoiceListenerService extends Service {
             long lastScoreAt = 0L;
             float peak = 0f;
             waitingForWakeWord();
-            Log.i(TAG, "READY: PCM16 16000Hz, single AudioRecord, preroll=0, ASR=after-wake; " + detector.identity());
+            Log.i(TAG, "READY: PCM16 16000Hz, single AudioRecord, preroll=0, ASR=after-wake, confirmFrames=3; " + detector.identity());
             while (!stopping) {
                 int offset = 0;
                 while (offset < frame.length && !stopping) {
@@ -182,16 +183,28 @@ public final class VoiceListenerService extends Service {
                     if (commandWindowUntil == 0L) {
                         recognizer.reset();
                         detector.reset();
+                        wakeConfirmation.reset();
+                        peak = 0f;
                     } else if (now >= commandWindowUntil) {
                         handleJson(recognizer.getFinalResult(), false);
                         recognizer.reset();
                         detector.reset();
+                        wakeConfirmation.reset();
+                        peak = 0f;
                         if (commandWindowUntil != 0L) waitingForWakeWord();
                     }
                 } else {
                     float score = detector.process(frame);
                     peak = Math.max(peak, score);
+                    int previousFrames = wakeConfirmation.frames();
+                    float previousPeak = wakeConfirmation.peak();
+                    boolean confirmed = wakeConfirmation.accept(score);
                     if (score >= wakeThreshold) {
+                        Log.d(TAG, "WAKE_CANDIDATE score=" + score + "; frames=" + wakeConfirmation.frames() + "/3");
+                    } else if (previousFrames > 0) {
+                        Log.d(TAG, "WAKE_REJECTED frames=" + previousFrames + "; peak=" + previousPeak);
+                    }
+                    if (confirmed) {
                         recognizer.reset();
                         // Never feed the wake frame or previous audio to Vosk.
                         // The next AudioRecord frame enters the command branch.
@@ -199,7 +212,7 @@ public final class VoiceListenerService extends Service {
                         publishHeard("", false);
                         publishStatus("Обращение услышано. Слушаю команду…");
                         showWakeScreen();
-                        Log.i(TAG, "WAKE score=" + score + "; command window=6000ms; ASR=next-frame; preroll=0");
+                        Log.i(TAG, "WAKE score=" + score + "; confirmFrames=3; command window=6000ms; ASR=next-frame; preroll=0");
                     } else if (now - lastScoreAt >= 1000L) {
                         // Scores are UI telemetry; avoid updating Android's notification every second.
                         sendBroadcast(new Intent(ACTION_STATUS_CHANGED).setPackage(getPackageName())

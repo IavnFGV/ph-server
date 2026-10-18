@@ -1,0 +1,91 @@
+{
+  "model_sha256": "a21044274f5032063faa45b28f25e26fd9f1f2c89d1a2964f73e30c09ad1fa48",
+  "threshold": 0.65,
+  "confirmation_frames": 3,
+  "frame_ms": 80,
+  "single_frame_hits": 10,
+  "three_frame_hits": 10,
+  "positive_total": 10,
+  "negative_events_2s_cooldown": {
+    "1": 0,
+    "3": 0
+  },
+  "negative_source_duration_seconds": 60.0925,
+  "phrases": [
+    {
+      "validation_phrase": 1,
+      "single_frame_hit": true,
+      "three_frame_hit": true,
+      "longest_run_frames": 6,
+      "additional_detection_delay_ms": 160
+    },
+    {
+      "validation_phrase": 2,
+      "single_frame_hit": true,
+      "three_frame_hit": true,
+      "longest_run_frames": 5,
+      "additional_detection_delay_ms": 160
+    },
+    {
+      "validation_phrase": 3,
+      "single_frame_hit": true,
+      "three_frame_hit": true,
+      "longest_run_frames": 8,
+      "additional_detection_delay_ms": 160
+    },
+    {
+      "validation_phrase": 4,
+      "single_frame_hit": true,
+      "three_frame_hit": true,
+      "longest_run_frames": 8,
+      "additional_detection_delay_ms": 160
+    },
+    {
+      "validation_phrase": 5,
+      "single_frame_hit": true,
+      "three_frame_hit": true,
+      "longest_run_frames": 8,
+      "additional_detection_delay_ms": 160
+    },
+    {
+      "validation_phrase": 6,
+      "single_frame_hit": true,
+      "three_frame_hit": true,
+      "longest_run_frames": 8,
+      "additional_detection_delay_ms": 160
+    },
+    {
+      "validation_phrase": 7,
+      "single_frame_hit": true,
+      "three_frame_hit": true,
+      "longest_run_frames": 8,
+      "additional_detection_delay_ms": 160
+    },
+    {
+      "validation_phrase": 8,
+      "single_frame_hit": true,
+      "three_frame_hit": true,
+      "longest_run_frames": 8,
+      "additional_detection_delay_ms": 160
+    },
+    {
+      "validation_phrase": 9,
+      "single_frame_hit": true,
+      "three_frame_hit": true,
+      "longest_run_frames": 7,
+      "additional_detection_delay_ms": 160
+    },
+    {
+      "validation_phrase": 10,
+      "single_frame_hit": true,
+      "three_frame_hit": true,
+      "longest_run_frames": 8,
+      "additional_detection_delay_ms": 160
+    }
+  ],
+  "test_accessed": false,
+  "training_performed": false,
+  "validation_feature_sha256": "4494ad4518d748380db33457908fd5c4fe141807b03b0e365ba5285960fb9741",
+  "negative_feature_sha256": "66d9073b35fac235ec4daa8b0a12536ab13fce53e767f435a3aa4a5ded97b7f3",
+  "limitations": "Previously used validation, not new independent evaluation. Correlated frames. No audio from reported field false trigger was saved, so its rejection cannot be proven. Window detection only; not full Android six-second command state simulation."
+}

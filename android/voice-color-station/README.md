@@ -1,4 +1,4 @@
-# Voice Color Station 0.7.1
+# Voice Color Station 0.7.2
 
 Локальный голосовой POC для LG V50S на Android 12. Foreground-service слушает
 микрофон через один `AudioRecord`, openWakeWord и Vosk без сети. Выполняются
@@ -16,7 +16,12 @@
 Поддерживаются красный, зелёный, голубой, синий, жёлтый, оранжевый,
 фиолетовый, розовый, белый, серый и чёрный. Модуль `WakeWordDetector` непрерывно
 выполняет PCM → mel → embedding → `pomogator.onnx`. При достижении порога он открывает
-шестисекундное окно Vosk. Старые фонетические aliases удалены; до триггера Vosk
+шестисекундное окно Vosk после трёх последовательных scores ≥ порогу. Один
+или два высоких кадра с последующим падением отбрасываются; после команды
+счётчик сбрасывается вместе с акустическим контекстом. Добавка после первого
+превышения — 160 мс аудио. Порог 0.65 и личная модель не изменены.
+Соседние оценки коррелированы: продолжительный false signal всё ещё возможен.
+Старые фонетические aliases удалены; до триггера Vosk
 не декодирует поток. UI показывает score, срабатывание и текст команды.
 
 У детектора 2,56 секунды прогрева после запуска и завершения команды.
@@ -59,7 +64,14 @@ APK содержит `wakeword/config.json` с профилем, фразой, �
 
 Нужен PowerShell 7. SHA-256 обоих профилей и golden scores закреплены в
 `training/pomogator/android-profiles.json`. Сборка создаёт обычный debug APK
-и отдельную копию `voice-color-station-0.7.1-<profile>.apk` в ignored artifacts.
+и отдельную копию `voice-color-station-0.7.2-<profile>.apk` в ignored artifacts.
+
+Проверка gate без Android: `scripts/test-wake-confirmation.ps1` компилирует и
+запускает настоящий Java WakeConfirmation с синтетическими scores. Проверка
+`training/pomogator/check_wake_confirmation.py` на уже использованном validation
+дала 10/10 с gate и без него; ~60 с negative — 0 событий в обоих вариантах.
+Это regression, не новый независимый benchmark/гарантия отсутствия ложных wake.
+Logcat теперь содержит WAKE_CANDIDATE frames/3 и WAKE_REJECTED для диагностики.
 
 В 0.7.0 добавлены настройки overlay/battery exemption, partial CPU wake lock
 и открытие Activity по обращению над другим приложением/экраном блокировки.

@@ -97,6 +97,13 @@ self-test и READY personal-v2 подтверждены на устройств�
 цветов выполнена пользователем: он сообщил о заметном улучшении и разрешил
 merge. Количественный длительный negative/soak-test ещё не завершён.
 
+В Android 0.7.2 без смены модели добавлен gate из 3 последовательных scores
+>= 0.65. `check_wake_confirmation.py` использует cached validation features:
+10/10 сохранились, добавка к моменту обнаружения 160 мс; negative ~60 с — 0
+событий и до/после. Это повторная regression-проверка старого validation,
+не новый held-out test. Подробный JSON остаётся private, консольный лог в Git.
+Случай реального ложного пробуждения без сохранённого аудио replay не проверен.
+
 [Открыть notebook в Google Colab](https://colab.research.google.com/github/IavnFGV/ph-server/blob/feature/vosk-local-wakeword/training/pomogator/Pomogator_openWakeWord.ipynb)
 
 ## Почему не достаточно официального quick-start

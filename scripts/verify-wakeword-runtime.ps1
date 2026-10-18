@@ -40,6 +40,7 @@ try {
     if (-not ($events -match 'SELF_TEST passed')) { throw 'No successful ONNX self-test for this process.' }
     if (-not ($events -match 'READY:')) { throw 'Microphone pipeline did not become ready.' }
     if (-not ($events -match 'READY:.*preroll=0, ASR=after-wake')) { throw 'Post-wake-only ASR pipeline not confirmed.' }
+    if (-not ($events -match 'READY:.*confirmFrames=3')) { throw 'Three-frame wake confirmation not confirmed.' }
     if ($RequireBackgroundPermissions -and
             ($overlayState -notmatch 'SYSTEM_ALERT_WINDOW: allow' -or -not $batteryWhitelist)) {
         throw 'Grant overlay and battery exemption, then repeat verification.'

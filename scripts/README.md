@@ -35,6 +35,9 @@
   foreground-службу, микрофон, память и ошибки только текущего процесса.
   `-ExpectedProfile personal-v2` дополнительно требует правильные profile/hash/
   threshold в self-test текущего PID; default generic.
+- `test-wake-confirmation.ps1` — компилирует настоящий Java gate и standalone
+  harness без Android: 1/2 кадра отбрасываются, 3 подтверждают; reset/latch/NaN
+  проверяются отдельно. Классы сохраняются только в ignored .tools.
 - `train-personal-wakeword.ps1` — локальные CPU-этапы `prepare`/`fit` для
   проверенных личных записей; аугментация, frozen ONNX-признаки, дообучение
   классификатора. Голос/модель остаются в ignored `private/`, логи — в `logs/`.

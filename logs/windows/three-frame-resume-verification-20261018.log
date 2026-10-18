@@ -1,0 +1,8 @@
+Resume check 2026-10-18; no reinstall or service restart
+    versionCode=15 minSdk=31 targetSdk=31
+    versionName=0.7.2
+  * ServiceRecord{36e44eb u0 local.ivand.voicecolorstation/.VoiceListenerService}
+    isForeground=true foregroundId=71 foregroundNoti=Notification(channel=local-vosk-listener-v1 shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+Uid mode: RECORD_AUDIO: foreground
+RECORD_AUDIO: allow; time=+2m48s90ms ago (running)
+  PARTIAL_WAKE_LOCK              'VoiceColorStation:microphone' ACQ=-1d12h57m37s270ms LONG (uid=10316 pid=24750)

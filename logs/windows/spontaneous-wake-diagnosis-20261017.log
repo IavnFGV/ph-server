@@ -1,0 +1,7 @@
+10-17 01:50:33.736 19346 20057 I Pomogator: WAKE_UI requested; keyguard is not dismissed
+10-17 01:50:33.736 19346 20057 I Pomogator: WAKE score=0.78103864; command window=6000ms; ASR=next-frame; preroll=0
+10-17 01:52:44.694 19346 20057 I Pomogator: WAKE score=0.7742945; command window=6000ms; ASR=next-frame; preroll=0
+10-17 01:58:13.388 19346 20057 I Pomogator: WAKE score=0.92916334; command window=6000ms; ASR=next-frame; preroll=0
+10-17 01:58:15.595 19346 20057 I Pomogator: SCREEN_OFF requested by final command; background listener retained
+10-17 02:09:44.928 19346 20057 I Pomogator: WAKE_UI requested; keyguard is not dismissed
+10-17 02:09:44.928 19346 20057 I Pomogator: WAKE score=0.74084175; command window=6000ms; ASR=next-frame; preroll=0

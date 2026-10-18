@@ -457,3 +457,52 @@ APK SHA256: D6ADD0B29B5E68A0A30E8858F8F9D07ACF3DFD4602A781A91603DF655C82D4CA
 PowerShell transcript end
 End time: 20261017003841
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261017024124
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+./scripts/install-voice-color-station.ps1
+if ($LASTEXITCODE -ne 0) { throw 'Install failed' }
+./scripts/verify-wakeword-runtime.ps1 -ExpectedProfile personal-v2 -RequireBackgroundPermissions
+if ($LASTEXITCODE -ne 0) { throw 'Runtime verification failed' }
+.tools/platform-tools/adb.exe shell dumpsys device_policy | Select-String 'ScreenLockAdminReceiver'
+Process ID: 23540
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+    versionCode=15 minSdk=31 targetSdk=31
+    versionName=0.7.2
+  * ServiceRecord{36e44eb u0 local.ivand.voicecolorstation/.VoiceListenerService}
+    isForeground=true foregroundId=71 foregroundNoti=Notification(channel=local-vosk-listener-v1 shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+
+SYSTEM_ALERT_WINDOW: allow; time=+32m14s594ms ago; rejectTime=+1d4h16m5s357ms ago
+Battery exemption currently present: True
+  PARTIAL_WAKE_LOCK              'VoiceColorStation:microphone' ACQ=-772ms (uid=10316 pid=24750)
+           Java Heap:     2428                          13872
+         Native Heap:   192452                         193280
+           TOTAL PSS:   256677            TOTAL RSS:   347704       TOTAL SWAP PSS:      281
+Algorithm Hash
+--------- ----
+SHA256    B224737ED423FB57428385404614455F18375681B4AED08A4D3986892166A52C
+--------- beginning of main
+10-17 02:41:58.779 24750 25443 I Pomogator: SELF_TEST passed; score=9.11206E-4; profile=personal-v2; model=A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48; threshold=0.65
+10-17 02:41:58.865 24750 25443 I Pomogator: BACKGROUND: partial wake lock acquired; overlay=true; batteryExempt=true
+10-17 02:41:58.867 24750 25443 I Pomogator: READY: PCM16 16000Hz, single AudioRecord, preroll=0, ASR=after-wake, confirmFrames=3; profile=personal-v2; model=A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48; threshold=0.65
+10-17 02:41:59.006 24750 25443 D Pomogator: WAIT peak=0.0
+10-17 02:42:00.048 24750 25443 D Pomogator: WAIT peak=0.0
+APK SHA256: B224737ED423FB57428385404614455F18375681B4AED08A4D3986892166A52C
+**********************
+PowerShell transcript end
+End time: 20261017024127
+**********************
