@@ -470,3 +470,37 @@ WSManStackVersion: 3.0
 PowerShell transcript end
 End time: 20261017024124
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261018175904
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+./scripts/install-voice-color-station.ps1
+if ($LASTEXITCODE -ne 0) { throw 'Install failed' }
+./scripts/verify-wakeword-runtime.ps1 -ExpectedProfile personal-v2 -RequireBackgroundPermissions
+if ($LASTEXITCODE -ne 0) { throw 'Runtime verification failed' }
+./scripts/test-wake-confirmation.ps1 2>&1 | Tee-Object -FilePath logs/windows/idle-timeout-java-tests.log
+if ($LASTEXITCODE -ne 0) { throw 'Java regression failed' }
+python android/voice-color-station/test_audio_routing.py 2>&1 | Tee-Object -FilePath logs/windows/idle-timeout-source-tests.log
+if ($LASTEXITCODE -ne 0) { throw 'Source regression failed' }
+Process ID: 14472
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+
+
+**********************
+PowerShell transcript end
+End time: 20261018175908
+**********************

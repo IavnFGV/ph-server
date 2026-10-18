@@ -1,4 +1,4 @@
-# Voice Color Station 0.7.2
+# Voice Color Station 0.7.3
 
 Локальный голосовой POC для LG V50S на Android 12. Foreground-service слушает
 микрофон через один `AudioRecord`, openWakeWord и Vosk без сети. Выполняются
@@ -12,6 +12,13 @@
 с policy `force-lock`. Без разрешения команда сообщает об этом, но не блокирует.
 Это точное полное ASR-слово, не partial; «не отбой» не выполняется.
 После lockNow Android может потребовать PIN/пароль вместо биометрии.
+
+С 0.7.3, если Activity открыл сам wake и за 6 секунд не выполнена команда,
+экран автоматически блокируется тем же lockNow. Успешная команда цвета/«отбой»
+отменяет этот таймаут. Проверка владения UI выполняется на main thread: ручное
+открытие станции, уход в другую Activity/настройки и новая wake-сессия не должны
+погасить экран старым таймером. Автоблокировка требует того же force-lock admin;
+новых разрешений нет. Это ограничение времени показа, не исправление false wake.
 
 Поддерживаются красный, зелёный, голубой, синий, жёлтый, оранжевый,
 фиолетовый, розовый, белый, серый и чёрный. Модуль `WakeWordDetector` непрерывно
@@ -64,7 +71,7 @@ APK содержит `wakeword/config.json` с профилем, фразой, �
 
 Нужен PowerShell 7. SHA-256 обоих профилей и golden scores закреплены в
 `training/pomogator/android-profiles.json`. Сборка создаёт обычный debug APK
-и отдельную копию `voice-color-station-0.7.2-<profile>.apk` в ignored artifacts.
+и отдельную копию `voice-color-station-0.7.3-<profile>.apk` в ignored artifacts.
 
 Проверка gate без Android: `scripts/test-wake-confirmation.ps1` компилирует и
 запускает настоящий Java WakeConfirmation с синтетическими scores. Проверка

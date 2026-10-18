@@ -14,6 +14,8 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -64,6 +66,7 @@ public final class VoiceListenerService extends Service {
     private volatile AudioRecord audioRecord;
     private volatile boolean stopping;
     private long commandWindowUntil;
+    private long wakeUiSession;
     private String lastAppliedPhrase = "";
     private long lastAppliedAt;
 
@@ -191,7 +194,21 @@ public final class VoiceListenerService extends Service {
                         detector.reset();
                         wakeConfirmation.reset();
                         peak = 0f;
-                        if (commandWindowUntil != 0L) waitingForWakeWord();
+                        if (commandWindowUntil != 0L) {
+                            final long expiredSession = wakeUiSession;
+                            wakeUiSession = 0L;
+                            waitingForWakeWord();
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override public void run() {
+                                    if (!stopping && WakeUiTimeoutPolicy.shouldLockScreen(
+                                            expiredSession, MainActivity.visible && MainActivity.resumed, MainActivity.activeWakeSession)) {
+                                        lockScreen("idle timeout=6000ms");
+                                    } else {
+                                        Log.i(TAG, "AUTO_SCREEN_OFF skipped: wake UI no longer owns foreground");
+                                    }
+                                }
+                            });
+                        }
                     }
                 } else {
                     float score = detector.process(frame);
@@ -211,7 +228,7 @@ public final class VoiceListenerService extends Service {
                         commandWindowUntil = now + COMMAND_WINDOW_MILLIS;
                         publishHeard("", false);
                         publishStatus("Обращение услышано. Слушаю команду…");
-                        showWakeScreen();
+                        wakeUiSession = showWakeScreen(now) ? now : 0L;
                         Log.i(TAG, "WAKE score=" + score + "; confirmFrames=3; command window=6000ms; ASR=next-frame; preroll=0");
                     } else if (now - lastScoreAt >= 1000L) {
                         // Scores are UI telemetry; avoid updating Android's notification every second.
@@ -282,17 +299,19 @@ public final class VoiceListenerService extends Service {
                 .putExtra(EXTRA_STATUS, message));
     }
 
-    private void showWakeScreen() {
-        if (MainActivity.visible && getSystemService(PowerManager.class).isInteractive()) return;
+    private boolean showWakeScreen(long session) {
+        if (MainActivity.visible && getSystemService(PowerManager.class).isInteractive()) return false;
         if (!Settings.canDrawOverlays(this)) {
             Log.w(TAG, "WAKE_UI unavailable: grant overlay permission or tap notification");
-            return;
+            return false;
         }
         try {
             startActivity(new Intent(this, MainActivity.class).setAction(MainActivity.ACTION_WAKE_SCREEN)
+                    .putExtra(MainActivity.EXTRA_WAKE_SESSION, session)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
             Log.i(TAG, "WAKE_UI requested; keyguard is not dismissed");
-        } catch (RuntimeException error) { Log.w(TAG, "WAKE_UI blocked", error); }
+            return true;
+        } catch (RuntimeException error) { Log.w(TAG, "WAKE_UI blocked", error); return false; }
     }
 
     private synchronized void releaseCpuLock() {
@@ -364,6 +383,11 @@ public final class VoiceListenerService extends Service {
 
     private void screenOff() {
         commandWindowUntil = 0L;
+        wakeUiSession = 0L;
+        lockScreen("final command");
+    }
+
+    private void lockScreen(String reason) {
         DevicePolicyManager policies = getSystemService(DevicePolicyManager.class);
         ComponentName admin = new ComponentName(this, ScreenLockAdminReceiver.class);
         if (!policies.isAdminActive(admin)) {
@@ -372,9 +396,10 @@ public final class VoiceListenerService extends Service {
             return;
         }
         try {
-            publishStatus("Отбой. Экран выключен, фоновое слушание продолжается");
+            publishStatus(("final command".equals(reason) ? "Отбой." : "Нет команды.")
+                    + " Экран выключен, фоновое слушание продолжается");
             policies.lockNow();
-            Log.i(TAG, "SCREEN_OFF requested by final command; background listener retained");
+            Log.i(TAG, "SCREEN_OFF requested by " + reason + "; background listener retained");
         } catch (SecurityException error) {
             publishStatus("Android не разрешил блокировку экрана");
             Log.w(TAG, "SCREEN_OFF denied", error);
@@ -398,6 +423,7 @@ public final class VoiceListenerService extends Service {
 
     private void applyColor(ColorChoice choice, String phrase) {
         commandWindowUntil = 0L;
+        wakeUiSession = 0L;
         getSharedPreferences("voice_state", MODE_PRIVATE).edit()
                 .putInt("color_value", choice.value)
                 .putString("color_name", choice.name)

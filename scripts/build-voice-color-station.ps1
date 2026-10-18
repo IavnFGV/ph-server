@@ -59,7 +59,7 @@ try {
         -R $compiledResources `
         --manifest (Join-Path $appRoot 'AndroidManifest.xml') `
         --min-sdk-version 31 --target-sdk-version 31 `
-        --version-code 15 --version-name '0.7.2'
+        --version-code 16 --version-name '0.7.3'
     if ($LASTEXITCODE -ne 0) { throw "aapt2 link failed: $LASTEXITCODE" }
 
     & jar uf $resourcesApk -C $voskRoot assets
@@ -118,8 +118,8 @@ try {
 
     Get-FileHash -Algorithm SHA256 -LiteralPath $outputApk |
         Select-Object Path,Algorithm,Hash
-    Copy-Item -LiteralPath $outputApk -Destination (Join-Path $artifacts "voice-color-station-0.7.2-$WakeProfile.apk")
-    Write-Host "Build profile=$WakeProfile; version=0.7.2; versionCode=15"
+    Copy-Item -LiteralPath $outputApk -Destination (Join-Path $artifacts "voice-color-station-0.7.3-$WakeProfile.apk")
+    Write-Host "Build profile=$WakeProfile; version=0.7.3; versionCode=16"
 }
 finally {
     Stop-Transcript | Out-Null

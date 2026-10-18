@@ -26,6 +26,9 @@ import android.widget.TextView;
 public final class MainActivity extends Activity {
     public static final String ACTION_WAKE_SCREEN = "local.ivand.voicecolorstation.WAKE_SCREEN";
     public static volatile boolean visible;
+    public static volatile boolean resumed;
+    public static final String EXTRA_WAKE_SESSION = "wake_session";
+    public static volatile long activeWakeSession;
     private static final int MICROPHONE_PERMISSION_REQUEST = 1001;
 
     private LinearLayout root;
@@ -60,6 +63,8 @@ public final class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activeWakeSession = ACTION_WAKE_SCREEN.equals(getIntent().getAction())
+                ? getIntent().getLongExtra(EXTRA_WAKE_SESSION, 0L) : 0L;
         setShowWhenLocked(true);
         setTurnScreenOn(ACTION_WAKE_SCREEN.equals(getIntent().getAction()));
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -88,7 +93,7 @@ public final class MainActivity extends Activity {
         Button backgroundSettings = new Button(this);
         backgroundSettings.setText("Настройки фоновой работы");
         backgroundSettings.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) { showBackgroundSettings(); }
+            @Override public void onClick(View view) { activeWakeSession = 0L; showBackgroundSettings(); }
         });
         root.addView(backgroundSettings);
         setContentView(root);
@@ -166,6 +171,7 @@ public final class MainActivity extends Activity {
     @Override
     protected void onStop() {
         visible = false;
+        activeWakeSession = 0L;
         if (receiverRegistered) {
             unregisterReceiver(serviceReceiver);
             receiverRegistered = false;
@@ -176,6 +182,7 @@ public final class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        resumed = true;
         restoreLastColor();
         String current = VoiceListenerService.currentStatus;
         if (current != null) { serviceStatus = current; renderStatus(); }
@@ -189,9 +196,16 @@ public final class MainActivity extends Activity {
         }
     }
 
+    @Override protected void onPause() {
+        resumed = false;
+        super.onPause();
+    }
+
     @Override protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+        activeWakeSession = ACTION_WAKE_SCREEN.equals(intent.getAction())
+                ? intent.getLongExtra(EXTRA_WAKE_SESSION, 0L) : 0L;
         if (ACTION_WAKE_SCREEN.equals(intent.getAction())) {
             setTurnScreenOn(true);
             lastHeard = null;

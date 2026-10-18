@@ -27,7 +27,7 @@ class AudioRoutingContract(unittest.TestCase):
         self.assertIn('recognizer.acceptWaveForm(frame, frame.length)', branch)
 
     def test_background_launch_requires_user_permission_and_does_not_unlock(self):
-        branch = self.source.split('private void showWakeScreen()', 1)[1].split('private synchronized', 1)[0]
+        branch = self.source.split('private boolean showWakeScreen(long session)', 1)[1].split('private synchronized', 1)[0]
         self.assertLess(branch.index('Settings.canDrawOverlays'), branch.index('startActivity('))
         main = (Path(__file__).parent / 'src/local/ivand/voicecolorstation/MainActivity.java').read_text(encoding='utf-8')
         self.assertIn('setShowWhenLocked(true)', main)
@@ -59,6 +59,15 @@ class AudioRoutingContract(unittest.TestCase):
         import xml.etree.ElementTree as ET
         admin = ET.parse(Path(__file__).parent / 'res/xml/screen_lock_admin.xml').getroot()
         self.assertEqual([policy.tag for policy in admin.find('uses-policies')], ['force-lock'])
+
+    def test_timeout_after_final_result_rechecks_foreground_on_main_thread(self):
+        timeout = self.source.split('} else if (now >= commandWindowUntil) {', 1)[1].split('} else {\n                    float score', 1)[0]
+        self.assertLess(timeout.index('handleJson(recognizer.getFinalResult()'), timeout.index('if (commandWindowUntil != 0L)'))
+        self.assertIn('new Handler(Looper.getMainLooper())', timeout)
+        self.assertIn('WakeUiTimeoutPolicy.shouldLockScreen(', timeout)
+        self.assertIn('lockScreen("idle timeout=6000ms")', timeout)
+        color = self.source.split('private void applyColor(', 1)[1].split('@Override', 1)[0]
+        self.assertIn('wakeUiSession = 0L;', color)
 
 
 if __name__ == '__main__':
