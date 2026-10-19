@@ -33,6 +33,7 @@ public final class MainActivity extends Activity {
 
     private LinearLayout root;
     private TextView status;
+    private IdleCountdownView countdown;
     private String serviceStatus = "Загружаю локальную модель…";
     private String lastHeard;
     private boolean lastHeardIsFinal;
@@ -40,6 +41,10 @@ public final class MainActivity extends Activity {
     private final BroadcastReceiver serviceReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (VoiceListenerService.ACTION_IDLE_COUNTDOWN.equals(intent.getAction())) {
+                updateCountdown();
+                return;
+            }
             if (VoiceListenerService.ACTION_COLOR_CHANGED.equals(intent.getAction())) {
                 applyColor(intent.getIntExtra(VoiceListenerService.EXTRA_COLOR,
                                 Color.rgb(20, 28, 42)),
@@ -90,10 +95,15 @@ public final class MainActivity extends Activity {
         root.addView(status, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 0, 1f));
+        countdown = new IdleCountdownView(this);
+        int ringSize = Math.round(144f * getResources().getDisplayMetrics().density);
+        LinearLayout.LayoutParams ringLayout = new LinearLayout.LayoutParams(ringSize, ringSize);
+        ringLayout.gravity = Gravity.CENTER_HORIZONTAL;
+        root.addView(countdown, ringLayout);
         Button backgroundSettings = new Button(this);
         backgroundSettings.setText("Настройки фоновой работы");
         backgroundSettings.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) { activeWakeSession = 0L; showBackgroundSettings(); }
+            @Override public void onClick(View view) { activeWakeSession = 0L; updateCountdown(); showBackgroundSettings(); }
         });
         root.addView(backgroundSettings);
         setContentView(root);
@@ -132,6 +142,7 @@ public final class MainActivity extends Activity {
                 + 0.587 * Color.green(value)
                 + 0.114 * Color.blue(value)) / 255.0;
         status.setTextColor(luminance > 0.62 ? Color.BLACK : Color.WHITE);
+        countdown.setForeground(status.getCurrentTextColor());
         if (phrase != null) {
             lastHeard = phrase;
             lastHeardIsFinal = true;
@@ -164,6 +175,7 @@ public final class MainActivity extends Activity {
         filter.addAction(VoiceListenerService.ACTION_COLOR_CHANGED);
         filter.addAction(VoiceListenerService.ACTION_STATUS_CHANGED);
         filter.addAction(VoiceListenerService.ACTION_PHRASE_HEARD);
+        filter.addAction(VoiceListenerService.ACTION_IDLE_COUNTDOWN);
         registerReceiver(serviceReceiver, filter);
         receiverRegistered = true;
     }
@@ -172,6 +184,7 @@ public final class MainActivity extends Activity {
     protected void onStop() {
         visible = false;
         activeWakeSession = 0L;
+        countdown.setDeadline(0L, 6000L);
         if (receiverRegistered) {
             unregisterReceiver(serviceReceiver);
             receiverRegistered = false;
@@ -186,6 +199,7 @@ public final class MainActivity extends Activity {
         restoreLastColor();
         String current = VoiceListenerService.currentStatus;
         if (current != null) { serviceStatus = current; renderStatus(); }
+        updateCountdown();
         enterImmersiveMode();
         if (!ACTION_WAKE_SCREEN.equals(getIntent().getAction())
                 && !getSharedPreferences("voice_state", MODE_PRIVATE).getBoolean("background_setup_shown", false)) {
@@ -210,6 +224,14 @@ public final class MainActivity extends Activity {
             setTurnScreenOn(true);
             lastHeard = null;
         }
+        updateCountdown();
+    }
+
+    private void updateCountdown() {
+        long session = VoiceListenerService.currentCountdownSession;
+        long deadline = session != 0L && session == activeWakeSession
+                ? VoiceListenerService.currentScreenOffDeadline : 0L;
+        countdown.setDeadline(deadline, 6000L);
     }
 
     private void showBackgroundSettings() {

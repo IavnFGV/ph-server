@@ -1,0 +1,3 @@
+PASS: isolated/two-frame peaks, three-frame confirmation, equality, latch, reset, non-finite input/config
+PASS: timeout locks only the matching visible voice-opened session
+PASS: last-word deadline, repeated partial/final, new segment, boundary, cancel, unarmed timer

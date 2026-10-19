@@ -1650,3 +1650,67 @@ LG выведены из эксплуатации, использование к
   пока не подтверждены пользователем. Ветка feature/background-lockscreen,
   без merge main; APK/voice/model остаются ignored.
 
+### 2026-10-19 — чтение текущих логов: подтверждённых wake нет
+
+- По запросу пользователя выполнено read-only чтение ADB/version/PID/logcat.
+  На LG 0.7.3/code16, PID23084. Доступный ring buffer: 19 октября примерно
+  01:54:31–02:52:11 по часам Android, ~57 мин 40 с; это не вся история
+  со времени установки. Приложение не перезапускалось, код/порог/права не менялись.
+- В этом интервале 0 подтверждённых WAKE и 2 отклонённые одиночные серии:
+  02:14:30 score .7945732 и 02:14:44 score .72033966. Обе имеют WAKE_REJECTED
+  frames=1, то есть UI/command window по ним не открывались. Нельзя назвать их
+  ложными по аудио, но заданный gate их действительно отбросил.
+- SCREEN_OFF manual/idle timeout, AUTO_SCREEN_OFF skipped, pipeline/FATAL/
+  screen-lock errors в доступной выборке отсутствуют. Таймаут на этом интервале
+  не проверен: не было открытий, которые требовали бы автоматического гашения.
+- События сохранены в logs/windows/wake-events-review-20261019.log. Нельзя
+  сделать вывод о полном предыдущем дне или долговременном false alarms/hour
+  по вытесняемому snapshot. Аудиозапись не включалась.
+
+### 2026-10-19 — круговой отсчёт от последнего распознанного слова, 0.8.0
+
+- Пользователь попросил анимацию времени до гашения с перезапуском от последнего
+  распознанного слова; затем подтвердил продолжение. Реализация не меняет wake
+  model/.65/three-frame gate. Отсчёт отделён от прежнего fixed unanswered window:
+  после цвета Vosk продолжает командное окно до 6 секунд без нового текста.
+  В этом окне можно добавить цвет или «отбой» без повторного wake.
+- Добавлен чистый SpeechIdleCountdown: arm при voice-opened экране, refresh
+  только по изменившемуся непустому ASR partial/final, одинаковые partial и
+  дублирующий final время не двигают. Final/пустой final заканчивают segment,
+  поэтому такое же слово в следующем segment может продлить countdown.
+  Это приближение момента распознавания слова; revision гипотезы тоже может
+  продлить deadline. VAD/точные акустические границы слов не добавлялись.
+- Service продлевает commandWindowUntil по новому тексту; после getFinalResult
+  повторно проверяет, не было ли продления/новой команды. Countdown проверяется
+  и вне command branch, один монотонный deadline управляет UI и auto lock.
+  Цвет больше не отменяет гашение/ASR немедленно, «отбой» отменяет timer и
+  блокирует сразу. Session guard/visible/resumed/permission guard сохранены;
+  manual UI/другое приложение по старой session не блокируются.
+- IdleCountdownView рисует убывающий круг, число секунд и подпись «до сна».
+  На новом слове круг снова полный. Отрисовка ~30 fps через invalidate только
+  при показе и remaining>0; при onStop View скрывается/останавливается.
+  Учитывается контраст выбранного цвета (светлый/тёмный foreground), радиус
+  144 dp в отдельной строке над настройками. Секунды имеют content description.
+  Никаких картинок, новых библиотек, сети или дополнительных permissions.
+- Service публикует package-scoped событие deadline только на arm/refresh/cancel,
+  а не каждую animation frame. Main восстанавливает countdown из текущего
+  session/deadline при возвращении. Notification не обновляется на каждом тике,
+  звук/вибрация не добавлялись. В log пишутся только deadline/тип обновления,
+  не расшифровка/сырой звук.
+- Пройдены 3 standalone Java harness (wake gate, session policy, speech idle
+  clock) и 10 source-contract checks. Countdown tests включают boundary 6 с,
+  новый текст, повтор partial/final, новый segment, cancel и unarmed/manual.
+  javac/D8/signature v3 прошли. Это не Android визуальный тест и не live voice
+  подтверждение; реальные рисунок/сброс от слова/гашение пользователь ещё проверяет.
+- Установлено install -r 0.8.0 / code17, данные и прежние profile APK сохранены.
+  SHA-256 `B2670C6BB816B9F583FC3A0087DC27E3FB614EE6B18B033BC72B36ED75EF32ED`.
+  Runtime require-background-permissions проверил SELF_TEST/READY, three-frame
+  gate, mic running, CPU lock held, overlay/battery exemption, без startup errors.
+  Пользователю предложен Home → wake → «включи синий», новое слово и 6 с тишины.
+  В дополнительном коротком logcat-чтении ещё нет wake/idle событий, поэтому
+  реальный таймер не объявляется проверенным только по установке.
+- README/background/rollback обновлены; возврат fixed timer без круга — исходник
+  fdebe89 с допустимым code/key, без uninstall. Личные APK/model не публикуются,
+  audio не записывается, main не сливается автоматически. Включён в историю
+  также оставшийся snapshot логов диагностики от начала 19 октября.
+

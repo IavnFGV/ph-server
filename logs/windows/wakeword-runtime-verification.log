@@ -558,3 +558,51 @@ APK SHA256: CF145349EE2779B3DA436A167D1A0945107710F4CE1B0FB0CAE61A8A0F604B4B
 PowerShell transcript end
 End time: 20261018175912
 **********************
+**********************
+PowerShell transcript start
+Start time: 20261019170441
+Username: IVAN-YOGA-7\ivand
+RunAs User: IVAN-YOGA-7\ivand
+Configuration Name:
+Machine: IVAN-YOGA-7 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Users\ivand\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell\pwsh.dll -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+./scripts/install-voice-color-station.ps1
+if ($LASTEXITCODE -ne 0) { throw 'Install failed' }
+./scripts/verify-wakeword-runtime.ps1 -ExpectedProfile personal-v2 -RequireBackgroundPermissions
+if ($LASTEXITCODE -ne 0) { throw 'Runtime verification failed' }
+Process ID: 22644
+PSVersion: 7.6.5
+PSEdition: Core
+GitCommitId: 7.6.5
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+    versionCode=17 minSdk=31 targetSdk=31
+    versionName=0.8.0
+  * ServiceRecord{9c23be1 u0 local.ivand.voicecolorstation/.VoiceListenerService}
+    isForeground=true foregroundId=71 foregroundNoti=Notification(channel=local-vosk-listener-v1 shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x6a color=0x00000000 backgroundColor=0x00000000 category=service actions=1 vis=PRIVATE)
+
+SYSTEM_ALERT_WINDOW: allow; time=+4m47s413ms ago; rejectTime=+3d18h38m52s825ms ago
+Battery exemption currently present: True
+  PARTIAL_WAKE_LOCK              'VoiceColorStation:microphone' ACQ=-783ms (uid=10316 pid=30648)
+           Java Heap:     2384                          13488
+         Native Heap:   189936                         190748
+           TOTAL PSS:   220847            TOTAL RSS:   297572       TOTAL SWAP PSS:      296
+Algorithm Hash
+--------- ----
+SHA256    B2670C6BB816B9F583FC3A0087DC27E3FB614EE6B18B033BC72B36ED75EF32ED
+--------- beginning of main
+10-19 17:04:46.218 30648 31350 I Pomogator: SELF_TEST passed; score=9.11206E-4; profile=personal-v2; model=A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48; threshold=0.65
+10-19 17:04:46.314 30648 31350 I Pomogator: BACKGROUND: partial wake lock acquired; overlay=true; batteryExempt=true
+10-19 17:04:46.317 30648 31350 I Pomogator: READY: PCM16 16000Hz, single AudioRecord, preroll=0, ASR=after-wake, confirmFrames=3; profile=personal-v2; model=A21044274F5032063FAA45B28F25E26FD9F1F2C89D1A2964F73E30C09AD1FA48; threshold=0.65
+10-19 17:04:46.496 30648 31350 D Pomogator: WAIT peak=0.0
+10-19 17:04:47.536 30648 31350 D Pomogator: WAIT peak=0.0
+APK SHA256: B2670C6BB816B9F583FC3A0087DC27E3FB614EE6B18B033BC72B36ED75EF32ED
+**********************
+PowerShell transcript end
+End time: 20261019170444
+**********************

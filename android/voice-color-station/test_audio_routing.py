@@ -60,14 +60,22 @@ class AudioRoutingContract(unittest.TestCase):
         admin = ET.parse(Path(__file__).parent / 'res/xml/screen_lock_admin.xml').getroot()
         self.assertEqual([policy.tag for policy in admin.find('uses-policies')], ['force-lock'])
 
-    def test_timeout_after_final_result_rechecks_foreground_on_main_thread(self):
-        timeout = self.source.split('} else if (now >= commandWindowUntil) {', 1)[1].split('} else {\n                    float score', 1)[0]
-        self.assertLess(timeout.index('handleJson(recognizer.getFinalResult()'), timeout.index('if (commandWindowUntil != 0L)'))
+    def test_speech_idle_timeout_rechecks_foreground_on_main_thread(self):
+        timeout = self.source.split('private void checkIdleTimeout(long now)', 1)[1].split('private void lockScreen', 1)[0]
+        self.assertIn('idleCountdown.expired(now)', timeout)
         self.assertIn('new Handler(Looper.getMainLooper())', timeout)
         self.assertIn('WakeUiTimeoutPolicy.shouldLockScreen(', timeout)
-        self.assertIn('lockScreen("idle timeout=6000ms")', timeout)
+        self.assertIn('lockScreen("speech idle timeout=6000ms")', timeout)
         color = self.source.split('private void applyColor(', 1)[1].split('@Override', 1)[0]
-        self.assertIn('wakeUiSession = 0L;', color)
+        self.assertNotIn('idleCountdown.cancel()', color)
+        self.assertNotIn('commandWindowUntil = 0L;', color)
+
+    def test_ui_animates_monotonic_deadline_only_while_visible(self):
+        widget = (Path(__file__).parent / 'src/local/ivand/voicecolorstation/IdleCountdownView.java').read_text(encoding='utf-8')
+        self.assertIn('deadline - SystemClock.elapsedRealtime()', widget)
+        self.assertIn('remaining > 0L && isShown()', widget)
+        self.assertIn('postInvalidateDelayed(33L)', widget)
+        self.assertIn('idleCountdown.observe(phrase, !partial, wordAt)', self.source)
 
 
 if __name__ == '__main__':
