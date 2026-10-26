@@ -1,0 +1,12 @@
+  mWakefulness=Asleep
+  mIsPowered=true
+  mPlugType=2
+  mStayOn=true
+  mWakeUpWhenPluggedOrUnpluggedConfig=true
+  mScreenOffTimeoutSetting=30000
+  mStayOnWhilePluggedInSetting=7
+  PARTIAL_WAKE_LOCK              'VoiceColorStation:microphone' ACQ=-6d15h47m16s242ms LONG (uid=10316 pid=30648)
+  mIsPowered=false
+  mWakefulness=Asleep
+  mStayOn=false
+  mStayOnWhilePluggedInSetting=0

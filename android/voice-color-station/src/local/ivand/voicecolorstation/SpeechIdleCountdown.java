@@ -11,6 +11,7 @@ public final class SpeechIdleCountdown {
     }
     public void arm(long now) { previous = ""; deadline = now + duration; }
     public void cancel() { previous = ""; deadline = 0L; }
+    public void refresh(long now) { if (deadline != 0L) deadline = now + duration; }
     public boolean observe(String text, boolean isFinal, long now) {
         boolean changed = !text.isEmpty() && !text.equals(previous);
         if (changed && deadline != 0L) deadline = now + duration;

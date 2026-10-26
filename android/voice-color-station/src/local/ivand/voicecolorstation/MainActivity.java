@@ -13,6 +13,10 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
+import android.util.Log;
 import android.os.PowerManager;
 import android.net.Uri;
 import android.provider.Settings;
@@ -27,13 +31,16 @@ public final class MainActivity extends Activity {
     public static final String ACTION_WAKE_SCREEN = "local.ivand.voicecolorstation.WAKE_SCREEN";
     public static volatile boolean visible;
     public static volatile boolean resumed;
-    public static final String EXTRA_WAKE_SESSION = "wake_session";
-    public static volatile long activeWakeSession;
     private static final int MICROPHONE_PERMISSION_REQUEST = 1001;
 
     private LinearLayout root;
     private TextView status;
     private IdleCountdownView countdown;
+    private Button pinScreen;
+    private final StationScreenIdle screenIdle = new StationScreenIdle(6000L);
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
+    private Runnable idleCheck;
+    private boolean settingsOpen;
     private String serviceStatus = "Загружаю локальную модель…";
     private String lastHeard;
     private boolean lastHeardIsFinal;
@@ -41,8 +48,10 @@ public final class MainActivity extends Activity {
     private final BroadcastReceiver serviceReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (VoiceListenerService.ACTION_IDLE_COUNTDOWN.equals(intent.getAction())) {
-                updateCountdown();
+            if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())
+                    || Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())
+                    || Intent.ACTION_POWER_DISCONNECTED.equals(intent.getAction())) {
+                refreshForScreenEvent(intent.getAction());
                 return;
             }
             if (VoiceListenerService.ACTION_COLOR_CHANGED.equals(intent.getAction())) {
@@ -57,9 +66,13 @@ public final class MainActivity extends Activity {
                     renderStatus();
                 }
             } else if (VoiceListenerService.ACTION_PHRASE_HEARD.equals(intent.getAction())) {
-                lastHeard = intent.getStringExtra(VoiceListenerService.EXTRA_PHRASE);
-                lastHeardIsFinal = intent.getBooleanExtra(
-                        VoiceListenerService.EXTRA_IS_FINAL, false);
+                String phrase = intent.getStringExtra(VoiceListenerService.EXTRA_PHRASE);
+                boolean isFinal = intent.getBooleanExtra(VoiceListenerService.EXTRA_IS_FINAL, false);
+                if (phrase != null) {
+                    screenIdle.speech(phrase, isFinal, SystemClock.elapsedRealtime());
+                    if (!phrase.isEmpty()) { lastHeard = phrase; lastHeardIsFinal = isFinal; }
+                }
+                updateCountdown();
                 renderStatus();
             }
         }
@@ -68,11 +81,9 @@ public final class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activeWakeSession = ACTION_WAKE_SCREEN.equals(getIntent().getAction())
-                ? getIntent().getLongExtra(EXTRA_WAKE_SESSION, 0L) : 0L;
         setShowWhenLocked(true);
         setTurnScreenOn(ACTION_WAKE_SCREEN.equals(getIntent().getAction()));
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         enterImmersiveMode();
         createInterface();
         restoreLastColor();
@@ -100,10 +111,22 @@ public final class MainActivity extends Activity {
         LinearLayout.LayoutParams ringLayout = new LinearLayout.LayoutParams(ringSize, ringSize);
         ringLayout.gravity = Gravity.CENTER_HORIZONTAL;
         root.addView(countdown, ringLayout);
+        pinScreen = new Button(this);
+        pinScreen.setText("Не гасить экран");
+        pinScreen.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                if (!screenIdle.active()) startScreenTimer("pin-button");
+                screenIdle.togglePin(SystemClock.elapsedRealtime());
+                updateCountdown();
+                restartIdleCheck();
+                Log.i("Pomogator", "SCREEN_PIN enabled=" + screenIdle.pinned());
+            }
+        });
+        root.addView(pinScreen);
         Button backgroundSettings = new Button(this);
         backgroundSettings.setText("Настройки фоновой работы");
         backgroundSettings.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) { activeWakeSession = 0L; updateCountdown(); showBackgroundSettings(); }
+            @Override public void onClick(View view) { showBackgroundSettings(); }
         });
         root.addView(backgroundSettings);
         setContentView(root);
@@ -175,7 +198,9 @@ public final class MainActivity extends Activity {
         filter.addAction(VoiceListenerService.ACTION_COLOR_CHANGED);
         filter.addAction(VoiceListenerService.ACTION_STATUS_CHANGED);
         filter.addAction(VoiceListenerService.ACTION_PHRASE_HEARD);
-        filter.addAction(VoiceListenerService.ACTION_IDLE_COUNTDOWN);
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_POWER_CONNECTED);
+        filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
         registerReceiver(serviceReceiver, filter);
         receiverRegistered = true;
     }
@@ -183,8 +208,7 @@ public final class MainActivity extends Activity {
     @Override
     protected void onStop() {
         visible = false;
-        activeWakeSession = 0L;
-        countdown.setDeadline(0L, 6000L);
+        suspendScreenTimer();
         if (receiverRegistered) {
             unregisterReceiver(serviceReceiver);
             receiverRegistered = false;
@@ -199,7 +223,7 @@ public final class MainActivity extends Activity {
         restoreLastColor();
         String current = VoiceListenerService.currentStatus;
         if (current != null) { serviceStatus = current; renderStatus(); }
-        updateCountdown();
+        startScreenTimer("resume");
         enterImmersiveMode();
         if (!ACTION_WAKE_SCREEN.equals(getIntent().getAction())
                 && !getSharedPreferences("voice_state", MODE_PRIVATE).getBoolean("background_setup_shown", false)) {
@@ -212,29 +236,106 @@ public final class MainActivity extends Activity {
 
     @Override protected void onPause() {
         resumed = false;
+        suspendScreenTimer();
+        setTurnScreenOn(false);
         super.onPause();
     }
 
     @Override protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        activeWakeSession = ACTION_WAKE_SCREEN.equals(intent.getAction())
-                ? intent.getLongExtra(EXTRA_WAKE_SESSION, 0L) : 0L;
-        if (ACTION_WAKE_SCREEN.equals(intent.getAction())) {
-            setTurnScreenOn(true);
+        boolean wake = ACTION_WAKE_SCREEN.equals(intent.getAction());
+        setTurnScreenOn(wake);
+        if (wake) {
             lastHeard = null;
         }
-        updateCountdown();
+        if (screenIdle.active()) screenIdle.interact(SystemClock.elapsedRealtime());
+        startScreenTimer("intent");
     }
 
     private void updateCountdown() {
-        long session = VoiceListenerService.currentCountdownSession;
-        long deadline = session != 0L && session == activeWakeSession
-                ? VoiceListenerService.currentScreenOffDeadline : 0L;
-        countdown.setDeadline(deadline, 6000L);
+        countdown.setDeadline(screenIdle.deadline(), 6000L);
+        pinScreen.setText(screenIdle.pinned() ? "Вернуть таймер (6 с)" : "Не гасить экран");
+        if (screenIdle.pinned()) getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    private boolean ownsScreen() {
+        return visible && resumed && hasWindowFocus() && !settingsOpen && !isFinishing()
+                && getSystemService(PowerManager.class).isInteractive();
+    }
+
+    private void startScreenTimer(String reason) {
+        if (!ownsScreen()) return;
+        if (!screenIdle.active()) {
+            screenIdle.resume(SystemClock.elapsedRealtime());
+            Log.i("Pomogator", "SCREEN_TIMER armed; reason=" + reason + "; timeout=6000ms");
+        }
+        updateCountdown();
+        restartIdleCheck();
+    }
+
+    private void refreshForScreenEvent(String reason) {
+        if (!ownsScreen()) return;
+        if (!screenIdle.active()) startScreenTimer(reason);
+        else screenIdle.interact(SystemClock.elapsedRealtime());
+        updateCountdown();
+        Log.i("Pomogator", "SCREEN_TIMER power/screen event=" + reason + "; pinned=" + screenIdle.pinned());
+    }
+
+    @Override public void onUserInteraction() {
+        super.onUserInteraction();
+        if (!ownsScreen()) return;
+        if (!screenIdle.active()) startScreenTimer("interaction");
+        screenIdle.interact(SystemClock.elapsedRealtime());
+        updateCountdown();
+    }
+
+    @Override public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (countdown == null) return;
+        if (hasFocus) startScreenTimer("focus"); else suspendScreenTimer();
+    }
+
+    private void suspendScreenTimer() {
+        if (idleCheck != null) uiHandler.removeCallbacks(idleCheck);
+        screenIdle.pause();
+        if (countdown != null) updateCountdown();
+    }
+
+    private void restartIdleCheck() {
+        if (idleCheck != null) uiHandler.removeCallbacks(idleCheck);
+        if (!screenIdle.active() || screenIdle.pinned()) return;
+        final long session = screenIdle.session();
+        idleCheck = new Runnable() {
+            @Override public void run() {
+                if (!ownsScreen()) { suspendScreenTimer(); return; }
+                if (screenIdle.shouldLock(SystemClock.elapsedRealtime(), session, ownsScreen())) {
+                    suspendScreenTimer();
+                    DevicePolicyManager policy = getSystemService(DevicePolicyManager.class);
+                    ComponentName admin = new ComponentName(MainActivity.this, ScreenLockAdminReceiver.class);
+                    if (!policy.isAdminActive(admin)) {
+                        serviceStatus = "Разрешите блокировку экрана в настройках фоновой работы";
+                        renderStatus();
+                        Log.w("Pomogator", "SCREEN_OFF blocked: force-lock admin not enabled");
+                        return;
+                    }
+                    try {
+                        setTurnScreenOn(false);
+                        policy.lockNow();
+                        Log.i("Pomogator", "SCREEN_OFF requested by visible UI idle timeout=6000ms; listener retained");
+                    } catch (SecurityException error) { Log.w("Pomogator", "SCREEN_OFF denied", error); }
+                    return;
+                }
+                if (screenIdle.session() == session && !screenIdle.pinned()) uiHandler.postDelayed(this, 100L);
+            }
+        };
+        uiHandler.postDelayed(idleCheck, 100L);
     }
 
     private void showBackgroundSettings() {
+        settingsOpen = true;
+        suspendScreenTimer();
         PowerManager power = getSystemService(PowerManager.class);
         final ComponentName lockAdmin = new ComponentName(this, ScreenLockAdminReceiver.class);
         DevicePolicyManager policies = getSystemService(DevicePolicyManager.class);
@@ -258,7 +359,13 @@ public final class MainActivity extends Activity {
                     catch (RuntimeException error) { serviceStatus = "Откройте разрешения вручную в настройках Android"; renderStatus(); }
                     }
                 })
-                .setNegativeButton("Позже", null).show();
+                .setNegativeButton("Позже", null)
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override public void onDismiss(DialogInterface dialog) {
+                        settingsOpen = false;
+                        startScreenTimer("settings-dismissed");
+                    }
+                }).show();
     }
 
     private void enterImmersiveMode() {

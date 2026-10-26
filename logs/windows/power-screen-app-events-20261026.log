@@ -1,0 +1,6 @@
+10-26 07:41:00.087 30648 31350 I Pomogator: WAKE score=0.78009295; confirmFrames=3; command window=6000ms; ASR=next-frame; preroll=0
+10-26 07:48:03.245 30648 31350 I Pomogator: WAKE score=0.95129466; confirmFrames=3; command window=6000ms; ASR=next-frame; preroll=0
+10-26 07:48:04.440 30648 31350 D Pomogator: IDLE_TIMER refreshed by changed ASR text; deadline=0
+10-26 07:48:04.685 30648 31350 D Pomogator: IDLE_TIMER refreshed by changed ASR text; deadline=0
+10-26 07:48:06.565 30648 31350 D Pomogator: IDLE_TIMER refreshed by changed ASR text; deadline=0
+10-26 07:48:07.118 30648 31350 I Pomogator: SCREEN_OFF requested by final command; background listener retained

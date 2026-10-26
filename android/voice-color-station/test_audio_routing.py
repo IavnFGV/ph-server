@@ -31,7 +31,8 @@ class AudioRoutingContract(unittest.TestCase):
         self.assertLess(branch.index('Settings.canDrawOverlays'), branch.index('startActivity('))
         main = (Path(__file__).parent / 'src/local/ivand/voicecolorstation/MainActivity.java').read_text(encoding='utf-8')
         self.assertIn('setShowWhenLocked(true)', main)
-        self.assertIn('setTurnScreenOn(true)', main)
+        self.assertIn('setTurnScreenOn(wake)', main)
+        self.assertIn('boolean wake = ACTION_WAKE_SCREEN.equals(intent.getAction())', main)
         self.assertNotIn('requestDismissKeyguard', main)
 
     def test_boot_reminder_does_not_start_microphone(self):
@@ -61,14 +62,27 @@ class AudioRoutingContract(unittest.TestCase):
         self.assertEqual([policy.tag for policy in admin.find('uses-policies')], ['force-lock'])
 
     def test_speech_idle_timeout_rechecks_foreground_on_main_thread(self):
-        timeout = self.source.split('private void checkIdleTimeout(long now)', 1)[1].split('private void lockScreen', 1)[0]
-        self.assertIn('idleCountdown.expired(now)', timeout)
-        self.assertIn('new Handler(Looper.getMainLooper())', timeout)
-        self.assertIn('WakeUiTimeoutPolicy.shouldLockScreen(', timeout)
-        self.assertIn('lockScreen("speech idle timeout=6000ms")', timeout)
+        main = (Path(__file__).parent / 'src/local/ivand/voicecolorstation/MainActivity.java').read_text(encoding='utf-8')
+        self.assertIn('new Handler(Looper.getMainLooper())', main)
+        self.assertIn('screenIdle.shouldLock(SystemClock.elapsedRealtime(), session, ownsScreen())', main)
+        self.assertIn('hasWindowFocus() && !settingsOpen', main)
+        self.assertIn('policy.isAdminActive(admin)', main)
+        self.assertIn('policy.lockNow()', main)
         color = self.source.split('private void applyColor(', 1)[1].split('@Override', 1)[0]
         self.assertNotIn('idleCountdown.cancel()', color)
         self.assertNotIn('commandWindowUntil = 0L;', color)
+
+    def test_power_events_and_pin_are_activity_scoped(self):
+        main = (Path(__file__).parent / 'src/local/ivand/voicecolorstation/MainActivity.java').read_text(encoding='utf-8')
+        self.assertIn('filter.addAction(Intent.ACTION_POWER_CONNECTED)', main)
+        self.assertIn('filter.addAction(Intent.ACTION_POWER_DISCONNECTED)', main)
+        self.assertIn('filter.addAction(Intent.ACTION_SCREEN_ON)', main)
+        self.assertIn('screenIdle.togglePin(SystemClock.elapsedRealtime())', main)
+        self.assertIn('if (screenIdle.pinned()) getWindow().addFlags', main)
+        create = main.split('protected void onCreate(', 1)[1].split('private void createInterface', 1)[0]
+        self.assertNotIn('addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)', create)
+        pause = main.split('protected void onPause()', 1)[1].split('@Override', 1)[0]
+        self.assertIn('suspendScreenTimer()', pause)
 
     def test_ui_animates_monotonic_deadline_only_while_visible(self):
         widget = (Path(__file__).parent / 'src/local/ivand/voicecolorstation/IdleCountdownView.java').read_text(encoding='utf-8')

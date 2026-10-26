@@ -14,8 +14,6 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -41,9 +39,6 @@ public final class VoiceListenerService extends Service {
             "local.ivand.voicecolorstation.STATUS_CHANGED";
     public static final String ACTION_PHRASE_HEARD =
             "local.ivand.voicecolorstation.PHRASE_HEARD";
-    public static final String ACTION_IDLE_COUNTDOWN = "local.ivand.voicecolorstation.IDLE_COUNTDOWN";
-    public static volatile long currentScreenOffDeadline;
-    public static volatile long currentCountdownSession;
     public static final String EXTRA_COLOR = "color";
     public static final String EXTRA_COLOR_NAME = "color_name";
     public static final String EXTRA_PHRASE = "phrase";
@@ -69,7 +64,6 @@ public final class VoiceListenerService extends Service {
     private volatile AudioRecord audioRecord;
     private volatile boolean stopping;
     private long commandWindowUntil;
-    private long wakeUiSession;
     private final SpeechIdleCountdown idleCountdown = new SpeechIdleCountdown(COMMAND_WINDOW_MILLIS);
     private String lastAppliedPhrase = "";
     private long lastAppliedAt;
@@ -217,12 +211,8 @@ public final class VoiceListenerService extends Service {
                         // Never feed the wake frame or previous audio to Vosk.
                         // The next AudioRecord frame enters the command branch.
                         commandWindowUntil = now + COMMAND_WINDOW_MILLIS;
-                        long previousSession = wakeUiSession;
-                        boolean opened = showWakeScreen(now);
-                        wakeUiSession = opened ? now : (MainActivity.visible
-                                && MainActivity.activeWakeSession == previousSession ? previousSession : 0L);
-                        if (wakeUiSession != 0L) idleCountdown.arm(now); else idleCountdown.cancel();
-                        publishCountdown();
+                        idleCountdown.cancel();
+                        showWakeScreen(now);
                         publishHeard("", false);
                         publishStatus("Обращение услышано. Слушаю команду…");
                         Log.i(TAG, "WAKE score=" + score + "; confirmFrames=3; command window=6000ms; ASR=next-frame; preroll=0");
@@ -236,7 +226,6 @@ public final class VoiceListenerService extends Service {
                         lastScoreAt = now;
                     }
                 }
-                checkIdleTimeout(SystemClock.elapsedRealtime());
             }
         } catch (Exception error) {
             if (!stopping) {
@@ -244,7 +233,6 @@ public final class VoiceListenerService extends Service {
                 fail("Ошибка голосовой станции: " + error.getMessage());
             }
         } finally {
-            cancelCountdown();
             releaseCpuLock();
             if (recorder != null) {
                 try { recorder.stop(); } catch (IllegalStateException ignored) { }
@@ -305,7 +293,6 @@ public final class VoiceListenerService extends Service {
         }
         try {
             startActivity(new Intent(this, MainActivity.class).setAction(MainActivity.ACTION_WAKE_SCREEN)
-                    .putExtra(MainActivity.EXTRA_WAKE_SESSION, session)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
             Log.i(TAG, "WAKE_UI requested; keyguard is not dismissed");
             return true;
@@ -358,14 +345,16 @@ public final class VoiceListenerService extends Service {
             String phrase = object.optString(partial ? "partial" : "text", "")
                     .trim().toLowerCase(new Locale("ru", "RU"));
             if (phrase.isEmpty()) {
-                if (!partial) idleCountdown.observe("", true, SystemClock.elapsedRealtime());
+                if (!partial) {
+                    idleCountdown.observe("", true, SystemClock.elapsedRealtime());
+                    publishHeard("", true);
+                }
                 return;
             }
             long wordAt = SystemClock.elapsedRealtime();
             if (idleCountdown.observe(phrase, !partial, wordAt)) {
                 if (commandWindowUntil != 0L) commandWindowUntil = wordAt + COMMAND_WINDOW_MILLIS;
-                publishCountdown();
-                Log.d(TAG, "IDLE_TIMER refreshed by changed ASR text; deadline=" + idleCountdown.deadline());
+                Log.d(TAG, "ASR_ACTIVITY changed text; command deadline refreshed");
             }
             publishHeard(phrase, !partial);
             if (partial) return;
@@ -390,37 +379,7 @@ public final class VoiceListenerService extends Service {
 
     private void screenOff() {
         commandWindowUntil = 0L;
-        wakeUiSession = 0L;
-        cancelCountdown();
         lockScreen("final command");
-    }
-
-    private void publishCountdown() {
-        currentCountdownSession = wakeUiSession;
-        currentScreenOffDeadline = idleCountdown.deadline();
-        sendBroadcast(new Intent(ACTION_IDLE_COUNTDOWN).setPackage(getPackageName()));
-    }
-
-    private void cancelCountdown() {
-        idleCountdown.cancel();
-        publishCountdown();
-    }
-
-    private void checkIdleTimeout(long now) {
-        if (!idleCountdown.expired(now)) return;
-        final long expiredSession = wakeUiSession;
-        wakeUiSession = 0L;
-        cancelCountdown();
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override public void run() {
-                if (!stopping && WakeUiTimeoutPolicy.shouldLockScreen(expiredSession,
-                        MainActivity.visible && MainActivity.resumed, MainActivity.activeWakeSession)) {
-                    lockScreen("speech idle timeout=6000ms");
-                } else {
-                    Log.i(TAG, "AUTO_SCREEN_OFF skipped: wake UI no longer owns foreground");
-                }
-            }
-        });
     }
 
     private void lockScreen(String reason) {

@@ -1,0 +1,10 @@
+10-26 08:03:47.029 12594 12594 I Pomogator: SCREEN_TIMER armed; reason=focus; timeout=6000ms
+10-26 08:03:53.198 12594 12594 I Pomogator: SCREEN_OFF requested by visible UI idle timeout=6000ms; listener retained
+10-26 08:04:34.720 12594 12594 I Pomogator: SCREEN_TIMER armed; reason=focus; timeout=6000ms
+10-26 08:04:35.088 12594 12594 I Pomogator: SCREEN_PIN enabled=true
+10-26 08:05:13.537 12594 12594 I Pomogator: SCREEN_PIN enabled=false
+10-26 08:05:23.863 12594 12594 I Pomogator: SCREEN_OFF requested by visible UI idle timeout=6000ms; listener retained
+10-26 08:05:37.743 12594 12594 I Pomogator: SCREEN_TIMER armed; reason=focus; timeout=6000ms
+10-26 08:05:38.087 12594 12594 I Pomogator: SCREEN_PIN enabled=true
+10-26 08:05:46.928 12594 12594 I Pomogator: SCREEN_TIMER armed; reason=focus; timeout=6000ms
+10-26 08:05:53.066 12594 12594 I Pomogator: SCREEN_OFF requested by visible UI idle timeout=6000ms; listener retained

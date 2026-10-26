@@ -1714,3 +1714,93 @@ LG выведены из эксплуатации, использование к
   audio не записывается, main не сливается автоматически. Включён в историю
   также оставшийся snapshot логов диагностики от начала 19 октября.
 
+### 2026-10-26 — экран после изменения питания: диагностика без изменения настроек
+
+- Пользователь сообщил, что подключение/отключение ноутбука по USB оставляет
+  экран включённым без timer, и спросил о timer для этого сценария. Выполнены
+  read-only ADB settings/dumpsys/logcat/source проверки; APK и глобальные
+  настройки не менялись. PID30648 сохранился от установки 0.8.0.
+- PowerManagerService имеет mWakeUpWhenPluggedOrUnpluggedConfig=true и
+  зафиксировал WAKE_REASON_PLUGGED_IN 26 октября в 07:46:08, 07:46:16,
+  07:47:25 (время logcat). В app log нет соответствующих новых wake в эти
+  моменты, зато видны 07:41 и 07:48. Экран будит системное событие питания,
+  а не обязательно classifier. Последующий «отбой» в 07:48:07 вызвал device_admin
+  sleep, что соответствует сообщению пользователя о ручном погашении.
+- global stay_on_while_plugged_in=7, mStayOn=true при USB, screen_off_timeout
+  30000 мс. Это системное удержание при питании. Дополнительно MainActivity
+  безусловно ставит FLAG_KEEP_SCREEN_ON, удерживая свой видимый экран и без
+  питания. Android docs рекомендует снимать flag, когда удержание не нужно:
+  https://developer.android.com/develop/background-work/background-tasks/awake/screen-on
+  https://developer.android.com/reference/android/provider/Settings.Global#STAY_ON_WHILE_PLUGGED_IN
+- Нынешний countdown разрешён только для voice-opened session. После обычного
+  screen/power wake session сброшена в onStop и отсутствует; поэтому
+  idleCountdown не arm-ится. В app log в 07:48 есть IDLE_TIMER deadline=0.
+  Partial CPU lock относится к микрофону, не является screen-on wake lock.
+- Возможное исправление для согласования: единый idle countdown, когда именно
+  наша станция видима/resumed, независимо от причины открытия (voice/manual/
+  power). Внешнее приложение не блокировать, настройки защищать от старого
+  timer, постоянный KEEP_SCREEN_ON ограничить активным взаимодействием.
+  Глобальную stay-awake настройку без отдельного решения пользователя не менять.
+  LockNow уже умеет погасить экран несмотря на stay-awake, новых прав не нужно.
+- Сохранены power snapshot, app events и system events в отдельных logs/windows/
+  power-screen-*-20261026.log. Первый rg с Windows literal wildcard вернул
+  invalid filename; повтор с directory + -g '*.java' прошёл. Изменений кода нет.
+
+### 2026-10-26 — единый таймер экрана и кнопка закрепления, APK 0.9.0
+
+- Пользователь явно разрешил реализовать/установить исправление, затем предложил
+  кнопку удержания экрана. Добавлен toggle «Не гасить экран» / «Вернуть таймер
+  (6 с)». Это временный pin только активного UI; потеря фокуса/уход/экран-off
+  снимает pin и KEEP_SCREEN_ON. При старте flag по умолчанию очищен, а не установлен.
+- Экранный countdown перенесён из audio-worker в Activity main-thread controller
+  StationScreenIdle. Он не зависит от готовности Vosk/аудиопотока и arm-ится
+  при resume/focus/SCREEN_ON/POWER_CONNECTED/POWER_DISCONNECTED, только если
+  станция действительно visible/resumed/focused и экран interactive. Речь в
+  существующем ASR-окне и касания продлевают 6 с, duplicate partial/final — нет.
+  Фоновая служба остаётся постоянно слушать wake; touch/pin ASR не включают.
+- Dynamic power/screen receiver действует только пока Activity запущена.
+  Screen timer/pin приостанавливаются в настройках и системных окнах; callbacks
+  снимаются при уходе. Main Handler проверяет текущую generation/foreground
+  перед lockNow; старый callback не должен блокировать другой экран. Pin скрывает
+  круг и удерживает флагом только своё окно. Возврат к timer даёт полные 6 с.
+- Service больше не владеет screen deadline/session и не пытается блокировать
+  UI своим старым timer. Он публикует ASR text updates, включая пустой final для
+  корректного завершения segment (UI при этом не стирает показанный текст).
+  У Service сохранены прежний command inactivity window, модель/.65/3-frame gate,
+  force-lock «отбой», mic foreground-service и partial CPU wake lock.
+  System stay_on_while_plugged_in=7 и screen_off_timeout=30000 НЕ менялись.
+- Новый Java harness StationScreenIdle проверил manual/power resume, touch,
+  speech и duplicate text, pin/unpin, focus loss и stale callback. Вместе с
+  прежними harness пройдено 4 standalone Java runners; 11 source-contract checks.
+  Первый source check ожидал буквальный setTurnScreenOn(true) и упал после
+  замены на setTurnScreenOn(wake); исправлена проверка conditional action.
+  Оба вывода сохранены в одном append-log. Первая docs patch с неверным контекстом
+  отклонена без частичных изменений, затем применена исправленная.
+- Сборка javac/D8 и signature v3 прошли. Установлена 0.9.0 / code18 через
+  install -r, старый профильный APK 0.8.0 сохранён. SHA-256 нового APK:
+  `58C52325658727350D678C140E4ED40B51A8909CF2510413F9CC547E4B5E233A`.
+  Runtime verify подтвердил SELF_TEST/READY, mic running, partial CPU lock,
+  overlay и battery exemption. Новые права не выдавались, admin policy прежняя.
+- На LG проведена короткая acceptance-проверка, без разблокировки keyguard,
+  reboot, battery simulation или глобальных правок:
+  1. ADB wake key + запуск своей Activity, без voice wake: circle виден, в
+     08:03:47 SCREEN_TIMER armed, в 08:03:53 SCREEN_OFF — около 6.17 с.
+     USB был подключён, mStayOn=true; явный app lock погасил экран несмотря на это.
+  2. По просмотренному screenshot найден центр новой кнопки (1080x2340 display,
+     tap 540,2080). Pin включён в 08:04:35; спустя >8 с экран Awake, circle скрыт,
+     кнопка «Вернуть таймер», window имеет KEEP_SCREEN_ON/mHoldScreenWindow.
+     Screenshot обоих состояний просмотрен: без clipping, сохранён только в
+     ignored .tools/ui-qa/, в публичный Git не добавлен.
+  3. Unpin в 08:05:13, touch примерно через 4 с. Через 3 с после touch ещё Awake,
+     через 7 с — Asleep; SCREEN_OFF в 08:05:23.86. Touch продлил countdown.
+  4. Pin → Home → ожидание >8 с: Home не заблокирован, Awake, mHoldScreenWindow=null.
+     Возврат в станцию в 08:05:46 снова arm, в 08:05:53 auto lock. Pin не остался
+     включённым после ухода. Фоновый RECORD_AUDIO остаётся running.
+- Системные/приложенческие события, диагностика до правки и regression logs
+  сохраняются. Физическое отключение/подключение кабеля не автоматизировалось:
+  проверены wake/resume при USB-питании и подписки power events, реальный replug
+  пользователю ещё нужно проверить. Это не полноценный долгий soak-test.
+- README/background/rollback обновлены. Разработка остаётся в
+  feature/background-lockscreen; main автоматически не сливается. Откат UI —
+  0d25440 (0.8.0) с допустимым versionCode и прежним ключом, без uninstall.
+
